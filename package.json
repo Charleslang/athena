@@ -1,0 +1,16 @@
+{
+  "name": "note",
+  "version": "1.0.0",
+  "description": "记录，成为更好的自己",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vuepress dev docs",
+    "build": "vuepress build docs",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Junfeng Dai",
+  "license": "ISC",
+  "devDependencies": {
+    "vuepress": "^2.0.0-beta.50"
+  }
+}

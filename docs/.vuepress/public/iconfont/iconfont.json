@@ -1,0 +1,23 @@
+{
+  "id": "3614104",
+  "name": "vuepress-note",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "15056486",
+      "name": "闪电",
+      "font_class": "shandian1",
+      "unicode": "e602",
+      "unicode_decimal": 58882
+    },
+    {
+      "icon_id": "4532573",
+      "name": "闪电",
+      "font_class": "shandian",
+      "unicode": "e625",
+      "unicode_decimal": 58917
+    }
+  ]
+}
