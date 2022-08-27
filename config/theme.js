@@ -54,7 +54,7 @@ const theme = defaultTheme({
   ],
   logo: '/images/avatar.jpg', // Logo 图片将会显示在导航栏的左端
   logoDark: '/images/avatar.jpg', // 暗黑模式下的 Logo
-  repo: 'https://github.com/vuepress/vuepress-next', // 右上角最后的位置显示仓库地址
+  repo: 'https://github.com/Charleslang/note', // 右上角最后的位置显示仓库地址
   repoLabel: 'Junfeng Dai', // 如果不设置, 则会根据 repo 的域名自动推断
   sidebarDepth: 2, // 提取哪些标签作为侧边栏
   editLink: true, // 是否启用 编辑此页 链接, 默认为 true
