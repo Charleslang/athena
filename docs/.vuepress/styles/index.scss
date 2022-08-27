@@ -3,15 +3,15 @@ html.dark {
 }
 
 #app {
-  & div.theme-container .navbar {
-    & .site-name{
+  div.theme-container .navbar {
+    .site-name{
       font-size: 1.1rem;
     }
-    & img.logo {
+    img.logo {
       border-radius: 50%;
     }
   }
-  & div.no-sidebar {
+  div.no-sidebar {
     position: absolute;
     top: 0;
     bottom: 0;
@@ -19,7 +19,7 @@ html.dark {
     right: 0;
     overflow-x: hidden;
 
-    & main.home {
+    main.home {
       width: 100%;
       max-width: 100%;
       padding: var(--navbar-height) 0 0 0;
@@ -28,8 +28,8 @@ html.dark {
       display: table;
       height: calc(100% - var(--navbar-height));
 
-      & .hero {
-        & h1#main-title {
+      .hero {
+        h1#main-title {
           font-weight: 700;
           font-family: 'Playball',cursive;
           letter-spacing: -1px;
@@ -43,12 +43,12 @@ html.dark {
         }
       }
 
-      & header {
+      header {
         display: table-cell;
         vertical-align: middle;
         width: 100%;
 
-        & p.description {
+        p.description {
           font-size: 1.1rem;
           font-family: 'Long Cang', cursive;
           letter-spacing: .01rem;
@@ -66,7 +66,7 @@ html.dark {
         }
       }
 
-      & .footer {
+      .footer {
         width: 100%;
         position: absolute;
         border: none;
@@ -79,35 +79,35 @@ html.dark {
         // background: #22272e;
         padding: 0;
 
-        & .footer-container {
+        .footer-container {
           margin: 1.5rem;
 
-          & a {
+          a {
             font-weight: normal;
             color: #888;
           }
 
-          & a:hover {
+          a:hover {
             font-weight: normal;
             color: #7C61DD;
           }
         }
 
-        & .footer-text {
+        .footer-text {
           font-size: 16px;
           border-bottom: 1px dashed #333;
           padding-bottom: 5px;
           font-family: 'Long Cang', cursive;
         }
 
-        & .footer-text-icon {
+        .footer-text-icon {
           display: inline-block;
           margin: 0 7px;
           font-size: 14px;
           -webkit-font-smoothing: antialiased;
           animation: iconAnimate 1.33s ease-in-out infinite;
 
-          & .icon-shandian1 {
+          .icon-shandian1 {
             font-size: 18px;
             color: #7C61DD;
           }
