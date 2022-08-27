@@ -1,4 +1,10 @@
-node_modules
+# cache file
 .cache
 .temp
+.idea
+
+# dependencies
+node_modules
+
+# build
 dist
