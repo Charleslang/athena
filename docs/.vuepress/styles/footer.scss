@@ -1,0 +1,51 @@
+/*
+ * footer 样式
+ */
+ #app .footer {
+  width: 100%;
+  position: absolute;
+  border: none;
+  left: 0;
+  top: 100%;
+  color: #888;
+  font-size: 13px;
+  line-height: 1.5;
+  background: #232323;
+  // background: #22272e;
+  padding: 0;
+
+  .footer-container {
+    margin: 1.5rem;
+    // height: 600px;
+
+    a {
+      font-weight: normal;
+      color: #888;
+    }
+
+    a:hover {
+      font-weight: normal;
+      color: $color-text-purple;
+    }
+  }
+
+  .footer-text {
+    font-size: 16px;
+    border-bottom: 1px dashed #333;
+    padding-bottom: 5px;
+    font-family: 'Long Cang', cursive;
+  }
+
+  .footer-text-icon {
+    display: inline-block;
+    margin: 0 7px;
+    font-size: 14px;
+    -webkit-font-smoothing: antialiased;
+    animation: iconAnimate 1.33s ease-in-out infinite;
+
+    .icon-shandian1 {
+      font-size: 18px;
+      color: $color-text-purple;
+    }
+  }
+}

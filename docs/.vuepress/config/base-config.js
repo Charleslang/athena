@@ -1,4 +1,6 @@
-module.exports = {
+import { getDirname, path } from '@vuepress/utils'
+
+export const baseConfig = {
   port: 8088, // 项目运行的端口
   lang: 'zh-CN',
   title: '个人日志随笔', // 站点标题

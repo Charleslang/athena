@@ -1,0 +1,71 @@
+/*
+ * 自定义首页样式
+ */
+#app {
+  div.theme-container .navbar {
+    .site-name{
+      font-size: 1.1rem;
+    }
+    img.logo {
+      border-radius: 50%;
+    }
+  }
+  div.no-sidebar {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    // 设置 overflow-x: hidden; 后，将无法出现回到顶部的组件
+    // 因为 window.pageYOffset 一直是 0
+    // overflow-x: hidden;
+
+    main.home {
+      width: 100%;
+      max-width: 100%;
+      padding: var(--navbar-height) 0 0 0;
+      background: url("/images/P61.jpg") center center / cover no-repeat rgb(34, 34, 34);
+      overflow: hidden;
+      display: table;
+      height: calc(100% - var(--navbar-height));
+
+      .hero {
+        h1#main-title {
+          font-weight: 700;
+          font-family: 'Playball',cursive;
+          letter-spacing: -1px;
+          color: #fff;
+          -webkit-animation: fade-in-down 1s;
+          animation: fade-in-down 1s both;
+          -webkit-animation-delay: .5s;
+          animation-delay: .5s;
+          text-shadow: 0 3px 6px rgb(0 0 0 / 30%);
+          margin: 0;
+        }
+      }
+
+      header {
+        display: table-cell;
+        vertical-align: middle;
+        width: 100%;
+
+        p.description {
+          font-size: 1.1rem;
+          font-family: 'Long Cang', cursive;
+          letter-spacing: .01rem;
+          color: rgba(255,255,255,.8);
+          text-shadow: 0 3px 6px rgb(0 0 0 / 50%);
+          font-weight: 400;
+          margin: 0.5rem auto;
+          -webkit-animation: fade-in-down .9s;
+          animation: fade-in-down .9s both;
+          -webkit-animation-delay: .7s;
+          animation-delay: .7s;
+          // -webkit-box-orient: vertical;
+          -webkit-line-clamp: 10;
+          overflow: hidden;
+        }
+      }
+    }
+  }
+}

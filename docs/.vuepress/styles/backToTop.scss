@@ -1,0 +1,27 @@
+div.back-to-top {
+  -webkit-mask: none;
+  mask: none;
+  background: #fff;
+  width: 2.5rem;
+  height: 2.5rem;
+  box-shadow: 0 1px 8px 0 rgba(0, 0, 0, 0.1);
+  border-radius: 0.25rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  bottom: 6rem;
+  &:hover {
+    background: #fff;
+  }
+  &::before {
+    color: $color-text-purple-light;
+    // 伪元素设置 iconfont 参考 https://blog.csdn.net/u011456552/article/details/52981371
+    content: '\e7d9';
+    font-family: "iconfont" !important;
+    font-size: 26px;
+    font-style: normal;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    display: block;
+  }
+}

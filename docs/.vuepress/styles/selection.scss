@@ -1,0 +1,15 @@
+/* 文本选中样式 */
+::selection {
+  background: $color-text-purple-light;
+  color: #FFF;
+}
+
+::-moz-selection {
+  background: $color-text-purple-light;
+  color: #FFF;
+}
+
+::-webkit-selection {
+  background: $color-text-purple-light;
+  color: #FFF;
+}
