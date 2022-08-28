@@ -18,3 +18,10 @@
   background-clip: padding-box;
   min-height: 100px;
 }
+
+body,html {
+  // 火狐浏览器不兼容 ::-webkit-scrollbar, 需要通过下面的方式设置, 以下只对火狐生效, 其它浏览器均不支持
+  // 见 https://developer.mozilla.org/zh-CN/docs/Web/CSS/scrollbar-width#%E6%B5%8F%E8%A7%88%E5%99%A8%E5%85%BC%E5%AE%B9%E6%80%A7
+  scrollbar-width: thin;
+  scrollbar-color: #999 #f9f9f9;
+}
