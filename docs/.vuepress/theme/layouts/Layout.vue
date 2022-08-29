@@ -30,7 +30,7 @@
     margin: 0 auto;
     text-align: center;
     overflow: auto;
-    background: var(--c-bg);
+    background: rgba(255, 255, 255, 0);
   }
   #app-page-bottom .footer-container {
     margin-bottom: 0;
