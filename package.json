@@ -1,16 +1,24 @@
 {
   "name": "note",
   "version": "1.0.0",
-  "description": "记录，成为更好的自己",
+  "description": "记录, 成为更好的自己",
   "main": "index.js",
   "scripts": {
     "dev": "vuepress dev docs",
     "build": "vuepress build docs",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Charleslang/note.git"
+  },
   "author": "Junfeng Dai",
   "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Charleslang/note/issues"
+  },
+  "homepage": "https://github.com/Charleslang/note#readme",
   "devDependencies": {
-    "vuepress": "^2.0.0-beta.50"
+    "vuepress": "^2.0.0-beta.51"
   }
 }

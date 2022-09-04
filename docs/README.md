@@ -1,5 +1,5 @@
 ---
-title: 
+title: 个人日志随笔
 home: true
 heroText: 清淨
 tagline: 有些人没有见过汪洋，以为江河最为壮美
