@@ -6,6 +6,20 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "494633",
+      "name": "success",
+      "font_class": "success",
+      "unicode": "e6d0",
+      "unicode_decimal": 59088
+    },
+    {
+      "icon_id": "14680883",
+      "name": "icon-copy",
+      "font_class": "copy",
+      "unicode": "e60c",
+      "unicode_decimal": 58892
+    },
+    {
       "icon_id": "587073",
       "name": "rocket",
       "font_class": "rocket",

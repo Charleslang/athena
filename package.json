@@ -20,5 +20,9 @@
   "homepage": "https://github.com/Charleslang/note#readme",
   "devDependencies": {
     "vuepress": "^2.0.0-beta.51"
+  },
+  "dependencies": {
+    "clipboard": "^2.0.11",
+    "tippy.js": "^6.3.7"
   }
 }

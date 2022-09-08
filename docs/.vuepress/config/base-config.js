@@ -1,3 +1,5 @@
+import { plugins } from '../plugins/index'
+
 export const baseConfig = {
   port: 8088, // 项目运行的端口
   lang: 'zh-CN',
@@ -12,5 +14,6 @@ export const baseConfig = {
   head: [
     ['link', { rel: 'icon', href: '/images/icon.ico' }],
     ['link', { rel: 'stylesheet', href: '/iconfont/iconfont.css' }]
-  ]
+  ],
+  plugins
 }

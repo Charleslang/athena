@@ -10,6 +10,15 @@ public class HelloWorld {
   }
 }
 ```
+```js
+consloe.log('123')
+```
+```css
+body {
+  color: #fff;
+}
+```
+
 
 ![hhh](/images/avatar.jpg)
 
