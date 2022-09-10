@@ -23,6 +23,3 @@ body {
 ![hhh](/images/avatar.jpg)
 
 ## 第二部分
-
-
-# 快速上手

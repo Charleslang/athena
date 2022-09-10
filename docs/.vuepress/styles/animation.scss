@@ -115,3 +115,17 @@
     transform: scale(1.1)
   }
 }
+
+/* 头像旋转 */
+@keyframes logoAnimate {
+  0%{
+    transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    -webkit-transform: rotate(0deg);
+  }
+  100%{
+    transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    -webkit-transform: rotate(360deg);
+  }
+}

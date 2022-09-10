@@ -1,6 +1,6 @@
 <template>
-  <div :class="[containerClass, 'clipboard-container']">
-    <button :class="[btnClass, 'btn-clipboard']">
+  <div :class="[containerClass, 'clipboard-container', staticClass, positionClass]">
+    <button :class="[btnClass, 'btn-clipboard']" @click="copyContent($event)">
       <i class="iconfont icon-copy"></i>
       <i class="iconfont icon-success"></i>
     </button>
@@ -8,9 +8,8 @@
 </template>
 
 <script>
-  import { computed, onBeforeUnmount, onMounted, ref, toRefs } from 'vue'
+  import { computed, onBeforeUnmount, onMounted, toRefs, onUpdated, onBeforeMount } from 'vue'
 
-  import Clipboard from 'clipboard'
   import tippy from 'tippy.js'
   import 'tippy.js/dist/tippy.css'
   
@@ -34,129 +33,120 @@
     },
     setup(props) {
       const { code, index, parent, options } = toRefs(props)
-      const originalBackground = ref(null)
-      const originalTransition = ref(null)
-      let clipboardInstance = ref(null)
       
       const genDefaultOption = (options) => {
         return {
-          staticIcon: options?.staticIcon === true || false,
-          align: options?.align || 'bottom',
+          position: options?.position || 'top',
+          show: options?.show || 'hover',
           selector: options?.selector || 'div[class*="language-"]',
           delay: options?.delay || 400,
-          color: options?.color || 'var(--c-brand)',
-          backgroundTransition: options?.backgroundTransition !== false || true,
-          backgroundTransitionColor: options?.backgroundTransitionColor || 'var(--code-bg-color)',
-          successTextColor: options?.successTextColor || 'var(--c-brand-light)',
           hoverText: options?.hoverText || 'Copy to clipboard',
           successText: options?.successText || 'Copied!',
+          tippy: options?.tippy || { placement: 'top' },
         }
       }
       
       const componentOptions = computed(() => options.value === null ? genDefaultOption(null) : genDefaultOption(options.value))
-      const containerClass = computed(() => ('clipboard-container-' + index.value))
-      const btnClass = computed(() => ('btn-clipboard-' + index.value))
+      const containerClass = computed(() => `clipboard-container-${index.value}`)
+      const btnClass = computed(() => `btn-clipboard-${index.value}`)
+      const staticClass = computed(() => componentOptions.value.show === 'hover' ? '' : 'clipboard-container-static')
+      const positionClass = computed(() => componentOptions.value.position === 'top' ? 'clipboard-container-top' : 'clipboard-container-bottom')
+      const tippyConfig = computed(() => componentOptions.value.tippy)
 
-      const addCopyToolTips = (selector, hoverText) => {
-        tippy(selector, {
-          content: hoverText,
-          trigger: 'mouseenter',
-          hideOnClick: false,
-          zIndex: 999,
-          onHidden: (instance) => {
-            instance.reference.children[0].disabled = false
-            instance.reference.children[0].classList.remove('btn-copy-success')
-            instance.setContent(hoverText)
-          }
-        })
-      }
+      let tippyInstance = null
 
-      const addCopyEvent = (selector, options, successCallback, errorCallback) => {
-        const el = document.querySelector(selector)
-        if (!el) {
-          return
-        }
-
-        let clipboard
-        if (options && Object.keys(options).length) {
-          clipboard = new Clipboard(selector, options)
-        } else {
-          clipboard = new Clipboard(selector)
-        }
-
-        clipboard.on('success', e => {
-          if (successCallback) {
-            successCallback(e)
-          } else {
-            console.log('复制成功:' + e.text)
-            console.log('---------------')
-          }
-          e.clearSelection()
-        })
-
-        clipboard.on('error', e => {
-          if (errorCallback) {
-            errorCallback(e)
-          } else {
-            console.log('复制失败')
-          }
-        })
-
-        return clipboard
-      }
-        
-      
       onMounted(() => {
         if (parent.value !== null) {
-          console.log('clipboard-onMounted渲染...')
-          console.log(containerClass.value)
-
           // onMounted 中无法直接获取 DOM https://segmentfault.com/a/1190000041292717
           setTimeout(() => {
-
-            addCopyToolTips(`.${containerClass.value}`, componentOptions.value.hoverText)
-
-            clipboardInstance = addCopyEvent(`.${btnClass.value}`, {
-              text: trigger => {
-                // 此处使用 code.value 会有问题, 一直都是复制最后一个代码块的内容
-                const codeNode = trigger.parentNode.parentNode?.firstElementChild
-                return codeNode?.innerText || codeNode?.textContent || ''
-              }
-            }, e => {
-              console.log('回调成功')
-              e.trigger.disabled = true
-              e.trigger.classList.add('btn-copy-success')
-              e.trigger.parentNode._tippy.setContent(componentOptions.value.successText)
-            }, e => {
-              console.error('复制到剪切板失败')
-            })
+            tippyInstance = addCopyToolTips(document.querySelector(`.${containerClass.value}`), componentOptions.value.hoverText)
           })
-          
         }
       })
       
       onBeforeUnmount(() => {
-        console.log('clipboard-onBeforeUnmount卸载...')
         if (parent.value !== null) {
-          if (originalBackground.value !== null)
-            parent.value.style.background = originalBackground.value
-          if (originalTransition.value !== null)
-            parent.value.style.transition = originalTransition.value
+          tippyInstance?.destroy()
         }
-        // if (successTimeout.value !== undefined) {
-        //   window.clearTimeout(successTimeout.value)
-        // }
-
-        // if (clipboardInstance?.value !== null) {
-        //   clipboardInstance.destroy()
-        // }  
       })
-      
-      
+
+      /**
+       * 给复制按钮添加提示词
+       */
+      const addCopyToolTips = (selector, hoverText) => {
+        const instance = tippy(selector, {
+          content: hoverText,
+          trigger: 'mouseenter',
+          hideOnClick: false,
+          zIndex: 999,
+          ...tippyConfig.value,
+          onDestroy: () => {
+          },
+          onHidden: (instance) => {
+            instance.reference.children[0].disabled = false
+            instance.reference.children[0].classList.remove('btn-copy-success')
+            instance.reference.classList.remove('success')
+            instance.setContent(hoverText)
+          }
+        })
+
+        return instance
+      }
+
+      /**
+       * 复制按钮的复制事件
+       */
+      const copyContent = (e) => {
+        if (navigator.clipboard) {
+          navigator.clipboard.writeText(code.value).then(
+            () => onCopySuccess(e),
+            () => onCopyFailed()
+          )
+        } else {
+          const copyElement = document.createElement('textarea')
+          document.body.appendChild(copyElement)
+          copyElement.value = code.value
+          copyElement.select()
+          try {
+            document.execCommand('Copy')
+            onCopySuccess(e)
+          } catch (error) {
+            onCopyFailed(error)
+          }
+          copyElement.remove()
+        }
+      }
+
+      /**
+       * 复制成功后的回调
+       */
+      const onCopySuccess = (e) => {
+        if (e.target.nodeName === 'BUTTON') {
+          e.target.disabled = true
+          e.target.classList.add('btn-copy-success')
+          e.target.parentNode.classList.add('success')
+          e.target.parentNode._tippy.setContent(componentOptions.value.successText)
+        } else {
+          e.target.parentNode.disabled = true
+          e.target.parentNode.classList.add('btn-copy-success')
+          e.target.parentNode.parentNode.classList.add('success')
+          e.target.parentNode.parentNode._tippy.setContent(componentOptions.value.successText)
+        }
+      }
+
+      /**
+       * 复制失败后的回调
+       */
+      const onCopyFailed = (error) => {
+        console.log('复制失败', error)
+      }
 
       return {
         containerClass,
-        btnClass
+        btnClass,
+        staticClass,
+        positionClass,
+        copyContent
       }
     }
   }
@@ -165,7 +155,6 @@
 <style scoped>
   .clipboard-container {
     position: absolute;
-    top: 0;
     right: 0;
     z-index: 9;
     cursor: pointer;
@@ -173,8 +162,25 @@
     transition: all 0.3s;
   }
 
+  .clipboard-container-static {
+    opacity: 0.9;
+  }
+
+  .clipboard-container-top {
+    top: 0;
+  }
+
+  .clipboard-container-bottom {
+    bottom: 0;
+  }
+
+  .clipboard-container.success {
+    opacity: 1 !important;
+  }
+
   .clipboard-container:hover .btn-clipboard {
-    background-color: #f3f4f6;
+    /* background-color: #f3f4f6; */
+    background-color: #d3d5d8;
     transition-duration: .1s;
   }
 
@@ -202,6 +208,10 @@
     color: #2da44e;
     border-color: rgb(74, 194, 107);
     font-weight: 600;
+  }
+
+  .clipboard-container:hover .btn-copy-success {
+    background-color: #f3f4f6;
   }
 
   .clipboard-container .btn-copy-success .icon-copy {

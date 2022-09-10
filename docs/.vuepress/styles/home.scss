@@ -9,6 +9,13 @@
     }
     img.logo {
       border-radius: 50%;
+
+      &:hover {
+        animation: logoAnimate .8s ease-in-out;
+        -webkit-transform-origin: center center;
+        -ms-transform-origin: center center;
+        transform-origin: center center;
+      }
     }
   }
   div.no-sidebar {
