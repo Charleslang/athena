@@ -45,15 +45,15 @@
           color: #fff;
           -webkit-animation: fade-in-down 1s;
           animation: fade-in-down 1s both;
-          -webkit-animation-delay: .5s;
-          animation-delay: .5s;
+          -webkit-animation-delay: .3s;
+          animation-delay: .3s;
           text-shadow: 0 3px 6px rgb(0 0 0 / 30%);
           margin: 0;
         }
       }
 
       header {
-        display: table-cell;
+        display: none;
         vertical-align: middle;
         width: 100%;
 
@@ -67,8 +67,8 @@
           margin: 0.5rem auto;
           -webkit-animation: fade-in-down .9s;
           animation: fade-in-down .9s both;
-          -webkit-animation-delay: .7s;
-          animation-delay: .7s;
+          -webkit-animation-delay: .5s;
+          animation-delay: .5s;
           // -webkit-box-orient: vertical;
           -webkit-line-clamp: 10;
           overflow: hidden;

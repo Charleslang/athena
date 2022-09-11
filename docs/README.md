@@ -7,3 +7,31 @@ footer: <div class="footer-container"><div class="footer-text">[ 吾尝终日而
 # 将 footer 作为 html 代码处理
 footerHtml: true 
 ---
+
+<LoadingPage v-if="show" :frontmatter="frontmatter" :loadingText="'记录，成为更好的自己'" />
+
+<script>
+
+  // todo 直接使用路由导航守卫来判断
+  import { onMounted, ref } from 'vue'
+  import { usePageFrontmatter } from '@vuepress/client'
+
+  export default {
+    setup() {
+      const frontmatter = usePageFrontmatter()
+      const show = ref(true)
+
+      onMounted(() => {
+        // DOM 加载完成后去掉 loading
+        setTimeout(() => {
+          show.value = false
+        })
+      })
+
+      return {
+        frontmatter,
+        show
+      }
+    }
+  }
+</script>

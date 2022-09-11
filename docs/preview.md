@@ -22,4 +22,6 @@ body {
 
 ![hhh](/images/avatar.jpg)
 
+使用 `npm install` 快速安装。
+
 ## 第二部分

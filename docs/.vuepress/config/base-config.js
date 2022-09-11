@@ -1,4 +1,7 @@
 import { plugins } from '../plugins/index'
+import { getDirname, path } from '@vuepress/utils'
+
+const __dirname = getDirname(import.meta.url)
 
 export const baseConfig = {
   port: 8088, // 项目运行的端口
@@ -15,5 +18,8 @@ export const baseConfig = {
     ['link', { rel: 'icon', href: '/images/icon.ico' }],
     ['link', { rel: 'stylesheet', href: '/iconfont/iconfont.css' }]
   ],
+  alias: {
+    '@components': path.resolve(__dirname, '../components'),
+  },
   plugins
 }
