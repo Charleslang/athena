@@ -12,14 +12,16 @@ footerHtml: true
 
 <script>
 
-  // todo 直接使用路由导航守卫来判断
   import { onMounted, ref } from 'vue'
   import { usePageFrontmatter } from '@vuepress/client'
+  import { useRoute } from 'vue-router'
 
   export default {
     setup() {
+      const route = useRoute()
+      const show = ref(route.path === '/')
+
       const frontmatter = usePageFrontmatter()
-      const show = ref(true)
 
       onMounted(() => {
         // DOM 加载完成后去掉 loading

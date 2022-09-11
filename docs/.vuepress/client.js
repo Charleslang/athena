@@ -10,15 +10,17 @@ export default defineClientConfig({
   },
   setup() {
     onMounted(() => {
-      setTimeout(() => {
-        const img = document.createElement('img')
-        img.src = '/images/P61.jpg'
-        img.onload = () => {
-          const background = document.querySelector('#app .no-sidebar main.home')
-          const hero = document.querySelector('#app .no-sidebar main.home header.hero')
-          hero.style.display = 'table-cell'
-        }
-      })
+      const hero = document.querySelector('#app .no-sidebar main.home header.hero')
+      if (hero) {
+        setTimeout(() => {
+          const img = document.createElement('img')
+          img.src = '/images/P61.jpg'
+          img.onload = () => {
+            const background = document.querySelector('#app .no-sidebar main.home')
+            hero.style.display = 'table-cell'
+          }
+        })
+      }
     })
   },
   // @since 2.0.0-beta.51 主题 API 中已移除 layouts 属性，应该在 client.js 中配置 layouts
