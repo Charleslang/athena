@@ -32,6 +32,7 @@
       const { frontmatter, loadingText } = toRefs(props)
       const lightTheme = ref(false)
 
+      // 使用 css 来判断 html 标签的 class 来改变背景会更好（将 img 标签换成 div，设置 backgroundImage），先暂时这样
       const themeMedia = window.matchMedia("(prefers-color-scheme: light)")
       if (themeMedia.matches) {
         lightTheme.value = true

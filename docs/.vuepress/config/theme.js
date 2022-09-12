@@ -1,6 +1,7 @@
 // import { defaultTheme } from '@vuepress/theme-default'
 import { localTheme } from '../theme'
 import { navbar } from './navbar'
+import userConfig from "./userConfig.js"
 
 export const theme = localTheme({
   colorMode: 'auto', // 只有在 colorModeSwitch 为 false 才生效
@@ -28,4 +29,18 @@ export const theme = localTheme({
   lastUpdatedText: '上次更新',
   contributors: true, // 是否启用 贡献者列表 。默认为 true
   contributorsText: '贡献者', // 贡献者列表 标签的文字。
+  userConfig: userConfig({
+    backgroundImg: ['/images/P3.jpg', '/images/P61.jpg'],
+    heroText: [
+      '实力与野心不符，是一件可悲的事情', 
+      '有些人没有见过汪洋，以为江河最为壮美', 
+      '举杯的目的，从来不是为了醉酒', 
+      '儒以文乱法，侠以武犯禁', 
+      '十年可见春去秋来，百年可证生老病死，千年可叹王朝更替，万年可见斗转星移'
+    ],
+    footerText: {
+      left: '吾尝终日而思矣',
+      right: '不如须臾之所学也'
+    }
+  }),
 })

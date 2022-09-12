@@ -20,6 +20,7 @@ export const baseConfig = {
   ],
   alias: {
     '@components': path.resolve(__dirname, '../components'),
+    '@hooks': path.resolve(__dirname, '../hooks'),
   },
   plugins
 }
