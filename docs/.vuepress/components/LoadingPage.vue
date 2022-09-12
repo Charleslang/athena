@@ -1,10 +1,11 @@
 <template>
   <div 
-    :class="[lightTheme ? 'bg-linght' : 'bg-dark', 'loading-wrapper']" 
+    :class="['loading-wrapper']" 
     v-if="frontmatter && frontmatter.home">
-    <img class="loading-img" 
+    <!-- <img class="loading-img" 
       :src="lightTheme ? '/images/loading/loading-pen.gif' : '/images/loading/loading-pen_dark.gif'" 
-      alt="loading"/>
+      alt="loading"/> -->
+      <div class="loading-img"></div>
     <div class="loading-text">{{loadingText}}</div>
   </div>
 </template>
@@ -30,18 +31,19 @@
     setup(props) {
 
       const { frontmatter, loadingText } = toRefs(props)
-      const lightTheme = ref(false)
+      // const lightTheme = ref(false)
 
       // 使用 css 来判断 html 标签的 class 来改变背景会更好（将 img 标签换成 div，设置 backgroundImage），先暂时这样
-      const themeMedia = window.matchMedia("(prefers-color-scheme: light)")
-      if (themeMedia.matches) {
-        lightTheme.value = true
-      }
+      // Node 环境打包会报错 ReferenceError: window is not defined
+      // const themeMedia = window.matchMedia("(prefers-color-scheme: light)")
+      // if (themeMedia.matches) {
+      //   lightTheme.value = true
+      // }
 
       return {
         frontmatter,
         loadingText,
-        lightTheme
+        // lightTheme
       }
     }
   }
@@ -55,24 +57,17 @@
     bottom: 0;
     left: 0;
     right: 0;
-    /* background: var(--c-bg); */
+    background: var(--c-bg);
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
   }
 
-  .loading-wrapper.bg-light {
-    background-color: #fff;
-  }
-
-  .loading-wrapper.bg-dark {
-    background-color: #232323;
-  }
-
   .loading-wrapper .loading-img {
     width: 7rem;
     height: 7rem;
+    background: url('/images/loading/loading-pen.gif') center center / cover no-repeat;
   }
 
   .loading-wrapper .loading-text {

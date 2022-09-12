@@ -37,3 +37,17 @@ footerHtml: true
     }
   }
 </script>
+
+<style>
+  html.dark .loading-wrapper .loading-img {
+    background-image: url('/images/loading/loading-pen_dark.gif');
+  }
+
+  /* html.dark .loading-wrapper {
+    background-color: #fff;
+  }
+
+  html.dark .loading-wrapper {
+    background-color: #232323;
+  } */
+</style>
