@@ -3,6 +3,7 @@ import { onMounted, watch } from "vue"
 import { useRoute } from 'vue-router'
 import { loadImgSuccess } from '@hooks/useBackgroundImgLoaded.js'
 import { useUserConfig } from './hooks/useUserConfig'
+import { useInit } from './hooks/useInit'
 import Layout from './layouts/Layout.vue'
 import NotFound from './components/NotFound.vue'
 import LoadingPage from './components/LoadingPage.vue'
@@ -16,12 +17,14 @@ export default defineClientConfig({
     onMounted(() => {
       useUserConfig()
       loadImgSuccess()
+      useInit()
     }),
     watch(
       () => route.path,
       () => {
         useUserConfig()
         loadImgSuccess()
+        useInit()
       }
     )
   },

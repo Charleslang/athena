@@ -41,5 +41,9 @@ export const navbar = [
   {
     text: '更新日志',
     link: '/logs'
+  },
+  {
+    text: '订阅号',
+    link: '/wx'
   }
 ]

@@ -1,0 +1,55 @@
+#app {
+  header {
+    div.navbar-items-wrapper {
+      nav.navbar-items {
+        .navbar-item:nth-last-child(2) {
+
+          &:hover {
+            position: relative;
+            .wx-nav-wrapper {
+              height: 12rem;
+            }
+          }
+
+          &:hover::before {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            margin-left: -8px;
+            border-width: 0 8px 8px;
+            border-style: solid;
+            border-color: rgba(0,0,0,0) rgba(0,0,0,0) var(--c-text);
+          }
+
+          .wx-nav-wrapper {
+            height: 0;
+            position: absolute;
+            top: calc( var(--navbar-height) - var(--navbar-padding-v) );
+            transform: translateX(-50%);
+            margin-left: inherit;
+            box-shadow: 0 1px 5px #aaa;
+            text-align: center;
+            font-size: 14px;
+            -webkit-transition: height .3s;
+            transition: height .3s;
+            overflow: hidden;
+            line-height: 1;
+            background-color: #fff;
+            background-color: var(--c-bg-navbar);
+            /* 阻止 hover 冒泡 */
+            pointer-events: none;
+
+            img {
+              vertical-align: middle;
+              width: 129px;
+              margin: 1rem;
+            }
+          }
+        }
+      }
+    }
+  }
+}

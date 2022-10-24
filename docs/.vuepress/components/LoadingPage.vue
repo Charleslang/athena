@@ -5,7 +5,7 @@
     <!-- <img class="loading-img" 
       :src="lightTheme ? '/images/loading/loading-pen.gif' : '/images/loading/loading-pen_dark.gif'" 
       alt="loading"/> -->
-      <div class="loading-img"></div>
+    <div class="loading-img"></div>
     <div class="loading-text">{{loadingText}}</div>
   </div>
 </template>
