@@ -4,8 +4,29 @@ $color-text-purple-light: #807dd4;
 :root {
   --nprogress-color: #807dd4;
   --nprogress-z-index: 1031;
+
+  // 主色调
+  --c-brand: #646cff;
+
+  // main 的最大宽度
+  --content-width: 90%;
+
+  // code 代码块
+  --not-pre-code-bg-color: #f6f6f7;
 }
 
 html.dark {
-  --c-bg: #232323;
+  // 主色调
+  --c-brand: #646cff;
+  --c-brand-light: #9499ff;
+
+  --c-bg: #1e1e20;
+
+  --c-bg-dark-1: #1e1e20; // #161618
+
+  // 文字颜色
+  --c-text: #fffff5db;
+
+  // code 代码块
+  --not-pre-code-bg-color: #313136;
 }

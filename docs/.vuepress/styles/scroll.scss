@@ -1,27 +1,35 @@
 /* 滚动条样式 */
 /*定义滚动条高宽及背景高宽分别对应横竖滚动条的尺寸*/
 ::-webkit-scrollbar {
-  width: 3px;
-  height: 3px;
+  width: 6px;
+  height: 6px;
   background-color: #F5F5F5;
 }
 
 /*定义滚动条轨道内阴影+圆角*/
 ::-webkit-scrollbar-track {
-  width: 3px;
+  width: 10px;
   background-color: #f9f9f9;
 }
 
 /*定义滑块内阴影+圆角*/
 ::-webkit-scrollbar-thumb {
-  background-color: #999;
+  background-color: #0003;
   background-clip: padding-box;
   min-height: 100px;
+  border-radius: 10px;
+  transition: all .2s ease-in-out;
+  cursor: pointer;
 }
 
 body,html {
   // 火狐浏览器不兼容 ::-webkit-scrollbar, 需要通过下面的方式设置, 以下只对火狐生效, 其它浏览器均不支持
   // 见 https://developer.mozilla.org/zh-CN/docs/Web/CSS/scrollbar-width#%E6%B5%8F%E8%A7%88%E5%99%A8%E5%85%BC%E5%AE%B9%E6%80%A7
   scrollbar-width: thin;
-  scrollbar-color: #999 #f9f9f9;
+  scrollbar-color: #0003 #f9f9f9;
+}
+
+// 重置左侧 sidebar 滚动条样式
+.sidebar::-webkit-scrollbar-thumb {
+  background-color: #0003;
 }

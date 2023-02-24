@@ -30,7 +30,7 @@ export const theme = localTheme({
   contributors: true, // 是否启用 贡献者列表 。默认为 true
   contributorsText: '贡献者', // 贡献者列表 标签的文字。
   userConfig: userConfig({
-    backgroundImg: ['/images/P3.jpg', '/images/P61.jpg'],
+    backgroundImg: ['/images/P65.jpg', '/images/P66.jpg', '/images/P69.jpg', '/images/P70.jpg', '/images/P71.jpg'],
     heroText: [
       '实力与野心不符，是一件可悲的事情', 
       '有些人没有见过汪洋，以为江河最为壮美', 
@@ -40,10 +40,13 @@ export const theme = localTheme({
       '你最可爱，我说时来不及思索，但思索之后，还是这样说',
       '最难消受美人恩',
       '权，然后知轻重；度，然后知长短',
-      '君子成人之美，不成人之恶。 小人反是',
+      '君子成人之美，不成人之恶。小人反是',
       '刑过不避大臣，赏善不遗匹夫',
       '我们给予恐惧，他们则跪着乞求',
-      '旅行是一场艳遇，最后我们遇见了自己'
+      '旅行是一场艳遇，最后我们遇见了自己',
+      '术以知奸，以刑止刑',
+      '心，如果在深井，眼中的天空就会变小',
+      '行万里路，才能见天地之广阔'
     ],
     footerText: {
       left: '吾尝终日而思矣',
