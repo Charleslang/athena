@@ -1,12 +1,12 @@
 export const navbar = [
   {
     text: '后端',
-    link: '/backend', // 如果当前路由和 link 的值相同, 则该 navbar 会处于选中状态
-    activeMatch: '/backend' // 当路由为 /backend/ 时, 该 nav 处于选中状态
+    link: '/backend.html', // 如果当前路由和 link 的值相同, 则该 navbar 会处于选中状态
+    activeMatch: '/backend.html' // 当路由为 /backend/ 时, 该 nav 处于选中状态
   },
   {
     text: '前端',
-    link: '/protal'
+    link: '/protal.html'
   },
   {
     text: '文章归档',
