@@ -78,3 +78,7 @@
     }
   }
 }
+
+html.dark main.home {
+  filter: brightness(.8);
+}

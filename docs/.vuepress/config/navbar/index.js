@@ -1,8 +1,8 @@
 export const navbar = [
   {
     text: '后端',
-    link: '/preview/', // 如果当前路由和 link 的值相同, 则该 navbar 会处于选中状态
-    activeMatch: '/preview/' // 当路由为 /backend/ 时, 该 nav 处于选中状态
+    link: '/backend', // 如果当前路由和 link 的值相同, 则该 navbar 会处于选中状态
+    activeMatch: '/backend' // 当路由为 /backend/ 时, 该 nav 处于选中状态
   },
   {
     text: '前端',

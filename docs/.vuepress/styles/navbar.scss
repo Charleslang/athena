@@ -3,8 +3,14 @@
     box-shadow: 0 1px 8px 0 rgba(0, 0, 0, 0.1);
     div.navbar-items-wrapper {
       nav.navbar-items {
+        .navbar-item {
+          a:hover,
+          a.router-link-active {
+            border-bottom: none;
+            color: var(--c-text-accent);
+          }
+        }
         .navbar-item:nth-last-child(2) {
-
           &:hover {
             position: relative;
             .wx-nav-wrapper {

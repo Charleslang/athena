@@ -11,7 +11,7 @@
             <span class="right">不如须臾之所学也 ]</span>
           </div>
           Copyright © 2021-present Junfeng Dai <br> 
-          <a href="https://beian.miit.gov.cn" class="record-num" target="_blank">蜀 ICP 备 2021009537 号 - 1</a>
+          <a href="https://beian.miit.gov.cn" class="record-num" target="_blank">蜀ICP备2021009537号</a>
         </div>
       </div>
     </template>

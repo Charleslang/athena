@@ -165,7 +165,7 @@
         font-size: 32px;
         font-weight: bold;
         line-height: 40px;
-        color: #1482f0;
+        color: var(--c-brand);
         opacity: 0;
         margin-bottom: 20px;
         animation-name: slideUp;
@@ -200,14 +200,15 @@
         float: left;
         width: 110px;
         height: 36px;
-        background: #1482f0;
-        border-radius: 100px;
+        background: var(--c-brand);
+        border-radius: 2px;
         text-align: center;
         color: #ffffff;
         opacity: 0;
         font-size: 14px;
         line-height: 36px;
         cursor: pointer;
+        transition: background .2s;
         animation-name: slideUp;
         animation-duration: 0.5s;
         animation-delay: 0.3s;
@@ -215,6 +216,9 @@
         a {
           color: #fff;
         }
+      }
+      &__return-home:hover {
+        background: #646cffa8;
       }
       @keyframes slideUp {
         0% {

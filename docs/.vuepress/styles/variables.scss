@@ -2,8 +2,8 @@ $color-text-purple: #7C61DD;
 $color-text-purple-light: #807dd4;
 
 :root {
-  --nprogress-color: #807dd4;
-  --nprogress-z-index: 1031;
+  // --nprogress-color: #807dd4;
+  // --nprogress-z-index: 1031;
 
   // 主色调
   --c-brand: #646cff;
@@ -13,9 +13,18 @@ $color-text-purple-light: #807dd4;
 
   // code 代码块
   --not-pre-code-bg-color: #f6f6f7;
+
+  // 自定义搜索框样式
+  --docsearch-text-color-1: rgba(60, 60, 67, .7);
+  --docsearch-icon-size: 18px;
+  --docsearch-icon-stroke-width-1: 1.4;
+
 }
 
 html.dark {
+  // --nprogress-color: #807dd4;
+  // --nprogress-z-index: 1031;
+
   // 主色调
   --c-brand: #646cff;
   --c-brand-light: #9499ff;
@@ -29,4 +38,7 @@ html.dark {
 
   // code 代码块
   --not-pre-code-bg-color: #313136;
+
+  // 自定义搜索框样式
+  --docsearch-text-color-1: rgba(235, 235, 245, .6);
 }

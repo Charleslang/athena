@@ -1,4 +1,3 @@
-import { plugins } from '../plugins/index'
 import { getDirname, path } from '@vuepress/utils'
 
 const __dirname = getDirname(import.meta.url)
@@ -22,5 +21,9 @@ export const baseConfig = {
     '@components': path.resolve(__dirname, '../components'),
     '@hooks': path.resolve(__dirname, '../hooks'),
   },
-  plugins
+  markdown: {
+    headers: {
+      level: [1, 2, 3]
+    }
+  }
 }

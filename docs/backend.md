@@ -2746,11 +2746,11 @@ rpm 包命名原则，以 `mysql-community-server-8.0.30-1.el7.x86_64.rpm` 为�
     
     比如我现在安装一个 MySQL，可能会报如下错误：
     
-    ![image.png](https://note.youdao.com/yws/res/47361/WEBRESOURCEb9e6251b086f5bbad70cfc2c1f6b2bc5)
+    <!-- ![image.png](https://note.youdao.com/yws/res/47361/WEBRESOURCEb9e6251b086f5bbad70cfc2c1f6b2bc5) -->
     
     提示需要安装 `libodbcinst.so.2`（一般以 so、数字结尾的都是库依赖） 这个库，我们只需要在库依赖网站查询 `libodbcinst.so.2`，然后安装即可，如下：
     
-    ![image.png](https://note.youdao.com/yws/res/47368/WEBRESOURCE75afc2808553a207a3312602b7b26a5a)
+    <!-- ![image.png](https://note.youdao.com/yws/res/47368/WEBRESOURCE75afc2808553a207a3312602b7b26a5a) -->
     
 ## RPM 命令
 
@@ -3098,7 +3098,7 @@ man 5 pwasswd
 ```
 使用 `man` 命令后，会看到输出的内容包括如下部分：
 
-![image.png](https://note.youdao.com/yws/res/47770/WEBRESOURCE807d477109135c99f8214f7f48b2271f)
+<!-- ![image.png](https://note.youdao.com/yws/res/47770/WEBRESOURCE807d477109135c99f8214f7f48b2271f) -->
 
 也就是说，每一行代表了一个用户，每行的格式如下：
 ```bash
@@ -3281,11 +3281,11 @@ root:::
 
 - 超级用户
 
-    ![image.png](https://note.youdao.com/yws/res/47954/WEBRESOURCE149b0d562de63da875d692688d5e79c4)
+    <!-- ![image.png](https://note.youdao.com/yws/res/47954/WEBRESOURCE149b0d562de63da875d692688d5e79c4) -->
     
 - 普通用户
 
-    ![image.png](https://note.youdao.com/yws/res/47957/WEBRESOURCE9dddebea30b14800f5625d05a5f13280)
+    <!-- ![image.png](https://note.youdao.com/yws/res/47957/WEBRESOURCE9dddebea30b14800f5625d05a5f13280) -->
 
 **2. 用户邮箱**
 
@@ -3629,7 +3629,7 @@ drwx------ 2 nobody root 4096 Aug  9  2021 uwsgi_temp
 
 `drwxr-xr-x` 表示文件夹的权限，其实这里面包含了四部分，如下图所示：
 
-![image.png](https://note.youdao.com/yws/res/46257/WEBRESOURCE4c82f2b5f38e7e07c0e063a2d6de453f)
+<!-- ![image.png](https://note.youdao.com/yws/res/46257/WEBRESOURCE4c82f2b5f38e7e07c0e063a2d6de453f) -->
 
 对于权限来讲，`r` 表示读（read）权限，`w` 表示写（write）权限，`x` 表示可执行（execute）权限，`-` 表示没有权限（这三者的顺序是固定的，都是以 rwx 这样的顺序出现）。如果只是普通文件的话，没有必要给可执行权限，除非这个文件可以使用 `sh` 或其它命令来执行。
 
@@ -5061,7 +5061,7 @@ echo "result: $sum"
 
 Linux 服务主要分为以下两类：
 
-![Linux服务分类.jpg](https://note.youdao.com/yws/res/49422/WEBRESOURCE447ecc436ac6e1946931c3cc26b6b11f)
+<!-- ![Linux服务分类.jpg](https://note.youdao.com/yws/res/49422/WEBRESOURCE447ecc436ac6e1946931c3cc26b6b11f) -->
 
 xinetd 即 extended internet daemon，xinetd 是新一代的网络守护进程服务程序，又叫超级 Internet 服务器。经常用来管理多种轻量级 Internet 服务。xinetd 提供类似于 inetd + tcp_wrapper 的功能，但是更加强大和安全。
 
