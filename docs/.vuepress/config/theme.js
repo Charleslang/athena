@@ -1,6 +1,7 @@
 // import { defaultTheme } from '@vuepress/theme-default'
 import { localTheme } from '../theme'
 import { navbar } from './navbar'
+import { sidebar } from './sidebar'
 import userConfig from "./userConfig.js"
 
 export const theme = localTheme({
@@ -8,9 +9,10 @@ export const theme = localTheme({
   colorModeSwitch: true, // 设置为 false 则右上角不会出现切换主题的按钮
   home: '/',
   navbar,
+  sidebar,
   logo: '/images/avatar.jpg', // Logo 图片将会显示在导航栏的左端
   logoDark: '/images/avatar.jpg', // 暗黑模式下的 Logo
-  sidebarDepth: 2, // 提取哪些标签作为侧边栏
+  sidebarDepth: 3, // 提取哪些标签作为侧边栏
   tip: '提示', // Tip 自定义容器 的默认标题, 默认为 TIP
   warning: '注意', // Warning 自定义容器 的默认标题，默认为 warning
   danger: '警告', // Darning 自定义容器 的默认标题，默认为 danger

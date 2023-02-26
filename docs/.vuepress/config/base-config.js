@@ -23,7 +23,13 @@ export const baseConfig = {
   },
   markdown: {
     headers: {
-      level: [1, 2, 3]
+      level: [1, 2, 3, 4]
+    },
+    code: {
+      vPre: {
+        inline: true,
+        block: true
+      }
     }
   }
 }

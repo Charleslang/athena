@@ -6,7 +6,21 @@ export const navbar = [
   },
   {
     text: '前端',
-    link: '/protal.html'
+    children: [
+      {
+        text: 'Vue',
+        children: [
+          {
+            text: 'Vue3',
+            link: '/portal/vue/vue3/index.html'
+          },
+          {
+            text: 'Vue2',
+            link: '/portal/vue/vue2/index.html'
+          }
+        ]
+      }
+    ]
   },
   {
     text: '文章归档',
