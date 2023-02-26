@@ -1,3 +1,7 @@
 .sidebar-item.active:not(p.sidebar-heading) {
+  border-left-color: none;
+}
+
+.sidebar-item {
   border-left: none;
 }

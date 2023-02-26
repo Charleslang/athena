@@ -19,6 +19,16 @@ $color-text-purple-light: #807dd4;
   --docsearch-icon-size: 18px;
   --docsearch-icon-stroke-width-1: 1.4;
 
+  // container
+  --custom-block-tip-border: rgba(16, 185, 129, .5);
+  --custom-block-tip-text: #10b981;
+  --custom-block-tip-bg: rgba(16, 185, 129, .05);
+  --custom-block-warning-border: rgba(234, 179, 8, .5);
+  --custom-block-warning-text: #eab308;
+  --custom-block-warning-bg: rgba(234, 179, 8, .05);
+  --custom-block-danger-border: rgba(244, 63, 94, .5);
+  --custom-block-danger-text: #f43f5e;
+  --custom-block-danger-bg: rgba(244, 63, 94, .05);
 }
 
 html.dark {

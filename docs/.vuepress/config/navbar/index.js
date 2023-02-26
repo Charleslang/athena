@@ -17,6 +17,10 @@ export const navbar = [
           {
             text: 'Vue2',
             link: '/portal/vue/vue2/index.html'
+          },
+          {
+            text: 'VuePress',
+            link: '/portal/vue/vuepress/index.html'
           }
         ]
       }

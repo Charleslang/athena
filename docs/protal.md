@@ -861,7 +861,7 @@ export function foo() {
   console.log(ma.phone)
 </script>
 ```
-> 注意：VSCode 要在 live serve 下运行。
+> 注意：VS Code 要在 live serve 下运行。
 
 - 统一暴露  
 ```js

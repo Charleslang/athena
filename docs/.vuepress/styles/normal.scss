@@ -31,3 +31,42 @@ html.dark .sidebar {
     }
   }
 }
+
+// container 样式
+.custom-container.tip, 
+.custom-container.warning, 
+.custom-container.danger {
+  padding: 0.1rem 1rem;
+  border: 1.5px solid transparent;
+  border-radius: 8px;
+}
+
+.custom-container.tip {
+  border-color: var(--custom-block-tip-border);
+  background-color: var(--custom-block-tip-bg);
+}
+
+.custom-container.tip,
+.custom-container.tip > .custom-container-title {
+  color: var(--custom-block-tip-text);
+}
+
+.custom-container.warning {
+  border-color: var(--custom-block-warning-border);
+  background-color: var(--custom-block-warning-bg);
+}
+
+.custom-container.warning,
+.custom-container.warning > .custom-container-title {
+  color: var(--custom-block-warning-text);
+}
+
+.custom-container.danger {
+  border-color: var(--custom-block-danger-border);
+  background-color: var(--custom-block-danger-bg);
+}
+
+.custom-container.danger,
+.custom-container.danger > .custom-container-title {
+  color: var(--custom-block-danger-text);
+}
