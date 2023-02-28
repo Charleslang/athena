@@ -1,4 +1,19 @@
 export const sidebar = {
+  // 在 markdown 中的 formmatter 中定义路由
+  // '/portal/advance': [
+    // '/portal/advance/es6.html',
+    // '/portal/advance/ts.html'
+    // {
+    //   text: 'ECMAScript 6',
+    //   children: [
+    //     '/portal/advance/es6.html'
+    //   ]
+    // },
+    // {
+    //   text: 'TypeScript',
+    //   link: '/portal/advance/ts.html'
+    // }
+  // ],
   '/portal/vue/vue3': [
     {
       text: 'Vue3',

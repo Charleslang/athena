@@ -7,6 +7,36 @@ export const navbar = [
   {
     text: '前端',
     children: [
+      // {
+      //   text: '三剑客',
+      //   children: [
+      //     {
+      //       text: 'HTML',
+      //       link: ''
+      //     },
+      //     {
+      //       text: 'CSS',
+      //       link: ''
+      //     },
+      //     {
+      //       text: 'JavaScript',
+      //       link: ''
+      //     }
+      //   ]
+      // },
+      {
+        text: '进阶',
+        children: [
+          {
+            text: 'ECMAScript 6',
+            link: '/portal/advance/es6.html'
+          },
+          {
+            text: 'TypeScript',
+            link: '/portal/advance/ts.html'
+          }
+        ]
+      },
       {
         text: 'Vue',
         children: [
