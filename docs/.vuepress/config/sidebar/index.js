@@ -14,6 +14,31 @@ export const sidebar = {
     //   link: '/portal/advance/ts.html'
     // }
   // ],
+  '/portal/vue/vue2': [
+    {
+      text: 'Vue2',
+      children: [
+        '/portal/vue/vue2/index.html',
+        '/portal/vue/vue2/get-started.html',
+        '/portal/vue/vue2/instance.html',
+        '/portal/vue/vue2/directives.html',
+        '/portal/vue/vue2/data-change.html',
+        '/portal/vue/vue2/vue-dom.html',
+        '/portal/vue/vue2/component.html',
+        '/portal/vue/vue2/module.html',
+        '/portal/vue/vue2/webpack.html',
+        '/portal/vue/vue2/vue-cli.html',
+        '/portal/vue/vue2/vue-router.html',
+        '/portal/vue/vue2/vuex.html',
+        '/portal/vue/vue2/event-bus.html',
+        '/portal/vue/vue2/mixins.html',
+        '/portal/vue/vue2/vue-demo.html',
+        '/portal/vue/vue2/axios.html',
+        '/portal/vue/vue2/vue-ext.html',
+        '/portal/vue/vue2/project-issue.html',
+      ]
+    },
+  ],
   '/portal/vue/vue3': [
     {
       text: 'Vue3',
@@ -38,20 +63,5 @@ export const sidebar = {
       ]
     },
   ],
-  // '/portal/vue/': [
-  //   {
-  //     text: 'Vue',
-  //     children: [
-  //       {
-  //         text: 'Vue3',
-  //         link: '/portal/vue/vue3/index.html'
-  //       },
-  //       {
-  //         text: 'Vue2',
-  //         link: '/portal/vue/vue3/index.html'
-  //       }
-  //     ]
-  //   }
-  // ]
 
 }

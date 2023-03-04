@@ -7,28 +7,32 @@ export const navbar = [
   {
     text: '前端',
     children: [
-      // {
-      //   text: '三剑客',
-      //   children: [
-      //     {
-      //       text: 'HTML',
-      //       link: ''
-      //     },
-      //     {
-      //       text: 'CSS',
-      //       link: ''
-      //     },
-      //     {
-      //       text: 'JavaScript',
-      //       link: ''
-      //     }
-      //   ]
-      // },
+      {
+        text: '三剑客',
+        children: [
+          {
+            text: 'HTML',
+            link: '/portal/base/html.html'
+          },
+          {
+            text: 'CSS',
+            link: '/portal/base/css.html'
+          },
+          {
+            text: 'JavaScript',
+            link: '/portal/base/js.html'
+          }
+        ]
+      },
       {
         text: '进阶',
         children: [
           {
-            text: 'ECMAScript 6',
+            text: 'jQuery',
+            link: '/portal/advance/jq.html'
+          },
+          {
+            text: 'ECMAScript6',
             link: '/portal/advance/es6.html'
           },
           {
@@ -41,12 +45,12 @@ export const navbar = [
         text: 'Vue',
         children: [
           {
-            text: 'Vue3',
-            link: '/portal/vue/vue3/index.html'
-          },
-          {
             text: 'Vue2',
             link: '/portal/vue/vue2/index.html'
+          },
+          {
+            text: 'Vue3',
+            link: '/portal/vue/vue3/index.html'
           },
           {
             text: 'VuePress',
@@ -86,9 +90,21 @@ export const navbar = [
       }
     ]
   },
+  // {
+  //   text: '日常',
+  //   link: '/daily'
+  // },
+  // {
+  //   text: '书单',
+  //   link: '/book/list.html'
+  // },
+  // {
+  //   text: '更新日志',
+  //   link: '/logs/update/index.html'
+  // },
   {
-    text: '更新日志',
-    link: '/logs'
+    text: '迁移日志',
+    link: '/logs/migrate/index.html',
   },
   {
     text: '订阅号',

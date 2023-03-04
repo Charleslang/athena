@@ -2,7 +2,7 @@
 sidebar: ['/portal/advance/es6.html']
 ---
 
-# ECMAScript 6
+# ECMAScript6
 
 ## 简介
 `ES6` 泛指 `ES 2015` (即 `ES6`) 及后续的版本。
@@ -1085,6 +1085,425 @@ console.log(BigInt(123))
 ```js
 console.log(globalThis)
 ```
+
+## 函数和字符串
+
+- 函数的简化 
+  
+  ```js
+  const app = new Vue({
+    el: '#app',
+    methods: {
+      // 以下几种函数的定义是等价的
+      add() {
+          
+      },
+      reduce: function() {
+          
+      },
+      query: () => {}
+    }
+  })
+  ```
+- 模板字符串
+
+  在 ES5 中，字符串使用单引号或双引号；ES6 中可以使用 ` `` `（即 Esc 下面的键），这样的好处是可以换行。
+  ```js
+  // ES5, 引号
+  var str = '123' + 
+    '456'
+  // ES6
+  let str = `你
+    好`
+  ```
+  - 字面量增强写法  
+  ```js
+  var name = 'zs', age = 30
+  // ES5
+  var obj = {
+    name: name,
+    age: age
+  }
+  // ES6
+  // 自动将变量名作为 key, 将变量的值作为 value
+  var obj = {
+    name,
+    age
+  }
+  ```
+
+- 箭头函数  
+
+  ```js
+  // 定义函数
+  const fun = (参数) => { }
+
+  // 只有UI个参数时，小括号可省
+  const fun = x => { }
+
+  // 只有一条语句参数时，大括号可省，它会自动将语句执行并返回结果
+  const fun = x => console.log(x) // 返回值是 undefined
+  const fun = (x, y) => x + y // 返回 x + y
+
+  // 在将函数作为参数时，会大量使用箭头函数来进行简化
+  ```
+
+- 箭头函数中的 this  
+
+  ```js
+  setTimeout(function () {
+    console.log(this) // Window
+  },1000)
+  setTimeout(() => {
+    console.log(this) // Window
+  },1000)
+
+  const obj = {
+    data() {
+      setTimeout(function () {
+        console.log(this) // window
+      },1000)
+      setTimeout(() => {
+        console.log(this) // data，即 obj 这个对象
+      },1000)
+    }
+  }
+  obj.data()
+
+  // 结论如下
+  // 箭头函数中的 this 会往外查找，直到找到最近的有 hits 的定义为止，这时箭头函数的 this 就指向这个最近的 this。
+
+  const obj = {
+    data() {
+      setTimeout(function () {
+        setTimeout(function() {
+          console.log(this) // Window
+        }, 1000)
+        setTimeout(() => {
+          console.log(this) // Window
+        }, 1000)
+      },1000)
+      setTimeout(() => {
+        setTimeout(function() {
+          console.log(this) // Window
+        }, 1000)
+        setTimeout(() => {
+          console.log(this) // obj
+        }, 1000)
+      },1000)
+    }
+  }
+  obj.data()
+  ```
+
+## Promise
+**1. Promise 能做什么？**  
+
+它是用来解决异步编程的一种方案。 
+
+**2. 什么时候可以使用异步事件？**  
+
+最常见的就是网络请求。  
+
+**3. 为什么有了 Ajax 还需要使用 Promise？**  
+
+因为在 Ajax 的回调函数中可能有存在其它的网络请求（即回调地狱），这时就可以使用 `Promise` 来优雅地解决这个问题。
+
+### 基本用法
+先来看一个简单的示例：
+```js
+// resolve 和 reject 是函数
+new Promise((resolve, reject) => {
+  // 第一次网络请求
+  setTimeout(() =>{
+    resolve()
+  },1000)
+}).then(() => {
+  // 第一次网络请求之后的处理
+  console.log('hello')
+
+  // 第二次网络请求
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve()
+    }, 1000)
+  })
+}).then(() => {
+  // 第二次网络请求之后的处理
+  console.log('hello1')
+
+  // 第三次网络请求
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve()
+    }, 1000)
+  })
+}).then(() => {
+  // 第三次网络请求之后的处理
+  console.log('world')
+})
+```
+以上代码的等价形式为：
+```js
+setTimeout(() => {
+  console.log('hello1')
+  setTimeout(() => {
+    console.log('hello2')
+    setTimeout(() => {
+      console.log('hello3')
+    }, 1000)
+  }, 1000)
+}, 1000)
+```
+在使用 Promise 时，需要创建一个实例（即 `new Promise()`），在创建实例时，需要通过构造方法传递一个函数（函数的两个参数都是函数（参数可选）），且传入的函数会被立即执行，在一步操作需要使用回调的地方调用 `resolve()` 方法，然后在 `then()` 方法中执行回调方法的处理即可。**定时器本身就是异步事件**。
+
+接下来模拟一个异步回调传参的情况：
+```js
+// 以下是伪代码
+new Promise((resolve, reject) => {
+  $.ajax({
+    url: ,
+    // 执行成功回调，并得到后台的响应数据 data
+    success: (data) => {
+      resolve(data)
+    },
+    error: (err) => {}
+  })
+}).then(/* 此 data 就是 ajax 成功时回调函数传入的数据 */ (data) => {})
+
+/* -------------------------------------- */
+
+new Promise((resolve, reject) => {
+  setTimeout(() => {
+    resolve('hello promise')
+  }, 1000)
+}).then((data) => {
+  console.log(data) // hello promise
+})
+```
+上面我们只使用了 `resolve()` 函数，接下来介绍一下 `reject` 的使用。其实，我们可以简单理解为 `resolve()` 用来处理请求成功，`reject()` 用来处理请求失败的情况，而且请求失败时是通过 `catch` 来进行回调的处理（也可使用 `then` 的第二个参数）。
+```js
+new Promise((resolve, reject) => {
+  $.ajax({
+    url: '',
+    success: (data) => { resolve(data) },
+    error: (err) => { reject(err) }
+  })
+}).then((data) => {
+  // 请求成功
+}).catch(err => {
+  // 请求失败
+})
+
+/* -------------------------------- */
+
+new Promise((resolve, reject) => {
+  $.ajax({
+    url: '',
+    success: (data) => { resolve(data) },
+    error: (err) => { reject(err) }
+  })
+}).then((data) => {
+  // 请求成功
+}, err => {
+  // 请求失败
+  console.error(err)
+})
+
+/* -------------------------------- */
+new Promise((resolve, reject) => {
+  reject('error')
+}).then(success => {
+
+}, err => {
+  console.error(err)
+})
+```
+:::tip 提示
+由于 `then` 和 `Promise.prototype.catch()` 方法都会返回 promise，它们可以被链式调用——这同时也是一种被称为复合（ composition） 的操作。
+:::
+
+### Promise 三种状态
+- pending  
+
+  等待状态，比如正在进行网络请求或定时器没到时间。
+
+- fulfill  
+
+  满足状态，当我们主动调用了 `resolve()` 时，就处于该状态，并且会回调 `then()`。
+
+- reject  
+
+  拒绝状态，当我们主动调用了 `reject()` 时，就处于该状态，并且会回调 `catch()`。
+
+### Promise 链式调用
+其实在上面的初始实例中就已经使用了链式调用。
+```js
+new Promise((resolve, reject) => {
+  setTimeout(() => {
+    resolve('aaa')
+  }, 1000)
+}).then(data => {
+  console.log(data, '第一次处理aaa')
+
+  new Promise(resolve => {
+    resolve(data + '123')
+  })
+}).then(data => {
+  console.log(data, '第二次处理')
+})
+```
+在上面的代码中，我们在某些 Promise 中没有进行一步操作，而只是单纯的处理数据而已，因此，我们可以直接使用 `Promise.resolve()`。修改如下：
+```js
+new Promise((resolve, reject) => {
+  setTimeout(() => {
+    resolve('aaa')
+  }, 1000)
+}).then(data => {
+  console.log(data, '第一次处理aaa')
+
+  return Promise.resolve(data + '123')
+}).then(data => {
+  console.log(data, '第二次处理')
+})
+```
+但是，我们还可以把上面的代码再次进行优化，省略 `Promise.resolve(data + '123')`，直接 return：
+```js
+new Promise((resolve, reject) => {
+  setTimeout(() => {
+    resolve('aaa')
+  }, 1000)
+}).then(data => {
+  console.log(data, '第一次处理aaa')
+
+  return data + '1233'
+}).then(data => {
+  console.log(data, '第二次处理')
+})
+```
+但是如果上面的代码执行过程中发生错误呢，这时，我们可以使用 `catch()`：
+```js
+new Promise((resolve, reject) => {
+  setTimeout(() => {
+    resolve('aaa')
+  }, 1000)
+}).then(data => {
+  console.log(data, '第一次处理aaa')
+
+  return new Promise((resolve, reject) => {
+      reject('错误')
+  })
+}).then(data => {
+  console.log(data, '第二次处理')
+}).catch(err => {
+    console.error(err)
+})
+```
+简写如下：
+```js
+new Promise((resolve, reject) => {
+  setTimeout(() => {
+    resolve('aaa')
+  }, 1000)
+}).then(data => {
+  console.log(data, '第一次处理aaa')
+
+  return Promise.reject('error!!')
+}).then(data => {
+  console.log(data, '第二次处理')
+}).catch(err => {
+  console.error(err)
+})
+
+/* ---------------- 使用 throw 抛出异常 --------------- */
+new Promise((resolve, reject) => {
+  setTimeout(() => {
+    resolve('aaa')
+  }, 1000)
+}).then(data => {
+  console.log(data, '第一次处理aaa')
+
+  throw 'the exception is found'
+}).then(data => {
+  console.log(data, '第二次处理')
+}).catch(err => {
+  console.error(err)
+})
+```
+### Promise 补充  
+在某种情况下，我们可能同时发出多个请求，而且需要等到这些请求全部成功后才能进行某种处理。普通的写法如下：
+```js
+let isResult1 = false
+let isResult2 = false
+
+$.ajax({
+  url: '',
+  success: function(data) {
+    isResult1 = true
+    handlerResult()
+  }
+})
+$.ajax({
+  url: '',
+  success: function(data) {
+    isResult2 = true
+    handlerResult()
+  }
+})
+
+function handlerResult() {
+  if (isResult1 && isResult2) {
+    // ...
+  }
+}
+```
+我们可以使用 Promise 提供的 `all()` 方法，该方法传入一个可迭代对象（即数组等可以循环的对象），它会自动监听请求状态：
+```js
+Promise.all([
+  new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve({name: 'kk', age: 12})
+    }, 1000)
+  }),
+  new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve('xxx')
+    }, 3000)
+  })
+]).then(results => {
+  // 数组
+  console.log(results)
+})
+```
+## 解构
+在函数或变量赋值中，如果我们想要传递一个对象作为参数，我们同常是这样写的：
+```js
+function foo(obj) {
+  console.log(obj.xxx)
+}
+```
+我们需要自己去调用对象的属性和方法等，而且有时候我们只想使用对象中的部分属性和方法，这时，我们就没有必要传入整个对象，这就是 ES6 中提出的对象解构。  
+```js
+/* ------------------- 对象解构 ------------------ */
+const obj = {
+  name: 'abc',
+  age: 18,
+  height: 1.88,
+  hobbies: ['lanqiu', 'zuqiu']
+}
+
+// 和顺序没有影响，它是按照名字来匹配的 
+const { height, name, age } = obj
+
+console.log(name, age, height)
+
+/* ------------------- 数组解构（不推荐） ------------------ */
+const arr = [1,2,3,4,5]
+// 取的就是前两个元素
+const [e1, e2] = arr
+console.log(e1, e2) // 1 2
+```
+
 ## 易错
 - 对象中没有 `this`。
 - `setTimeout` 是异步操作, 回调函数由 `window` 调用。
