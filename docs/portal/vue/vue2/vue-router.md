@@ -973,7 +973,7 @@ beforeRouteLeave (to, from, next) {
 }
 ```
 :::tip 提示
-导航守卫的更多内容请见 [导航守卫]("https://router.vuejs.org/zh/guide/advanced/navigation-guards.html#%E5%85%A8%E5%B1%80%E5%89%8D%E7%BD%AE%E5%AE%88%E5%8D%AB)。
+导航守卫的更多内容请见 [导航守卫](https://router.vuejs.org/zh/guide/advanced/navigation-guards.html#%E5%85%A8%E5%B1%80%E5%89%8D%E7%BD%AE%E5%AE%88%E5%8D%AB)。
 :::
 
 ## keep-alive
