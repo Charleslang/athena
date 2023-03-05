@@ -14,6 +14,41 @@ export const sidebar = {
     //   link: '/portal/advance/ts.html'
     // }
   // ],
+  '/backend/java/base': [
+    {
+      text: 'Java 基础',
+      children: [
+        '/backend/java/base/index.html',
+        '/backend/java/base/get-started.html',
+        '/backend/java/base/data-type.html',
+        '/backend/java/base/variables.html',
+        '/backend/java/base/number-base.html',
+        '/backend/java/base/import-package.html',
+        '/backend/java/base/input.html',
+        '/backend/java/base/data-type-convert.html',
+        '/backend/java/base/operator.html',
+        '/backend/java/base/random.html',
+        '/backend/java/base/structure.html',
+        '/backend/java/base/modifier.html',
+        '/backend/java/base/oo.html',
+        '/backend/java/base/overload-override.html',
+        '/backend/java/base/exe-process.html',
+        '/backend/java/base/params.html',
+        '/backend/java/base/thread.html',
+        '/backend/java/base/useful.html',
+        '/backend/java/base/enum.html',
+        '/backend/java/base/annotation.html',
+        '/backend/java/base/collection.html',
+        '/backend/java/base/genericity.html',
+        '/backend/java/base/io.html',
+        '/backend/java/base/socket.html',
+        '/backend/java/base/reflect.html',
+        '/backend/java/base/lambda.html',
+        '/backend/java/base/class-load.html',
+        '/backend/java/base/regex.html',
+      ]
+    }
+  ],
   '/portal/vue/vue2': [
     {
       text: 'Vue2',

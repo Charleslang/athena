@@ -36,6 +36,7 @@
       // overflow: hidden; // 因为 html.dark main.home 设置了 filter, 而 overflow:hidden 会将其隐藏
       display: table;
       height: calc(100% - var(--navbar-height));
+      transition: filter .7s;
 
       .hero {
         h1#main-title {

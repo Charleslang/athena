@@ -1,8 +1,19 @@
 export const navbar = [
   {
     text: '后端',
-    link: '/backend.html', // 如果当前路由和 link 的值相同, 则该 navbar 会处于选中状态
-    activeMatch: '/backend.html' // 当路由为 /backend/ 时, 该 nav 处于选中状态
+    children: [
+      {
+        text: 'Java',
+        children: [
+          {
+            text: 'Java 基础',
+            link: '/backend/java/base/index.html'
+          },
+        ]
+      }
+    ]
+    // link: '/backend.html', // 如果当前路由和 link 的值相同, 则该 navbar 会处于选中状态
+    // activeMatch: '/backend.html' // 当路由为 /backend/ 时, 该 nav 处于选中状态
   },
   {
     text: '前端',
