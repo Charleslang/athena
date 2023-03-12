@@ -13,4 +13,4 @@ dist
 ydnote
 
 # file
-docs/.vuepress/plugins/index.js
+# docs/.vuepress/plugins/index.js
