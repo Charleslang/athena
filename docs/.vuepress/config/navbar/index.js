@@ -75,6 +75,10 @@ export const navbar = [
     text: '文章归档',
     children: [
       {
+        text: 'Jenkins',
+        link: '/archive/jenkins/index.html',
+      },
+      {
         text: 'MySQL',
         link: '/mysql/'
       },

@@ -32,7 +32,13 @@ export const theme = localTheme({
   contributors: true, // 是否启用 贡献者列表 。默认为 true
   contributorsText: '贡献者', // 贡献者列表 标签的文字。
   userConfig: userConfig({
-    backgroundImg: ['/images/P65.jpg', '/images/P66.jpg', '/images/P69.jpg', '/images/P70.jpg', '/images/P71.jpg'],
+    backgroundImg: [
+      'https://djfmdresources.oss-cn-hangzhou.aliyuncs.com/athena/2023-03-17/P65.jpg', 
+      'https://djfmdresources.oss-cn-hangzhou.aliyuncs.com/athena/2023-03-17/P66.jpg', 
+      'https://djfmdresources.oss-cn-hangzhou.aliyuncs.com/athena/2023-03-17/P69.jpg', 
+      'https://djfmdresources.oss-cn-hangzhou.aliyuncs.com/athena/2023-03-17/P70.jpg', 
+      'https://djfmdresources.oss-cn-hangzhou.aliyuncs.com/athena/2023-03-17/P71.jpg'
+    ],
     heroText: [
       '实力与野心不符，是一件可悲的事情', 
       '有些人没有见过汪洋，以为江河最为壮美', 

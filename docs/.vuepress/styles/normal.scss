@@ -58,7 +58,8 @@ html.dark .sidebar {
 }
 
 .custom-container.warning,
-.custom-container.warning > .custom-container-title {
+.custom-container.warning > .custom-container-title,
+.custom-container.warning > p > a {
   color: var(--custom-block-warning-text);
 }
 

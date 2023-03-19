@@ -98,5 +98,19 @@ export const sidebar = {
       ]
     },
   ],
+  '/archive/jenkins': [
+    {
+      text: 'Jenkins',
+      children: [
+        '/archive/jenkins/index.html',
+        '/archive/jenkins/installing.html',
+        '/archive/jenkins/config.html',
+        '/archive/jenkins/plugins.html',
+        '/archive/jenkins/build-type.html',
+        '/archive/jenkins/build-triggers.html',
+        '/archive/jenkins/post-build.html',
+      ]
+    }
+  ]
 
 }
