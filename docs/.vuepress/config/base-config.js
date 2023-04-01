@@ -14,7 +14,7 @@ export const baseConfig = {
   cache: 'docs/.cache', // 缓存文件路径, 默认为 `${sourceDir}/.vuepress/.cache`
   debug: false, // 用于调试, 取代 console.log
   head: [
-    ['link', { rel: 'icon', href: '/images/avatar.ico' }],
+    ['link', { rel: 'icon', href: '/images/leaf.ico' }],
     ['link', { rel: 'stylesheet', href: '/iconfont/iconfont.css' }]
   ],
   alias: {
