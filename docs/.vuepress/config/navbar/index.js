@@ -87,6 +87,14 @@ export const navbar = [
         link: '/linux/'
       },
       {
+        text: '插件工具',
+        link: '/archive/plugin/index.html'
+      },
+      {
+        text: '代码集成',
+        link: '/code/'
+      },
+      {
         text: '其它',
         children: [
           {

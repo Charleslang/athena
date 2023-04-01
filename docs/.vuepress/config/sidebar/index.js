@@ -111,6 +111,15 @@ export const sidebar = {
         '/archive/jenkins/post-build.html',
       ]
     }
-  ]
+  ],
+  '/archive/plugin': [
+    {
+      text: '插件工具',
+      children: [
+        '/archive/plugin/index.html',
+        '/archive/plugin/github-student.html',
+      ]
+    }
+  ],
 
 }
