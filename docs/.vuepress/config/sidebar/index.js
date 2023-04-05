@@ -109,6 +109,7 @@ export const sidebar = {
         '/archive/jenkins/build-type.html',
         '/archive/jenkins/build-triggers.html',
         '/archive/jenkins/post-build.html',
+        '/archive/jenkins/build-params.html',
       ]
     }
   ],
