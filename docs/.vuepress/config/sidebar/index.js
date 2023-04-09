@@ -49,6 +49,21 @@ export const sidebar = {
       ]
     }
   ],
+  '/backend/framework/elasticsearch': [
+    {
+      text: 'Elasticsearch',
+      children: [
+        '/backend/framework/elasticsearch/index.html',
+        '/backend/framework/elasticsearch/concept.html',
+        '/backend/framework/elasticsearch/install.html',
+        '/backend/framework/elasticsearch/usage.html',
+        '/backend/framework/elasticsearch/query-dsl.html',
+        '/backend/framework/elasticsearch/aggregations.html',
+        '/backend/framework/elasticsearch/mapping.html',
+        '/backend/framework/elasticsearch/analysis.html',
+      ]
+    }
+  ],
   '/portal/vue/vue2': [
     {
       text: 'Vue2',

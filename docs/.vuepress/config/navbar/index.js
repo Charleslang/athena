@@ -10,6 +10,15 @@ export const navbar = [
             link: '/backend/java/base/index.html'
           },
         ]
+      },
+      {
+        text: '框架',
+        children: [
+          {
+            text: 'Elasticsearch',
+            link: '/backend/framework/elasticsearch/index.html'
+          }
+        ]
       }
     ]
     // link: '/backend.html', // 如果当前路由和 link 的值相同, 则该 navbar 会处于选中状态
