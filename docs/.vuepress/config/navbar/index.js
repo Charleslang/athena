@@ -19,6 +19,15 @@ export const navbar = [
             link: '/backend/framework/elasticsearch/index.html'
           }
         ]
+      },
+      {
+        text: '中间件',
+        children: [
+          {
+            text: 'Redis',
+            link: '/backend/middleware/redis/index.html'
+          }
+        ]
       }
     ]
     // link: '/backend.html', // 如果当前路由和 link 的值相同, 则该 navbar 会处于选中状态
@@ -86,6 +95,10 @@ export const navbar = [
       {
         text: 'Jenkins',
         link: '/archive/jenkins/index.html',
+      },
+      {
+        text: 'Maven',
+        link: '/archive/maven/index.html',
       },
       {
         text: 'MySQL',

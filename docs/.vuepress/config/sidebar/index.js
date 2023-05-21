@@ -61,6 +61,18 @@ export const sidebar = {
         '/backend/framework/elasticsearch/aggregations.html',
         '/backend/framework/elasticsearch/mapping.html',
         '/backend/framework/elasticsearch/analysis.html',
+        '/backend/framework/elasticsearch/config.html',
+      ]
+    }
+  ],
+  '/backend/middleware/redis': [
+    {
+      text: 'Redis',
+      children: [
+        '/backend/middleware/redis/index.html',
+        '/backend/middleware/redis/installing.html',
+        '/backend/middleware/redis/config.html',
+        '/backend/middleware/redis/datatype.html',
       ]
     }
   ],
@@ -125,6 +137,14 @@ export const sidebar = {
         '/archive/jenkins/build-triggers.html',
         '/archive/jenkins/post-build.html',
         '/archive/jenkins/build-params.html',
+      ]
+    }
+  ],
+  '/archive/maven': [
+    {
+      text: 'Maven',
+      children: [
+        '/archive/maven/index.html',
       ]
     }
   ],
