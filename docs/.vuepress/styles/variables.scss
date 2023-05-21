@@ -20,13 +20,17 @@ $color-text-purple-light: #807dd4;
   --docsearch-icon-stroke-width-1: 1.4;
 
   // container
-  --custom-block-tip-border: rgba(16, 185, 129, .5);
-  --custom-block-tip-text: #10b981;
-  --custom-block-tip-bg: rgba(16, 185, 129, .05);
-  --custom-block-warning-border: rgba(234, 179, 8, .5);
-  --custom-block-warning-text: #eab308;
-  --custom-block-warning-bg: rgba(234, 179, 8, .05);
-  --custom-block-danger-border: rgba(244, 63, 94, .5);
+  --custom-block-font-size: 14px;
+  --custom-block-code-font-size: 13px;
+  --custom-block-tip-code-bg: #ececed;
+
+  --custom-block-tip-border: #646cff;
+  --custom-block-tip-text: #454ce1;
+  --custom-block-tip-bg: rgba(100, 108, 255, .08);
+  --custom-block-warning-border: #d97706;
+  --custom-block-warning-text: #d97706;
+  --custom-block-warning-bg: #f6f6f7;
+  --custom-block-danger-border: rgba(244, 63, 94, .8);
   --custom-block-danger-text: #f43f5e;
   --custom-block-danger-bg: rgba(244, 63, 94, .05);
 }
@@ -51,4 +55,8 @@ html.dark {
 
   // 自定义搜索框样式
   --docsearch-text-color-1: rgba(235, 235, 245, .6);
+
+  // container
+  --custom-block-tip-text: #bcc0ff;
+  --custom-block-warning-bg: #252529;
 }

@@ -42,6 +42,28 @@ html.dark .sidebar {
   border-radius: 8px;
 }
 
+.custom-container {
+  font-size: var(--custom-block-font-size);
+
+  & a {
+    font-weight: 600;
+    transition: opacity .25s;
+  }
+
+  & code {
+    font-size: var(--custom-block-code-font-size);
+    font-weight: 700;
+    background-color: var(--custom-block-tip-code-bg);
+  }
+}
+
+.dark .custom-container {
+  & a {
+    color: #9499ff;
+    transition: color .25s;
+  }
+}
+
 .custom-container.tip {
   border-color: var(--custom-block-tip-border);
   background-color: var(--custom-block-tip-bg);
@@ -59,7 +81,7 @@ html.dark .sidebar {
 
 .custom-container.warning,
 .custom-container.warning > .custom-container-title,
-.custom-container.warning > p > a {
+.custom-container.warning > p > a {  
   color: var(--custom-block-warning-text);
 }
 
