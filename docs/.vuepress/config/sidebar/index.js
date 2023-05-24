@@ -73,6 +73,7 @@ export const sidebar = {
         '/backend/middleware/redis/installing.html',
         '/backend/middleware/redis/config.html',
         '/backend/middleware/redis/datatype.html',
+        '/backend/middleware/redis/java-clients.html',
       ]
     }
   ],
