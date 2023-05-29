@@ -40,9 +40,9 @@ double c = 6 / 5.0; // 1.2
 System.out.println('A' + 0);  // 65，即 A 的 ASCII 码
 System.out.println('代' + 0); // 输出 '代' 的 ASCII 码
 ```
-:::tip 补充  
-- `byte`、`short`、`char` 之间进行运算时，结果为 `int` 类型 
-- 两个 `char` 进行运算，可以用 `short` 来接收
+:::tip 提示  
+- `byte`、`short`、`char` 之间进行运算时，结果为 `int` 类型。
+- `byte`、`short`、`char` 可以接收两个字面量整数计算后的结果。例如 `byte b = 1 + 2;`、`short s = 1 + 2;`、`char c = 1 + 2;`（但是可能造成溢出）。
 :::
 
 ## 强制转换

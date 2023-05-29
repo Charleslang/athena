@@ -4,7 +4,7 @@
 
 **switch**  
 
-不是所有类型的数据都能在 `switch` 中使用（只有 `byte`、`short`、`char`、`int`、`枚举`、`String` 这 6 个类型才能在 switch 中使用）。case 后面的值只能是常量，且值不能重复。
+不是所有类型的数据都能在 `switch` 中使用（只有 `char`、`byte`、`short`、`int`、`Character`、`Byte`、`Short`、`Integer`、`String`、`枚举` 这几个类型才能在 switch 中使用）。case 后面的值只能是常量，且值不能重复。
 
 ```java
 int number = 1;
@@ -27,16 +27,6 @@ switch(number) {
 **数字翻转**  
 
 ```java
-int num = 123;
-int rear = -1;
-num = num * 10;
-while(num / 10 > 0) {
-    num = num / 10;
-    rear = num  % 10;
-    System.out.println(rear);
-}
-
-/* ------------------------------------ */
 public static int test3(int num) {
     int result = 0;
     while (num > 0) {
@@ -82,7 +72,7 @@ for (int i = 0; i < 3; i++) {
     System.out.println("hello");
 }
 ```
-for 循环中如果有多个条件或判断，请用逗号隔开。
+for 循环中的语句有多条，请用逗号隔开。
 ```java
 int i = 1, j = 0;
 for (System.out.println('a'), j--; i <= 3 && true; System.out.println("i++:"), i++) {

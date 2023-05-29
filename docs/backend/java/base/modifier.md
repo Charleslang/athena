@@ -46,7 +46,9 @@
   package com.dysy.entity1;
 
   public class A {
-      int abc;
+      int number;
+      protected int number2;
+      public int number3;
   }
   ```
 
@@ -56,15 +58,17 @@
   // 注意包名
   package com.dysy.entity2;
 
-  public class B extends A{
-      
-      public void print(){
-          // 直接访问（没有通过 get 方法访问变量 abc）
-          System.out.println(abc); // 0
-          // 以下就是错误的理解
-          // A a = new A();
-          // System.out.println(a.abc);
-          // 如果想要使用父类的实例来调用，则必须给该变量加上 static，但是不推荐此方式
+  public class B extends A {
+      private void test() {
+          System.out.println(number);
+          System.out.println(super.number);
+          System.out.println(this.number);
+          System.out.println(number2);
+          System.out.println(super.number2);
+          System.out.println(this.number2);
+          System.out.println(number3);
+          System.out.println(super.number3);
+          System.out.println(this.number3);
       }
   }
 ```

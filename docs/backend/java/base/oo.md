@@ -27,7 +27,7 @@ System.out.println(e == f); // true（char 使用的是 ASCII 码）
 int a = 1;
 char b = 1; // 本身就是将数字 1 赋值给了 b（所以 b 转为 int 时得到的结果就是 1）
 char c = '1'; // 字符 '1' 的 ASCII 码
-System.out.println(b+1);
+System.out.println(b + 1);
 System.out.println(c - '0'); // char to int
 System.out.println(a + '0'); // int to char
 System.out.println(Character.getNumericValue(a));// char to int
