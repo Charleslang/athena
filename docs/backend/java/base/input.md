@@ -8,31 +8,32 @@ Java 中，没有直接输入 `char` 类型的变量，但是可以输入字符�
 
 ```java
 public static void main (String[] args) {
-    Scanner s = new Scanner(System.in);
-    System.out.println("请输入年龄");
-    int a = s.nextInt();
-    System.out.println("请输入姓名");
-    int b = s.nextLine();
-    // System.out.println("请输入姓名");
-    // int c = s.next();
+    Scanner scanner = new Scanner(System.in);
+    System.out.print("请输入年龄 > ");
+    int age = scanner.nextInt();
+    System.out.print("请输入姓名 > ");
+    String name = scanner.nextLine(); // b 其实是上一次输入的回车。所以，代码执行到这里时，会直接结束了，而不会等用户输入。
+    // System.out.print("请输入姓名 > ");
+    // String name = scanner.next(); // 不会接收回车，所以可以输入姓名
     
     /* ------------------ */
-    // 遇到空格或者回车会停止录入
-    String str1 = scanner.next();
-    System.out.println(str1);
-    // 会自动接收上一次的空格或回车
-    // 还未等用户输入，str2 就已经有值了
+    // next() 遇到空格或者回车会停止录入
+    String str1 = scanner.next(); // 输入 12 3 4 5 6
+    System.out.println(str1); // 12
+    // 会自动接收上一次的空格或回车，还未等用户输入，str2 就已经有值了
     String str2 = scanner.nextLine();
-    System.out.println(str2);
+    System.out.println(str2); // " 3 4 5 6"
 }
 ```
 ```java
 public static void main (String[] args) {
     Scanner s = new Scanner(System.in);
     System.out.println("请输入姓名（请带空格和字母）"); // 输入 mm  nn
-    int c = s.next();
+    String c = s.next();
     System.out.println("请输入年龄");
-    int a = s.nextInt();// 报错 InputMismactchException
+    int a = s.nextInt(); // 报错 InputMismactchException
+    
+    // 但是，如果姓名后面跟着的是数字，则程序不会报错。例如姓名输入的是 "mm 1", 则 a 就是 1
 }
 ```
 

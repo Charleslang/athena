@@ -2,6 +2,7 @@
 .cache
 .temp
 .idea
+*.iml
 
 # dependencies
 node_modules
