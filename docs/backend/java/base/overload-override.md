@@ -22,12 +22,12 @@ public void print(String[] args) {
 
 :::tip 注意
 - 重写与方法返回值有关（即返回值必须相同（或子类）才算重写）。  
-- 继承之间也存在重写。但是，子类的修饰符不能比父类的方法更严格（比如父类的 a1() 方法为 public，而子类的 a1() 方法却是private（只能大于等于 public），这是不行的）。  
+- 子类的修饰符不能比父类的方法更严格（比如父类的 method1() 方法为 public，而子类的 method1() 方法却是 private（只能大于等于 public），这是不行的）。  
 - 构造方法不能被重写（因为构造方法不能被继承，只有可以被继承的方法才能重写）。  
 - 子类不能重写父类的 private、final、static 修饰的方法。  
 - 子类重写的方法抛出的异常，不能大于父类的异常。
 - 如果子类没有重写父类的方法，那么可以通过 `this.方法名` 或 `super.方法名` 来调用父类的方法。  
-- 子类的所有构造方法默认都会调用父类的无参构造，即 `super()`。
+- 默认情况下，子类的所有构造方法都会先调用父类的无参构造，即 `super()`。如果子类有一个无参构造函数，并且子类的无参构造函数没有调用父类的有参构造函数，那么，使用子类的无参构造创建对象时，就会先调用父类的无参构造；如果子类存在有参构造，且子类的有参构造没有调用父类的有参构造，那么，在使用子类的有参构造创建对象时，会先调用父类的无参构造。
 :::
 
 ```java
@@ -35,7 +35,6 @@ public class Test {
     
 }
 
-// 内部类
 class Son extends Father {
 
     public void x1(int a) {
@@ -53,12 +52,11 @@ class Son extends Father {
     }
     
     // 重写父类的 x3，此处的返回值可以是 Father 的子类 Son
-    public Son x3(int a) {
-        return new Son();
-    }
+    // public Son x3(int a) {
+    //    return new Son();
+    // }
 }
 
-// 内部类
 class Father {
     public void x1() {
         

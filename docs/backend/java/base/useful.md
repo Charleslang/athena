@@ -288,17 +288,16 @@ public static void main(String[] args) {
 ```
 ### Comparetor 定制排序
 
-实现该接口，并重写 `compare()` `方法。Comparator` 是在外部制定排序规则，然后作为排序策略参数传递给某些类，比如 `Collections.sort()`, `Arrays.sort()`, 或者一些内部有序的集合（比如 `SortedSet`，`SortedMap` 等）。当我们需要重新对一个数组等进行另外的排序规则时，可以使用 `Comparetor`。
+实现该接口，并重写 `compare()` 方法。Comparator` 是在外部制定排序规则，然后作为排序策略参数传递给某些类，比如 `Collections.sort()`, `Arrays.sort()`, 或者一些内部有序的集合（比如 `SortedSet`，`SortedMap` 等）。当我们需要重新对一个数组等进行另外的排序规则时，可以使用 `Comparetor`。
 
 ```java
 public static void main(String[] args) {
     Goods[] goods = {
-            new Goods("小米", 2999),
-            new Goods("华为", 4999),
-            new Goods("onePlus", 3999),
-            new Goods("Redmi", 1999),
-            new Goods("三星", 2999),
-
+        new Goods("小米", 2999),
+        new Goods("华为", 4999),
+        new Goods("onePlus", 3999),
+        new Goods("Redmi", 1999),
+        new Goods("三星", 2999)
     };
 
     // 升序
@@ -308,9 +307,7 @@ public static void main(String[] args) {
     Arrays.sort(goods, new Comparator<Goods>() {
         @Override
         public int compare(Goods o1, Goods o2) {
-
-              return etName().compareTo(o1.getName());
-            return o2.compareTo(o1);
+            return etName().compareTo(o1.getName());
         }
     });
     System.out.println(Arrays.toString(goods));

@@ -57,15 +57,15 @@ interface Show {
     void show();
 }
 
-public enum OneEnum implements Show{
+public enum OneEnum implements Show {
     // 每一个单独重写 show()
-    SUCCESS(200, "成功"){
+    SUCCESS(200, "成功") {
         @Override
         public void show() {
             
         }
     },
-    TIMEOUT(408, "超时"){
+    TIMEOUT(408, "超时") {
         @Override
         public void show() {
             
@@ -76,3 +76,16 @@ public enum OneEnum implements Show{
     // ...
 }
 ```
+
+**单例模式**
+
+```java
+public enum AppThreadPool {
+    EXECUTOR;
+    
+    AppThreadPool() { }
+}
+```
+:::tip 提示
+[Java单例模式的7种写法中，为何用Enum枚举实现被认为是最好的方式？](https://cloud.tencent.com/developer/article/1497592)
+:::

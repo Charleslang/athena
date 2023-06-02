@@ -67,9 +67,23 @@ public class Person {
 ```
 **2. toString()**  
 
-该方法也是在 `Object` 类中定义的，所以，所有对象都会有该方法。该方法默认打印类的全类名和地址。当我们打印对象时，实际上是去调用该对象的 `toString()` 方法（如果由系统自动调用，则会判断该对象是否为 null（避免 NPE）；如果我们显示地调用，则系统不会自动判断该对象是否为 null（可能引起 NPE）），`println` 的内部源码如下。
+该方法也是在 `Object` 类中定义的，所以，所有对象都会有该方法。该方法默认打印类的全类名和地址。
 ```java
-return (obj == null) ? "null" : obj.toString();
+public String toString() {
+    return getClass().getName() + "@" + Integer.toHexString(hashCode());
+}
+```
+
+当我们使用 `System.out.println();` 打印对象时，实际上使用的是 `String.valueOf(Object o)`方法。`println` 源码如下: 
+```java
+public void println(Object x) {
+    // String.valueOf(Object obj) 的源码是 return (obj == null) ? "null" : obj.toString();
+    String s = String.valueOf(x);
+    synchronized (this) {
+        print(s);
+        newLine();
+    }
+}
 ```
 String、Date、File、包装类等都重写了 `toString()` 方法。
 
@@ -77,12 +91,12 @@ String、Date、File、包装类等都重写了 `toString()` 方法。
 包装类（Wrapper）也叫封装类，它是针对 8 中基本类型的引用类型，有了类的特点。
 |基本数据类型|包装类|说明|
 |---|---|---|
-|`byte`|`Byte`|父类为 `Number`|
-|`short`|`Short`|父类为 `Number`|
-|`int`|`Integer`|父类为 `Number`|
-|`long`|`Long`|父类为 `Number`|
-|`float`|`Float`|父类为 `Number`|
-|`double`|`Double`|父类为 `Number`|
+|`byte`|`Byte`|父类为 `Number`，`Number` 是一个抽象类|
+|`short`|`Short`|父类为 `Number`，`Number` 是一个抽象类|
+|`int`|`Integer`|父类为 `Number`，`Number` 是一个抽象类|
+|`long`|`Long`|父类为 `Number`，`Number` 是一个抽象类|
+|`float`|`Float`|父类为 `Number`，`Number` 是一个抽象类|
+|`double`|`Double`|父类为 `Number`，`Number` 是一个抽象类|
 |`boolean`|`Boolean`||
 |`char`|`Character`||
 
@@ -112,7 +126,7 @@ public static boolean parseBoolean(String s) {
 ```
 
 :::warning 注意
-包装类的默认值为 `null`。
+包装类的默认值为 `null`。上面提到的这些包装类都不能被继承，因为它们都使用了 `final` 进行修饰。
 :::
 
 **包装类面试题**
@@ -140,48 +154,235 @@ System.out.println(a == b); // false
 ```
 
 ## 内部类
-内部类可以存在一个类中、方法中、代码块中。内部类可以用 `static` 修饰。在方法或代码块中内部类被称为局部内部类。  
+在 Java 中，可以将一个类定义在另外一个类里面或者一个方法里面，这样的类叫做内部类（也称为嵌套类）。一般来说，内部类分为成员内部类、局部内部类、匿名内部类和静态内部类。
 
-局部内部类使用外部的变量时，此变量必须用 `final` 修饰（JDK8 以后可以不显示指定 `final`），并且局部内部类只能使用默认的修饰符。
+### 成员内部类
+
+成员内部类是最常见的内部类，看下面的代码。
+
 ```java
-public class Test1 {
+public class OuterClass {
     
+    private int age = 10;
+    
+    class InnerClass {
+        private int age = 20;
+    }
 }
-class Test2 {
-    class Test3 {
+```
+看起来内部类 `InnerClass` 就好像 `OuterClass` 的一个成员，所以称 `InnerClass` 为成员内部类，成员内部类可以无限制访问外部类的所有成员属性。
+
+```java
+public class OuterClass {
+
+    private int age = 10;
+    String name = "张三";
+    protected String address = "北京市";
+    public String email = "123@qq.com";
+    private static String phone = "123456789";
+
+    class InnerClass {
         
-    }
-    
-    public void method() {
-        class Test5 {
-            
-        }
-    }
-    
-    {
-        class Test6 {
-            
+        private void print() {
+            System.out.println(age);
+            System.out.println(name);
+            System.out.println(address);
+            System.out.println(email);
+            System.out.println(phone);
         }
     }
 }
 ```
+内部类可以随心所欲地访问外部类的成员，但外部类想要访问内部类的成员，就不那么容易了，必须先创建一个成员内部类的对象，再通过这个对象来访问：
+
+```java
+public class OuterClass {
+
+    private int age = 10;
+    String name = "张三";
+    protected String address = "北京市";
+    public String email = "123@qq.com";
+    private static String phone = "123456789";
+
+    private void print() {
+        InnerClass innerClass = new InnerClass();
+        System.out.println(innerClass.type);
+        innerClass.print();
+    }
+
+    class InnerClass {
+
+        private int type = 1;
+
+        private void print() {
+            // 需要通过 this 来调用外部类的方法
+            OuterClass.this.print();
+            System.out.println(age);
+            System.out.println(name);
+            System.out.println(address);
+            System.out.println(email);
+            System.out.println(phone);
+        }
+    }
+}
+```
+这也就意味着，如果想要在静态方法中访问成员内部类的时候，就必须先得创建一个外部类的对象，因为内部类是依附于外部类的。
+
+```java
+public class OuterClass {
+
+    public static void main(String[] args) {
+        // 必须这样创建 InnerClass 对象
+        InnerClass innerClass = new OuterClass().new InnerClass();
+        // 编译报错
+        new OuterClass.InnerClass();
+        // 编译报错
+        new InnerClass();
+    }
+
+    class InnerClass {
+
+    }
+}
+```
+成员内部类的在实际开发中并不常用，因为内部类和外部类紧紧地绑定在一起，使用起来非常不便。成员内部类编译后的字节码文件是 `OuterClass$InnerClass.class`。
+
+### 局部内部类
+
+局部内部类是定义在一个方法或者一个作用域（代码块）里面的类，所以局部内部类的生命周期仅限于作用域内。
+
+```java
+public class OuterClass {
+    
+    private int age = 10;
+    String name = "张三";
+    protected String address = "北京市";
+    public String email = "123@qq.com";
+    private static String phone = "123456789";
+    
+    {
+        class Say {
+            private void say() {
+                System.out.println("say");
+            }
+        }
+        new Say().say();
+    }
+    
+    private void say() {
+        class Say {
+            private void say() {
+                System.out.println(age);
+                System.out.println(name);
+                System.out.println(address);
+                System.out.println(email);
+                System.out.println(phone);
+                System.out.println("say");
+            }
+        }
+        new Say().say();
+    }
+}
+```
+
+局部内部类就好像一个局部变量一样，它是不能被权限修饰符修饰的，比如 `public`、`protected`、`private` 和 `static` 等（编译会报错），但可以用 `final` 进行修饰。和成员内部类一样，局部内部类也是可以访问外部类的任何属性和方法。局部内部类编译后的字节码文件是 `OuterClass$1Say.class`、`OuterClass$2Say.class` 这样的形式。
+
+### 匿名内部类
+
+匿名内部类是我们平常用得比较多的，尤其是启动多线程的时候，并且 IDE 也会帮我们自动生成。
+
+```java
+public class OuterClass {
+
+    public static void main(String[] args) {
+        // 匿名内部类
+        Thread thread = new Thread() {
+            @Override
+            public void run() {
+                System.out.println(phone);
+            }
+        };
+        thread.start();
+    }
+}
+```
+
+匿名内部类就好像方法的参数一样，用完就没了，以至于我们都不需要为它专门写一个构造方法，它的名字也是由系统自动命名的。仔细观察编译后的字节码文件也可以发现，匿名内部类连名字都不配拥有，直接借用的外部类，然后 $1 就搞定了。例如，上面的匿名内部类会被编译成 `OuterClass$1.class`。如果某个类中存在多个匿名内部类的话，那么其编译后的名称依次是 `OuterClass$1.class`、`OuterClass$2.class` 等。
+
+
+### 静态内部类
+静态内部类和成员内部类类似，在定义静态内部类时，需要加上 `static` 关键字。
+
+```java
+public class OuterClass {
+    
+    static class StaticInnerClass {
+        
+    }
+}
+```
+
+由于 static 关键字的存在，静态内部类是不允许访问外部类中非 static 的变量和方法的。
+
+```java
+public class OuterClass {
+
+    private int age = 10;
+    String name = "张三";
+    protected String address = "北京市";
+    public String email = "123@qq.com";
+    private static String phone = "123456789";
+
+    static class StaticInnerClass {
+
+        private void print() {
+            // 编译报错
+            // System.out.println(age);
+            // 编译报错
+            // System.out.println(name);
+            // 编译报错
+            // System.out.println(address);
+            // 编译报错
+            // System.out.println(email);
+            System.out.println(phone);
+        }
+    }
+}
+```
+用 `static` 修饰的内部类和普通的内部类有很大的不同，它不再依附于外部类的实例，而是一个完全独立的类。
+
+```java
+public class OuterClass {
+
+    public static void main(String[] args) {
+
+        StaticInnerClass staticInnerClass = new StaticInnerClass();
+    }
+
+    static class StaticInnerClass {
+        
+    }
+}
+```
+
+局部内部类使用外部的变量时，外部变量必须用 `final` 修饰（JDK8 以后可以不显示指定 `final`），并且局部内部类只能使用默认的修饰符。
 ```java
 public class LocalInnerClass {
     public void test1() {
         // 编译报错
-//        static class Inner1 { }
+        // static class Inner1 { }
         // 编译报错
-//        private class Inner1 {}
+        // private class Inner1 {}
         // 编译报错
-//        protected class Inner1 {}
+        // protected class Inner1 {}
         // 编译报错
-//        public class Inner1 {}
+        // public class Inner1 {}
         // 正常编译
         class Inner1 {}
     }
 }
 ```
-
+需要注意的是，内部类仍然是一个独立的类，内部类会被编译成独立的 `.class` 文件，但是前面冠以外部类的类名和 `$` 符号。内部类不能用普通的方式访问，内部类是外部类的一个成员，因此内部类可以自由地访问外部类的成员变量，无论是否是 `private` 的。如果内部类声明成静态的，就不能随便的访问外部类的成员变量了，此时内部类只能访问外部类的静态成员变量和静态方法。
 
 ## 封装
 
@@ -307,7 +508,7 @@ S s = (s) (new Person());
 ```
 **多态的注意事项**  
 
-- 当使用多态调用方法时，会优先调用子类的方法，如果子类没有，则再调用父类的方法（如果有的话）
+- 当使用多态调用方法时，会优先调用子类的方法，如果子类没有，则再调用父类的方法（如果父类有的话）
 - 使用多态，不能调用子类中特有的方法
 - 多态性只适用于方法，不适用于属性
 - 有了多态，可以减少方法的重载
@@ -373,7 +574,7 @@ public abstract void print();
     ```
 
 :::tip 提示
-抽象类也可以被继承。抽象类不能被实例化（即 `new`）。
+抽象类也可以被继承。抽象类不能被实例化（即 `new`）。但是，抽象类中可以有构造方法，抽象类里面的构造方法是给其子类调用的。
 :::
 
 抽象类为什么不能被实例化？简单来讲，如果被实例化了，然后调用了它存在的抽象方法，就会报错，因为抽象方法没有方法体。  
@@ -386,7 +587,28 @@ public abstract void print();
 
 `abstract` 不能用来修饰属性、构造器等结构，不能用来修饰私有方法、静态方法、final 修饰的方法（类等）。  
 
-抽象类中可以有 `main` 方法。
+抽象类中可以有 `main` 方法，并且能够正常运行 `main` 方法，如下：
+```java
+public abstract class AbstractPerson {
+
+    abstract void say();
+
+    // main 方法（main 方法只能使用 public 修饰）
+    public static void main(String... args) {
+        System.out.println("1");
+    }
+    
+    // main 方法
+    public static void main(String[] args) {
+        System.out.println("1");
+    }
+    
+    // 只是一个普通的方法
+    public static void main() {
+        System.out.println("1");
+    }
+}
+```
 
 匿名抽象子类：
 ```java
@@ -406,21 +628,9 @@ abstract class Person {
     public abstract void print();
 }
 ```
-**抽象类中可以有 main 方法：**
-
-```java
-public abstract class AbstractTest {
-
-    static int a = 1;
-
-    public static void main(String[] args) {
-        System.out.println(AbstractTest.a);
-    }
-}
-```
 
 ## 接口  
-接口是 Java 中最顶层的，抽象类是中层，类是底层。使用 `interface` 来修饰，接口中的方法全部是 `public abstract` 类型（默认就是，写的时候可以不写）。接口也有多态。
+接口是 Java 中最顶层的，抽象类是中层，类是底层。使用 `interface` 来修饰接口，接口中的方法全部是 `public abstract` 类型（默认就是，写的时候可以不写）。接口也有多态。
 ```java
 public interface MyInterface {
 
@@ -518,7 +728,7 @@ interface T2 {
 interface T3 extends T1, T2 {
     Test1 test1 = new Test1("23");
 }
-class Test1 implements T3{
+class Test1 implements T3 {
     private String name;
 
     public String getName() {
@@ -728,9 +938,9 @@ public class Test1 {
         try {
             System.out.println("1");
             throw new RuntimeException("ex");
-        }catch(Exception e) {
+        } catch(Exception e) {
             
-        }finally {
+        } finally {
             System.out.println("2");
         }
     }
@@ -738,7 +948,7 @@ public class Test1 {
     public static void main(String[] args) {
         try {
             method1();
-        }catch(Exception e) {
+        } catch(Exception e) {
             System.out.println(e.getMessage());
         }
         // 输出的顺序为 1 2 ex。
@@ -752,3 +962,9 @@ public class Test1 {
 3. 实现类必须实现接口中的所有抽象方法，可以空实现
 4. 如果有继承又有实现接口，则必须先继承再实现
 5. Java 中是单继承多实现
+
+## main 方法
+
+:::tip 参考
+[为什么 Java 中的 main 方法必须是 public static void 的？](https://zhuanlan.zhihu.com/p/283389084)。
+:::
