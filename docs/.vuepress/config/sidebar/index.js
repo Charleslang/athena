@@ -74,6 +74,13 @@ export const sidebar = {
         '/backend/middleware/redis/config.html',
         '/backend/middleware/redis/datatype.html',
         '/backend/middleware/redis/java-clients.html',
+        {
+          text: '实战',
+          collapsible: true,
+          children: [
+            '/backend/middleware/redis/prod-sms-login.html',
+          ]
+        }
       ]
     }
   ],
