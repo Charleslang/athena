@@ -1,6 +1,8 @@
 # lambda
 
-Java8 中的新特性，先来感受一下什么是 lambda。现在，我们要启动一个线程：
+Java8 中的新特性，先来感受一下什么是 lambda。
+
+现在，我们要启动一个线程：
 
 - 原始方式
 
@@ -61,16 +63,16 @@ lambda 可以重写的方法中，该接口或抽象类需要标有一个 `@Func
 
 **函数式接口注意事项**
 
-- 在接口或抽象类中，如果没有 `@FunctionalInterface` 注解，但是有且仅有一个抽象方法，那么可以使用 lambda。  
+- 在接口或抽象类中，如果没有 `@FunctionalInterface` 注解，但是有且仅有一个抽象方法，那么也可以使用 lambda。  
 
 - 特殊情况，如果接口中有多个抽象方法，但是只有一个抽象方法是本接口新定义的，且其它抽象方法和 Object 中已有的抽象方法重复，那么该接口仍是函数式接口。
     
   ```java
   @FunctionalInterface
   public interface MyInterface {
-      public void myFun();//自己新加的
-      public String toString();//和Object中的重名
-      public boolean equals(Object obj);//和Object中的重名
+      public void myFun(); // 自己新加的
+      public String toString(); // 和 Object 中的重名
+      public boolean equals(Object obj); // 和 Object 中的重名
   } 
   ```
 
@@ -89,7 +91,7 @@ lambda 可以重写的方法中，该接口或抽象类需要标有一个 `@Func
   public static void testThree(){
           Predicate<Integer> p = num -> num < 10;
   //        Predicate<Integer> p = (num) -> {return num < 10;};
-          System.out.println(p.test(100));//return 100 < 10
+          System.out.println(p.test(100)); // return 100 < 10
       }
   ```
   ```java
@@ -162,7 +164,7 @@ lambda 可以重写的方法中，该接口或抽象类需要标有一个 `@Func
 
 - 示例二  
     
-  - 自定义接口 `MyInterfece.java`
+  - 自定义接口 `MyInterface.java`
   
   ```java
   @FunctionalInterface
@@ -182,13 +184,17 @@ lambda 可以重写的方法中，该接口或抽象类需要标有一个 `@Func
       System.out.println(mi.add(1,2));
       
       // 其实以上的方法相当于
-      MyInterface mi = new MyInterfaceImpl();
-      // 同时 MyInterfaceImpl 中实现了 add 方法。
+      MyInterface mi = new MyInterface() {
+        @Override
+        public int add(int x, int y) {
+            return x + y;
+        }
+      };
   }
   ```
 
 :::tip 提示
-不知道你是否也发现了，它有点 Javascript 中的函数的影子。
+不知道你是否也发现了，它有点 JavaScript 中的函数的影子。
 :::
 
 ### 形式二
@@ -222,16 +228,16 @@ lambda 可以重写的方法中，该接口或抽象类需要标有一个 `@Func
 - 方法引用可以看做是 Lambda 表达式深层次的表达。换句话说，方法引用就是 Lambda 表达式，也就是函数式接口的一个实例，通过方法的名字来指向一个方法，可以认为是 Lambda 表达式的一个语法糖。  
 
 :::tip 要求
-实现接口的抽象方法的参数列表和返回值类型，必须与方法引用的方法的参数列表和返回值类型保持一致! 
+实现接口的抽象方法的参数列表和返回值类型必须与方法引用的方法的参数列表和返回值类型保持一致! 
 :::
 
-格式：使用操作符“::”将类(或对象)与方法名分隔开来。  
+格式：使用操作符 `::` 将类(或对象)与方法名分隔开来。  
 
-如下三种主要使用情况: 
+以下是三种主要使用情况: 
 
-- 对象 :: 非静态方法名  
-- 类 :: 静态方法名  
-- 类 :: 非静态方法名  
+- 对象 `::` 非静态方法名  
+- 类 `::` 静态方法名  
+- 类 `::` 非静态方法名  
 
   这种方式较为特殊，可以不用完全满足上面的要求
 
@@ -314,7 +320,7 @@ public static void test7() {
 ```
 
 :::tip 说明
-在方法引用中的 类::非静态方法 中，实际上是将第一个参数作为方法的调用者（请记住）。
+在方法引用中的 `类::非静态方法` 中，实际上是将第一个参数作为方法的调用者（请记住）。
 :::
 
 **引用构造器**
@@ -522,4 +528,38 @@ public static void test2() {
 }
 ```
 # Optional 类
-Optional 可以看成一个容器，这个容器用来存放数据（任意类型、null 等），可以避免空指针异常。
+
+Optional 是一个容器对象，可以包含也可以不包含 null 值。Optional 在 Java 8 中引入，目的是解决 NullPointerException 的问题。本质上，Optional 是一个包装器类，其中包含对其他对象的引用。在这种情况下，对象只是指向内存位置的指针，并且也可以指向任何内容。从其它角度看，Optional 提供一种类型级解决方案来表示可选值而不是空引用。
+
+在 Java 8 之前，程序员将返回 `null` 而不是 Optional。这种方式没有明确的方法来表示 `null` 可能是一个特殊值。相比之下，在API 中返回 `Optional` 是明确的声明，表示其中可能没有值。如果我们要确保不会出现空指针异常，则需要对每个引用进行显式的空检查，如下所示。
+
+```java
+private void getIsoCode( User user){
+    if (user != null) {
+        Address address = user.getAddress();
+        if (address != null) {
+            Country country = address.getCountry();
+            if (country != null) {
+                String isocode = country.getIsocode();
+                if (isocode != null) {
+                    isocode = isocode.toUpperCase();
+                }
+            }
+        }
+    }
+}
+```
+
+Optional 提供一些方法供我们使用：
+
+1. `Optional.of(T)`
+
+    该方式的入参不能为 `null`，否则会有 NPE，在确定入参不为空时使用该方式。
+
+2. `Optional.ofNullable(T)`
+
+    该方式的入参可以为 `null`，当入参不确定为非 `null` 时使用。
+
+3. `Optional.empty()`
+
+    这种方式是返回一个空 Optional，等效 `Optional.ofNullable(null)`。

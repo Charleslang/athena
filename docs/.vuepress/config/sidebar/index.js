@@ -46,6 +46,7 @@ export const sidebar = {
         '/backend/java/base/lambda.html',
         '/backend/java/base/class-load.html',
         '/backend/java/base/regex.html',
+        '/backend/java/base/charset.html',
       ]
     }
   ],

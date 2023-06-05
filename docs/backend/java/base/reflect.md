@@ -51,9 +51,9 @@
 
 
   // 获取类的属性字段
-  Field id = clazz.getDeclaredField("address");
+  Field address = clazz.getDeclaredField("address");
   // 给字段赋值 (person.setAddress("成都"))
-  id.set(person, "成都");
+  address.set(person, "成都");
 
   // 获取类中的方法
   Method show = clazz.getDeclaredMethod("show");
@@ -97,7 +97,7 @@
 
 类的加载过程（面试题）：
 
-把我们写好的 java 文件，通过 javac 命令编译成字节码，也就是我们常说的 .class 文件。而我们所说的类加载过程即是指 JVM 虚拟机把 .class 文件中类信息加载进内存（当执行 java.exe 时会执行步骤），并进行解析生成对应的 class 对象的过程。加载到内存中类就称为运行时类，这个类就作为 `java.lang.Class` 的一个实例。`java.lang.Class` 的一个实例就对应一个运行时类。加载大内存中的运行时类会缓存一段时间，在此时间内，通过反射获取到的该运行时类都是同一个对象。
+把我们写好的 java 文件，通过 javac 命令编译成字节码，也就是我们常说的 .class 文件。而我们所说的类加载过程即是指 JVM 虚拟机把 .class 文件中类信息加载进内存（当执行 java.exe 时会执行步骤），并进行解析生成对应的 class 对象的过程。加载到内存中的类就称为运行时类，这个类就作为 `java.lang.Class` 的一个实例。`java.lang.Class` 的一个实例就对应一个运行时类。加载到内存中的运行时类会缓存一段时间，在此时间内，通过反射获取到的该运行时类都是同一个对象。
 
 **获取 Class 实例的方式**
 
@@ -120,7 +120,7 @@
 
   调用 Class 类的 `forName(全类名)`。
   ```java
-  Class<?> aClass = Class.forName("reflect1.entity.Person");
+  Class<?> clazz = Class.forName("reflect1.entity.Person");
   ```
 
 - 方式四  
@@ -128,7 +128,7 @@
   使用 ClassLoader。
   ```java
   ClassLoader classLoader = Test1.class.getClassLoader();
-  Class<?> aClass1 = classLoader.loadClass("reflect1.entity.Person");
+  Class<?> clazz = classLoader.loadClass("reflect1.entity.Person");
   ```
 
   ```java
@@ -210,100 +210,214 @@ for (Method method : declaredMethods) {
 }
 ```
 
-## 动态代理
-先来看一下静态代理：
+## 静态代理
 ```java
-interface A {
-    void doSome();
-}
-// 代理类
-class ProxyA implements A {
-
-    private A a;
-
-    public ProxyA(A a) {
-        this.a = a;
-    }
-
-    @Override
-    public void doSome() {
-        System.out.println("做一些前置工作");
-        a.doSome();
-        System.out.println("做一些后续工作");
-    }
+interface IUserDAO {
+    void save();
 }
 
 // 被代理类
-class B implements A {
+class UserDAO implements IUserDAO {
 
     @Override
-    public void doSome() {
-        System.out.println("B dosomething");
+    public void save() {
+        System.out.println("保存用户");
     }
 }
-public class Test1 {
+
+// 代理类
+class UserDAOProxy implements IUserDAO {
+
+    private IUserDAO target;
+
+    public UserDAOProxy(IUserDAO target) {
+        this.target = target;
+    }
+
+    @Override
+    public void save() {
+        System.out.println("开启事务");
+        target.save();
+        System.out.println("关闭事务");
+    }
+}
+
+public class Test {
     public static void main(String[] args) {
-        B b = new B();
-        ProxyA proxyA = new ProxyA(b);
-        proxyA.doSome();
+        UserDAO target = new UserDAO();
+        UserDAOProxy userDAOProxy = new UserDAOProxy(target);
+        userDAOProxy.save();
     }
 }
 ```
-静态代理的缺点就是，代理类和被代理类在编译期间就确定了。
+这种代理方式需要代理对象和目标对象实现一样的接口。优点是可以在不修改目标对象的前提下扩展目标对象的功能，但是缺点也很明显，如下：
 
----
+- 冗余。由于代理对象要实现与目标对象一致的接口，会产生过多的代理类。
+- 不易维护。一旦接口增加方法，目标对象与代理对象都要进行修改。
 
-实现动态代理要先解决的问题：  
+## JDK 动态代理
 
-1. 如何根据被代理类来动态创建一个代理类的对象
-2. 调用代理类的方法时，如何调用被代理类的同名方法
+动态代理利用了 JDK 提供的 API，动态地在内存中构建代理对象，从而实现对目标对象的代理功能。动态代理又被称为 JDK 代理或接口代理。
+
+静态代理与动态代理的主要区别：
+
+- 静态代理在编译时就已经实现，编译完成后的代理类是一个 .class 文件
+- 动态代理是在运行时动态生成的，即编译完成后的代理类没有 .class 文件，而是在运行时动态生成类字节码，并加载到 JVM 中
+- 由于 JDK 的动态代理是基于接口的，所以要求目标对象必须实现接口，否则不能使用动态代理
 
 ```java
-interface Factory {
-    String say();
+interface IUserDAO {
+    void save();
 }
+
 // 被代理类
-class Person implements Factory {
+class UserDAO implements IUserDAO {
 
     @Override
-    public String say() {
-        return "say hello";
+    public void save() {
+        System.out.println("保存用户");
     }
 }
 
-class ProxyFactory {
-    // 动态创建代理类对象
-    public static Object getInstance(Object obj) {
-        MyInvocationHandler myInvocationHandler = new MyInvocationHandler();
-        myInvocationHandler.bind(obj);
-        return Proxy.newProxyInstance(obj.getClass().getClassLoader(),
-                obj.getClass().getInterfaces(), myInvocationHandler);
-    }
-}
-class MyInvocationHandler implements InvocationHandler {
+class UserInvocationHandler implements InvocationHandler {
 
     // 需要使用被代理类的对象进行赋值
-    private Object obj;
+    private Object target;
 
-    public void bind(Object obj) {
-        this.obj = obj;
+    public UserInvocationHandler(Object target) {
+        this.target = target;
     }
 
     // 当通过代理类的对象调用方法时，会自动调用下列方法
-    // 因此，将被代理类要执行的方法方在下面的方法中
+    // 因此，需要将被代理类要执行的方法放在下面的方法中进行调用
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+        System.out.println("开启事务");
+        
         // method 即为代理类对象的方法，也是被代理类要执行的方法
-        Object returnValue = method.invoke(obj, args);
+        Object returnValue = method.invoke(target, args);
+        
+        System.out.println("关闭事务");
+        
         return returnValue;
     }
 }
-public class Test2 {
+
+class UserDAOProxyFactory {
+    // 动态创建代理类对象
+    public static Object getProxyInstance(Object target) {
+        // 第一个参数: 目标对象的类加载器
+        // 第二个参数: 目标对象实现的接口
+        // 第三个参数: 代理类的处理器
+        return Proxy.newProxyInstance(target.getClass().getClassLoader(),
+                target.getClass().getInterfaces(), new UserInvocationHandler(target));
+    }
+}
+
+public class Test {
     public static void main(String[] args) {
-        Person person = new Person();
-        Factory instance = (Factory)ProxyFactory.getInstance(person);
-        String say = instance.say();
-        System.out.println(say);
+        UserDAO target = new UserDAO();
+        System.out.println(target); // 目标对象
+        IUserDAO proxy = (IUserDAO)UserDAOProxyFactory.getProxyInstance();
+        System.out.println(proxy); // 代理对象
+        proxy.save();
     }
 }
 ```
+:::tip 参考
+[Java三种代理模式：静态代理、动态代理和cglib代理](https://segmentfault.com/a/1190000011291179)
+:::
+
+## CGLib 动态代理
+
+:::tip 参考
+[cglib](https://github.com/cglib/cglib)
+:::
+
+cglib（Code Generation Library）是一个第三方代码生成类库，运行时在内存中动态生成一个子类对象从而实现对目标对象功能的扩展。它是用于生成和转换 Java 字节码的高级 API。AOP、测试、数据访问框架使用它来生成动态代理对象和拦截字段访问。
+
+**cglib 特点:**
+
+- JDK 的动态代理有一个限制，就是使用动态代理的对象必须实现一个或多个接口。如果想代理没有实现接口的类，就可以使用 cglib。
+- cglib 是一个强大的高性能的代码生成包，它可以在运行期扩展 Java 类与实现 Java 接口。它广泛的被许多 AOP 的框架使用，例如Spring AOP 和 dynaop，为他们提供方法的 interception（拦截）。
+- cglib 包的底层是通过使用一个小而快的字节码处理框架 ASM，来转换字节码并生成新的类。不鼓励直接使用 ASM，因为它需要你对 JVM内部结构包括 class 文件的格式和指令集都很熟悉。
+- cglib 与 JDK 动态代理最大的区别就是，JDK 动态代理的对象必须实现一个或多个接口；cglib 代理的对象则无需实现接口，能达到代理类无侵入。
+
+使用 cglib 需要引入 cglib 的 jar 包，如果你已经有 spring-core 的 jar 包，则无需额外引入 cglib，因为 spring 中包含了 cglib。
+
+- 引入依赖
+
+```xml
+<dependency>
+    <groupId>cglib</groupId>
+    <artifactId>cglib</artifactId>
+    <version>3.3.0</version>
+</dependency>
+```
+
+- 代码测试
+
+```java
+// 被代理类
+class UserDAO {
+    public void save() {
+        System.out.println("保存用户");
+    }
+}
+
+class ProxyFactory implements MethodInterceptor {
+
+    // 维护一个目标对象
+    private Object target;
+    
+    public ProxyFactory(Object target) {
+        this.target = target;
+    }
+    
+    // 为目标对象生成代理对象
+    public Object getProxyInstance() {
+        // 增强类
+        Enhancer en = new Enhancer();
+        // 设置父类
+        en.setSuperclass(target.getClass());
+        // 设置回调函数
+        en.setCallback(this);
+        // 创建子类对象代理
+        return en.create();
+    }
+
+    @Override
+    public Object intercept(Object obj, Method method, Object[] args, MethodProxy proxy) throws Throwable {
+        System.out.println("开启事务");
+        
+        // 执行目标对象的方法
+        Object returnValue = method.invoke(target, args);
+        
+        System.out.println("关闭事务");
+        
+        return returnValue;
+    }
+}
+
+public class TestProxy {
+
+    public static void main(String[] args) {
+        // 目标对象
+        UserDAO target = new UserDAO();
+        System.out.println(target.getClass());
+        // 代理对象
+        UserDAO proxy = (UserDAO) new ProxyFactory(target).getProxyInstance();
+        System.out.println(proxy.getClass());
+        // 执行代理对象方法
+        proxy.save();
+    }
+}
+```
+
+**小结：**
+
+- 静态代理实现较简单，只要代理对象对目标对象进行包装，即可实现增强功能。但静态代理只能为一个目标对象服务，如果目标对象过多，则需要创建很多代理类。
+- JDK 动态代理需要目标对象实现业务接口，代理类需实现 `InvocationHandler` 接口。
+- 静态代理在编译时产生 class 字节码文件，可以直接使用，效率高。
+- JDK 动态代理必须实现 `InvocationHandler` 接口，通过反射代理方法，比较消耗系统性能，但可以减少代理类的数量，使用更灵活。
+- cglib 代理无需实现接口，通过生成类字节码实现代理，比反射稍快，不存在性能问题，但 cglib 会继承目标对象，需要重写方法，所以目标对象不能被 `final` 类，且目标方法需要符合重写的原则。
