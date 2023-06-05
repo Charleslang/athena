@@ -80,6 +80,7 @@ export const sidebar = {
           collapsible: true,
           children: [
             '/backend/middleware/redis/prod-sms-login.html',
+            '/backend/middleware/redis/prod-query-cache.html',
           ]
         }
       ]
