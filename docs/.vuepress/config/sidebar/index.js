@@ -154,6 +154,7 @@ export const sidebar = {
       text: 'Maven',
       children: [
         '/archive/maven/index.html',
+        '/archive/maven/package-config.html',
       ]
     }
   ],
