@@ -81,6 +81,9 @@ export const sidebar = {
           children: [
             '/backend/middleware/redis/prod-sms-login.html',
             '/backend/middleware/redis/prod-query-cache.html',
+            '/backend/middleware/redis/prod-cache-penetration.html',
+            '/backend/middleware/redis/prod-cache-breakdown.html',
+            '/backend/middleware/redis/prod-cache-avalanche.html',
           ]
         }
       ]
