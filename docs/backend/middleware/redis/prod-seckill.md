@@ -174,7 +174,7 @@ public long addCouponOrder(long couponId) throws Exception {
 </update>
 ```
 
-再次使用 JMter 进行压测，如下：
+再次使用 JMeter 进行压测，如下：
 
 ![20230624001313](https://djfmdresources.oss-cn-hangzhou.aliyuncs.com/athena/2023-06-24/20230624001313.png)
 
