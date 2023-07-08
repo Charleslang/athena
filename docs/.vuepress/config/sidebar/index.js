@@ -85,7 +85,9 @@ export const sidebar = {
             '/backend/middleware/redis/prod-cache-breakdown.html',
             '/backend/middleware/redis/prod-cache-avalanche.html',
             '/backend/middleware/redis/prod-global-unique-id.html',
-            '/backend/middleware/redis/prod-seckill.html',
+            '/backend/middleware/redis/prod-oversold.html',
+            '/backend/middleware/redis/prod-purchase-limit.html',
+            '/backend/middleware/redis/prod-distributed-lock.html',
           ]
         }
       ]
