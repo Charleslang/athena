@@ -67,7 +67,7 @@ ES 7 中，每个索引下都有一个默认的 type，名叫 `_doc`。
 
 ## 新增字段映射
 
-您可以使用 []`update mapping`](https://www.elastic.co/guide/en/elasticsearch/reference/7.17/indices-put-mapping.html) API向现有索引添加一个或多个新字段。
+您可以使用 [`update mapping`](https://www.elastic.co/guide/en/elasticsearch/reference/7.17/indices-put-mapping.html) API向现有索引添加一个或多个新字段。
 
 ```json
 // PUT /my-index-000001/_mapping

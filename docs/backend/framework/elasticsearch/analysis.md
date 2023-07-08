@@ -37,9 +37,9 @@ Tokenization 允许在单个词语（token）上进行匹配，但每个 token �
 
 Text analysis 由 [analyzer](https://www.elastic.co/guide/en/elasticsearch/reference/7.17/analyzer-anatomy.html)（分词器）执行，分词器是一组管理整个过程的规则。
 
-Elasticsearch 包含一个默认分词器，称为[standard analyzer](https://www.elastic.co/guide/en/elasticsearch/reference/7.17/analysis-standard-analyzer.html)（标准分词器），它开箱即用，适用于大多数用例。
+Elasticsearch 包含一个默认分词器，称为 [standard analyzer](https://www.elastic.co/guide/en/elasticsearch/reference/7.17/analysis-standard-analyzer.html)（标准分词器），它开箱即用，适用于大多数用例。
 
-但是，如果默认分析器不适合您的用例，你可以选择一个不同的[built-in analyzer](https://www.elastic.co/guide/en/elasticsearch/reference/7.17/analysis-analyzers.html)（内置分词器），甚至配置一个[自定义分词器](https://www.elastic.co/guide/en/elasticsearch/reference/7.17/analysis-custom-analyzer.html)。自定义分析器让您控制分析过程的每一步，包括：
+但是，如果默认分析器不适合您的用例，你可以选择一个不同的 [built-in analyzer](https://www.elastic.co/guide/en/elasticsearch/reference/7.17/analysis-analyzers.html)（内置分词器），甚至配置一个 [自定义分词器](https://www.elastic.co/guide/en/elasticsearch/reference/7.17/analysis-custom-analyzer.html)。自定义分析器让您控制分析过程的每一步，包括：
 
 - 在 tokenization 之前对文本进行更改
 - 如何将文本转换为 tokens
