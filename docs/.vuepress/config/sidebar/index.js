@@ -89,6 +89,8 @@ export const sidebar = {
             '/backend/middleware/redis/prod-oversold.html',
             '/backend/middleware/redis/prod-purchase-limit.html',
             '/backend/middleware/redis/prod-distributed-lock.html',
+            '/backend/middleware/redis/prod-redisson.html',
+            '/backend/middleware/redis/prod-async-kill.html',
           ]
         }
       ]
