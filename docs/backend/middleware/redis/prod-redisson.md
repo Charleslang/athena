@@ -193,8 +193,6 @@ else -- 如果该 key 的值小于等于 0，则删除该 key，返回 1
   redis.call(ARGV[4], KEYS[2], ARGV[1]);
   return 1;
 return nil;
-···
+```
 
 好了，上面就是 Redisson 如何实现可重入锁的原理了以及相关核心代码。不知道你还有没有一个问题，那就是，HASH 的 field 字段是什么？其实就是 `UUID:线程ID`。
-
-
