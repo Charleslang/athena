@@ -63,6 +63,17 @@ export const sidebar = {
         '/backend/framework/elasticsearch/mapping.html',
         '/backend/framework/elasticsearch/analysis.html',
         '/backend/framework/elasticsearch/config.html',
+        {
+          text: 'Query DSL',
+          collapsible: true,
+          children: [
+            '/backend/framework/elasticsearch/query-dsl-query-filter-context.html',
+            '/backend/framework/elasticsearch/query-dsl-compound-queries.html',
+            '/backend/framework/elasticsearch/query-dsl-full-text-queries.html',
+            '/backend/framework/elasticsearch/query-dsl-match-all-query.html',
+          ]
+        },
+        '/backend/framework/elasticsearch/java-rest-high-rest-client.html'
       ]
     }
   ],
