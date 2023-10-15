@@ -96,6 +96,15 @@ export const sidebar = {
       ]
     }
   ],
+  '/backend/middleware/rabbitmq': [
+    {
+      text: 'RabbitMQ',
+      children: [
+        '/backend/middleware/rabbitmq/index.html',
+        '/backend/middleware/rabbitmq/installing.html'
+      ]
+    }
+  ],
   '/portal/vue/vue2': [
     {
       text: 'Vue2',

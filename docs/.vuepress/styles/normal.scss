@@ -19,7 +19,7 @@ html.dark .sidebar {
 }
 
 // 搜索框样式
-#docsearch-container {
+// #docsearch-container {
   button.DocSearch.DocSearch-Button {
     border-radius: 5px;
     .DocSearch-Search-Icon {
@@ -31,7 +31,7 @@ html.dark .sidebar {
       height: var(--docsearch-icon-size);
     }
   }
-}
+// }
 
 // container 样式
 .custom-container.tip, 

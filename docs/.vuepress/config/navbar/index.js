@@ -26,6 +26,10 @@ export const navbar = [
           {
             text: 'Redis',
             link: '/backend/middleware/redis/index.html'
+          },
+          {
+            text: 'RabbitMQ',
+            link: '/backend/middleware/rabbitmq/index.html'
           }
         ]
       }
