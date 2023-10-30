@@ -112,7 +112,9 @@ export const sidebar = {
       text: 'RabbitMQ',
       children: [
         '/backend/middleware/rabbitmq/index.html',
-        '/backend/middleware/rabbitmq/installing.html'
+        '/backend/middleware/rabbitmq/installing.html',
+        '/backend/middleware/rabbitmq/get-started.html',
+        '/backend/middleware/rabbitmq/work-pattern.html',
       ]
     }
   ],
