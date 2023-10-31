@@ -115,6 +115,7 @@ export const sidebar = {
         '/backend/middleware/rabbitmq/installing.html',
         '/backend/middleware/rabbitmq/get-started.html',
         '/backend/middleware/rabbitmq/work-pattern.html',
+        '/backend/middleware/rabbitmq/message-ack.html',
       ]
     }
   ],
