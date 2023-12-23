@@ -138,10 +138,12 @@ public class WorkQueuesConsumer {
 | message10 |  | :white_check_mark: |
 | message11 | :white_check_mark: |  |
 
-上面这张表格非常直观地说明了这个问题。 worker1 总共获得 6 条消息，worker2 总共获得 5 条消息。由于 RabbitMQ 默认采用轮询的方式分发消息，所以我们可以看到，worker1 一直在忙，而 worker2 则比较空闲状态。从上面，我们还可以知道，即使 worker1 非常忙，但它也不会拒绝接收消息，并且 RabbitMQ 也不会考虑 worker1 是否忙，而是会一直将消息轮询分发给 worker1、worker2。
+上面这张表格非常直观地说明了这个问题。 worker1 总共获得 6 条消息，worker2 总共获得 5 条消息。由于 RabbitMQ 默认采用轮询的方式分发消息，所以我们可以看到，worker1 一直在忙，而 worker2 则比较空闲状态。从上面，我们还可以知道，即使 worker1 非常忙，但它也不会拒绝接收消息，并且 RabbitMQ 也不会考虑 worker1 是否忙，而是会一直将消息轮询分发给 worker1、worker2。更多请见 [Fair dispatch](./messages.html#公平分发)。
 
 :::tip 提示
 默认情况下，哪个 worker 先启动，谁就会先获得消息。
+
+在上面，我们提到了 RabbitMQ 会将每条消息**按顺序**发送给下一个消费者。如何理解这里的 "按顺序"？例如，worker1 每次处理消息的耗时都是 10 秒，而 worker2 只需要 1 秒，如果此时消息的到达顺序是 m1、m2、m3、m4，那么在 worker1 处理 m1 时，worker2 显然已经把 m2、m4 处理完了，而 m4 处理完成后的第 8 秒，worker1 才开始处理 m3。
 :::
 
 ## Publish/Subscribe
@@ -154,7 +156,7 @@ public class WorkQueuesConsumer {
 
 本质上，发布的日志消息将广播给所有接收者。
 
-请先看 [Exchanges](./exchanges.html) 、[Temporary queues](./temporary-queues.html)、[Bindings](./bindings.html) 了解一些前置概念。详细信息请见 [Putting it all together](https://www.rabbitmq.com/tutorials/tutorial-three-java.html)。
+请先看 [Exchanges](./exchanges.html) 、[Temporary queues](./queues.html#临时队列)、[Bindings](./bindings.html) 了解一些前置概念。详细信息请见 [Putting it all together](https://www.rabbitmq.com/tutorials/tutorial-three-java.html)。
 
 ![python-three-overall](https://djfmdresources.oss-cn-hangzhou.aliyuncs.com/athena/2023-12-11/python-three-overall.png)
 

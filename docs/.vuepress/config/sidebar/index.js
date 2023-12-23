@@ -115,10 +115,10 @@ export const sidebar = {
         '/backend/middleware/rabbitmq/installing.html',
         '/backend/middleware/rabbitmq/get-started.html',
         '/backend/middleware/rabbitmq/work-pattern.html',
-        '/backend/middleware/rabbitmq/message-ack.html',
-        '/backend/middleware/rabbitmq/temporary-queues.html',
         '/backend/middleware/rabbitmq/exchanges.html',
+        '/backend/middleware/rabbitmq/queues.html',
         '/backend/middleware/rabbitmq/bindings.html',
+        '/backend/middleware/rabbitmq/messages.html',
         '/backend/middleware/rabbitmq/prod.html',
       ]
     }

@@ -18,7 +18,7 @@ RabbitMQ 消息传递模型的核心思想是生产者从不直接向队列发�
 
 ![exchanges](https://djfmdresources.oss-cn-hangzhou.aliyuncs.com/athena/2023-12-11/exchanges.png)
 
-有几种可用的交换类型：`direct`、`topic`、`headers`、`fanout`。
+可用的交换机类型有：`direct`、`topic`、`headers`、`fanout`。
 
 ## fanout
 
@@ -124,3 +124,62 @@ topic 交换机功能强大，可以实现其它交换机相同的功能。
 
 当 binding 中未使用特殊字符 `*` 和 `#`时，topic 交换机的行为就像 `direct` 交换机一样。
 :::
+
+## 创建交换机
+
+接下来，我们使用 Java API 来创建交换机。其实，RabbitMQ 提供了很多创建交换机的方法，这里我们只介绍其中的一种，也是参数最全的一种。
+
+```java
+/**
+ * Declare an exchange, via an interface that allows the complete set of
+ * arguments.
+ * @see com.rabbitmq.client.AMQP.Exchange.Declare
+ * @see com.rabbitmq.client.AMQP.Exchange.DeclareOk
+ * @param exchange 交换机名称
+ * @param type 交换机类型
+ * @param durable 交换机是否持久化，true-持久化，false-不持久化（默认）。持久化后，重启 RabbitMQ 服务，交换机仍然存在
+ * @param autoDelete 交换机是否自动删除，true-自动删除，false-不自动删除（默认）。设置为 true 后，当最后一个绑定到交换机上的队列删除（或者 unbind）后，交换机将自动删除
+ * @param internal true if the exchange is internal, i.e. can't be directly
+ * published to by a client.
+ * @param arguments other properties (construction arguments) for the exchange
+ * @return a declaration-confirm method to indicate the exchange was successfully declared
+ * @throws java.io.IOException if an error is encountered
+ */
+Exchange.DeclareOk exchangeDeclare(String exchange,
+                                   String type,
+                                   boolean durable,
+                                   boolean autoDelete,
+                                   boolean internal,
+                                   Map<String, Object> arguments) throws IOException;
+```
+
+:::details 提示
+其中，`type` 参数可以使用 `BuiltinExchangeType` 枚举类，它包含了 RabbitMQ 内置的交换机类型。RabbitMQ 内置的交换机类型有 `direct`、`fanout`、`topic`、`headers`。因此，上面这个方法有一个重载的方法，它的 `type` 参数可以使用 `BuiltinExchangeType` 枚举类。如下：
+
+```java
+Exchange.DeclareOk exchangeDeclare(String exchange,
+                                   BuiltinExchangeType type,
+                                   boolean durable,
+                                   boolean autoDelete,
+                                   boolean internal,
+                                   Map<String, Object> arguments) throws IOException;
+```
+:::
+
+下面是一个创建 `topic` 交换机的示例：
+
+```java
+// 不持久化、不自动删除、不是内部交换机
+channel.exchangeDeclare("my.exchange.topic", BuiltinExchangeType.TOPIC);
+// 持久化、不自动删除、不是内部交换机
+channel.exchangeDeclare("my.exchange.topic.durable", BuiltinExchangeType.TOPIC, true);
+// 持久化、自动删除、不是内部交换机
+channel.exchangeDeclare("my.exchange.topic.auto.delete", BuiltinExchangeType.TOPIC, true, true, false, null);
+```
+运行上面的代码后，我们可以在 RabbitMQ 管理界面看到如下交换机：
+
+![20231223141148](https://djfmdresources.oss-cn-hangzhou.aliyuncs.com/athena/2023-12-23/20231223141148.png)
+
+可以发现，结果是符合预期的。在后台管理界面中，我们看到，如果交换机被持久化了，那么它会有一个 `D` 的标识；如果交换机设置了 `autoDelete` 为 `true`，那么它会有一个 `AD` 的标识。
+
+如何理解 `autoDelete` 这个参数呢？如果交换机设置了 `autoDelete` 为 `true`，那么当最后一个绑定到交换机上的队列删除（或者 unbind）后，则该交换机将被自动删除（会忽略 `durable` 属性）。那么你可能会想到，交换机在最开始创建的时候，不就是没有任何队列与它绑定吗？那么，交换机是不是创建后就被自动删除了，相当于没创建？其实不是这样的，因为交换机创建后，它会一直存在，直到有队列与它绑定过，并且与之绑定的所有队列都被删除或者都被 unbind 了，那么该交换机才会被自动删除。
