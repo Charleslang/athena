@@ -94,3 +94,8 @@ html.dark .sidebar {
 .custom-container.danger > .custom-container-title {
   color: var(--custom-block-danger-text);
 }
+
+// 正文字体
+main.page {
+  font-size: 0.9rem;
+}
