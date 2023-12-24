@@ -216,7 +216,7 @@ channel.basicPublish("", "task_queue", MessageProperties.PERSISTENT_TEXT_PLAIN, 
 
 ![prefetch-count](https://djfmdresources.oss-cn-hangzhou.aliyuncs.com/athena/2023-12-23/prefetch-count.png)
 
-为了解决这个问题，我们可以使用 `basicQos` 方法并设置 `prefetchCount = 1`。这告诉 RabbitMQ 不要一次给一个消费者多于一条消息。换句话说，在消费者处理并确认前一条消息之前，不要向该消费者发送新消息。相反，RabbitMQ 会将新消息分派给下一个不忙的消费者。
+为了解决这个问题，我们可以使用 `basicQos` 方法并设置 `prefetchCount = 1`（`prefetchCount` 默认为 0）。这告诉 RabbitMQ 不要一次给一个消费者多于一条消息。换句话说，在消费者处理并确认前一条消息之前，不要向该消费者发送新消息。相反，RabbitMQ 会将新消息分派给下一个不忙的消费者。
 
 ```java
 int prefetchCount = 1;
@@ -230,8 +230,18 @@ channel.basicConsume("quque.hello", true, (consumerTag, delivery) -> {
 });
 ```
 
+:::tip 提示
+简单来讲，`prefetchCount` 的作用就是告诉 RabbitMQ 一次给多少条消息给消费者，如果消费者没有 ack，那么 RabbitMQ 就不会再给该消费者发送新的消息，直到该消费者 ack 了之前的所有消息。
+
+如果队列中已经有积压的消息，那么在应用程序（消费者）启动后， RabbitMQ 会将队列中积压的消息按照消费者配置的 `prefetchCount` 将消息发送给消费者（如果第一个消费者的 `prefetchCount` 为 0，那么 RabbitMQ 会将积压的所有消息一次性全部发送给该队列的第一个消费者,如果此时，队列中有新的消息进入了，那么新进入队列的消息才会按照消费者配置的 `prefetchCount` 发送给消费者；如果第一个消费者的 `prefetchCount` 不为 0，但是该消费者使用了自动 ack，那么 RabbitMQ 也会将积压的所有消息一次性全部发送给该队列的第一个消费者）。
+:::
+
 :::warning 注意
-如果所有消费者都很忙，您的队列可能会被填满。您需要密切关注这一点，也许添加更多的消费者，或者制定其他策略。
+如果所有消费者都很忙，您的队列可能会被填满。您需要密切关注这一点，也许添加更多的消费者，或者制定其他策略。此外，ack 的方式也会影响到 `prefetchCount` 的作用，如果消费者使用了自动 ack，那么 `prefetchCount` 的意义就不大了。
 
 如果所有的消费者都很忙，那么消息仍然会在它们之间轮询。虽然这种分配方式不是很公平，但是它仍然有效。如果您希望严格按照每个消费者的能力分配，请参阅 [Consumer priorities](https://www.rabbitmq.com/consumer-priority.html)。
 :::
+
+给消费者设置 `prefetchCount` 之后，我们可以在 RabbitMQ 管理界面中看到 `Prefetch count` 字段的值：
+
+![20231224173511](https://djfmdresources.oss-cn-hangzhou.aliyuncs.com/athena/2023-12-24/20231224173511.png)
