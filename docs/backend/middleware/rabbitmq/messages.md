@@ -169,7 +169,7 @@ try {
 
 当 RabbitMQ 退出或崩溃时，它会忘记队列和消息，除非您告诉它不要这样做。要确保消息不丢失，需要做两件事：**将队列和消息标记为 `durable`**。
 
-首先，我们需要确保队列能够在 RabbitMQ 节点重新启动后继续存在。为此，我们需要将其声明为持 `durable`：
+首先，我们需要确保队列能够在 RabbitMQ 节点重新启动后继续存在。为此，我们需要将其声明为 `durable`：
 
 ```java
 boolean durable = true;
@@ -233,7 +233,7 @@ channel.basicConsume("quque.hello", true, (consumerTag, delivery) -> {
 :::tip 提示
 简单来讲，`prefetchCount` 的作用就是告诉 RabbitMQ 一次给多少条消息给消费者，如果消费者没有 ack，那么 RabbitMQ 就不会再给该消费者发送新的消息，直到该消费者 ack 了之前的所有消息。
 
-如果队列中已经有积压的消息，那么在应用程序（消费者）启动后， RabbitMQ 会将队列中积压的消息按照消费者配置的 `prefetchCount` 将消息发送给消费者（如果第一个消费者的 `prefetchCount` 为 0，那么 RabbitMQ 会将积压的所有消息一次性全部发送给该队列的第一个消费者,如果此时，队列中有新的消息进入了，那么新进入队列的消息才会按照消费者配置的 `prefetchCount` 发送给消费者；如果第一个消费者的 `prefetchCount` 不为 0，但是该消费者使用了自动 ack，那么 RabbitMQ 也会将积压的所有消息一次性全部发送给该队列的第一个消费者）。
+如果队列中已经有积压的消息，那么在应用程序（消费者）启动后， RabbitMQ 会将队列中积压的消息按照消费者配置的 `prefetchCount` 将消息发送给消费者（如果第一个消费者的 `prefetchCount` 为 0，那么 RabbitMQ 会将积压的所有消息一次性全部发送给该队列的第一个消费者，如果此时，队列中有新的消息进入了，那么新进入队列的消息才会按照消费者配置的 `prefetchCount` 发送给消费者；如果第一个消费者的 `prefetchCount` 不为 0，但是该消费者使用了自动 ack，那么 RabbitMQ 也会将积压的所有消息一次性全部发送给该队列的第一个消费者）。
 :::
 
 :::warning 注意
