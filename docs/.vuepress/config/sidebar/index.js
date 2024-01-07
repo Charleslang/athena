@@ -119,6 +119,16 @@ export const sidebar = {
         '/backend/middleware/rabbitmq/queues.html',
         '/backend/middleware/rabbitmq/bindings.html',
         '/backend/middleware/rabbitmq/messages.html',
+        '/backend/middleware/rabbitmq/confirms.html',
+        {
+          text: "拓展",
+          collapsible: true,
+          children: [
+            '/backend/middleware/rabbitmq/ext-dead-letter.html',
+            '/backend/middleware/rabbitmq/ext-ttl.html',
+            '/backend/middleware/rabbitmq/ext-maxlength.html',
+          ]
+        },
         '/backend/middleware/rabbitmq/prod.html',
       ]
     }
