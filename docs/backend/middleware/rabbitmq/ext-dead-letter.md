@@ -107,6 +107,10 @@ args.put("x-dead-letter-routing-key", "some-routing-key");
 
 请注意，该数组按最近在前排序，因此最新的死信记录在第一个 entry 中。
 
+将上面提到的一些概念结合起来，一条消息转为死信的过程如下图所示：
+
+![dead-queue](https://djfmdresources.oss-cn-hangzhou.aliyuncs.com/athena/2024-01-10/dead-queue.png)
+
 下面，通过代码来演示一下上面提到的三种死信情况。
 
 

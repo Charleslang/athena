@@ -129,6 +129,13 @@ export const sidebar = {
             '/backend/middleware/rabbitmq/ext-maxlength.html',
           ]
         },
+        {
+          text: "插件",
+          collapsible: true,
+          children: [
+            '/backend/middleware/rabbitmq/plugin-delay-message.html',
+          ]
+        },
         '/backend/middleware/rabbitmq/prod.html',
       ]
     }
