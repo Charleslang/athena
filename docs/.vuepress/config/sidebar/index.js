@@ -136,6 +136,7 @@ export const sidebar = {
             '/backend/middleware/rabbitmq/plugin-delay-message.html',
           ]
         },
+        '/backend/middleware/rabbitmq/spring-boot.html',
         '/backend/middleware/rabbitmq/prod.html',
       ]
     }
