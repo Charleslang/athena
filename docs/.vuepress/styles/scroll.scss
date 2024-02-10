@@ -1,18 +1,30 @@
-/* 滚动条样式 */
-/*定义滚动条高宽及背景高宽分别对应横竖滚动条的尺寸*/
+/**
+ * 滚动条样式 
+ */
+
+/**
+ * 定义滚动条高宽及背景高宽分别对应横竖滚动条的尺寸
+ */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
-  background-color: #F5F5F5;
+  background-color: transparent;
 }
 
-/*定义滚动条轨道内阴影+圆角*/
+/** 
+ * 定义滚动条轨道内阴影、圆角
+ */
 ::-webkit-scrollbar-track {
   width: 10px;
   background-color: #f9f9f9;
 }
+html.dark ::-webkit-scrollbar-track {
+  background-color: transparent;
+}
 
-/*定义滑块内阴影+圆角*/
+/**
+ * 定义滑块内阴影+圆角
+ */
 ::-webkit-scrollbar-thumb {
   background-color: #0003;
   background-clip: padding-box;
@@ -21,29 +33,53 @@
   transition: all .2s ease-in-out;
   cursor: pointer;
 }
-
-body,html {
-  // 火狐浏览器不兼容 ::-webkit-scrollbar, 需要通过下面的方式设置, 以下只对火狐生效, 其它浏览器均不支持
-  // 见 https://developer.mozilla.org/zh-CN/docs/Web/CSS/scrollbar-width#%E6%B5%8F%E8%A7%88%E5%99%A8%E5%85%BC%E5%AE%B9%E6%80%A7
-  scrollbar-width: thin;
-  scrollbar-color: rgba(144,147,153,.3) transparent;
+html.dark ::-webkit-scrollbar-thumb {
+  background-color: #303033;
 }
 
-html.dark {
-  // 暗黑模式下滚动条样式
-  scrollbar-color: #525255 transparent;
-}
-
-// 重置左侧 sidebar 滚动条样式
+/**
+ * 重置左侧 sidebar 滚动条样式
+ */
 .sidebar::-webkit-scrollbar-thumb {
   background-color: #0003;
 }
 
 /**
-  * 在 Chrome 121 之前, 可以通过 ::-webkit-scrollbar 来设置滚动条样式，但是 ::-webkit-scrollbar 在火狐浏览器中不生效
-  * 并且 webkit-scrollbar 不是 MDN 文档中的标准属性。见 https://developer.mozilla.org/en-US/docs/Web/CSS/::-webkit-scrollbar
-  * Chrome 121 开始支持 scrollbar-width、scrollbar-color 属性，webkit-scrollbar 不生效了。见 https://developer.chrome.com/docs/css-ui/scrollbar-styling?hl=zh-cn
-  */
+ * 如果支持 ::-webkit-scrollbar，则去掉 scrollbar-width 和 scrollbar-color 属性
+ */
 .sidebar {
-  scrollbar-width: none;
+  scrollbar-width: unset;
+  scrollbar-color: unset;
+}
+
+/**
+ * 如果不支持 ::-webkit-scrollbar，则使用 scrollbar-width 和 scrollbar-color 属性
+ * 从 Chrome 121 开始，scrollbar-width、scrollbar-color 优先级高于 ::-webkit-scrollbar
+ */
+@supports not selector(::-webkit-scrollbar) {
+
+  /**
+   * 火狐浏览器不兼容 ::-webkit-scrollbar, 需要通过下面的方式设置, 以下只对火狐生效, 其它浏览器均不支持
+   * 见 https://developer.mozilla.org/zh-CN/docs/Web/CSS/scrollbar-width#%E6%B5%8F%E8%A7%88%E5%99%A8%E5%85%BC%E5%AE%B9%E6%80%A7
+   */
+  body, html {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(144,147,153,.3) transparent;
+  }
+
+  /**
+   * 暗黑模式下滚动条样式
+   */
+  html.dark {
+    scrollbar-color: #525255 transparent;
+  }
+
+  /**
+   * 在 Chrome 121 之前, 可以通过 ::-webkit-scrollbar 来设置滚动条样式，但是 ::-webkit-scrollbar 在火狐浏览器中不生效
+   * 并且 ::-webkit-scrollbar 不是 MDN 文档中的标准属性。见 https://developer.mozilla.org/en-US/docs/Web/CSS/::-webkit-scrollbar
+   * Chrome 121 开始支持 scrollbar-width、scrollbar-color 属性，优先级高于 ::-webkit-scrollbar。见 https://developer.chrome.com/docs/css-ui/scrollbar-styling?hl=zh-cn
+   */
+  .sidebar {
+    scrollbar-width: none;
+  }
 }
