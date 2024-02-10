@@ -26,10 +26,24 @@ body,html {
   // 火狐浏览器不兼容 ::-webkit-scrollbar, 需要通过下面的方式设置, 以下只对火狐生效, 其它浏览器均不支持
   // 见 https://developer.mozilla.org/zh-CN/docs/Web/CSS/scrollbar-width#%E6%B5%8F%E8%A7%88%E5%99%A8%E5%85%BC%E5%AE%B9%E6%80%A7
   scrollbar-width: thin;
-  scrollbar-color: #0003 #f9f9f9;
+  scrollbar-color: rgba(144,147,153,.3) transparent;
+}
+
+html.dark {
+  // 暗黑模式下滚动条样式
+  scrollbar-color: #525255 transparent;
 }
 
 // 重置左侧 sidebar 滚动条样式
 .sidebar::-webkit-scrollbar-thumb {
   background-color: #0003;
+}
+
+/**
+  * 在 Chrome 121 之前, 可以通过 ::-webkit-scrollbar 来设置滚动条样式，但是 ::-webkit-scrollbar 在火狐浏览器中不生效
+  * 并且 webkit-scrollbar 不是 MDN 文档中的标准属性。见 https://developer.mozilla.org/en-US/docs/Web/CSS/::-webkit-scrollbar
+  * Chrome 121 开始支持 scrollbar-width、scrollbar-color 属性，webkit-scrollbar 不生效了。见 https://developer.chrome.com/docs/css-ui/scrollbar-styling?hl=zh-cn
+  */
+.sidebar {
+  scrollbar-width: none;
 }
