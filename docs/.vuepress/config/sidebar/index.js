@@ -120,6 +120,7 @@ export const sidebar = {
         '/backend/middleware/rabbitmq/bindings.html',
         '/backend/middleware/rabbitmq/messages.html',
         '/backend/middleware/rabbitmq/confirms.html',
+        '/backend/middleware/rabbitmq/cluster.html',
         {
           text: "拓展",
           collapsible: true,
@@ -210,7 +211,13 @@ export const sidebar = {
       text: 'Maven',
       children: [
         '/archive/maven/index.html',
+        '/archive/maven/overview.html',
+        '/archive/maven/maven-project.html',
+        '/archive/maven/lifecycle.html',
+        '/archive/maven/scope.html',
         '/archive/maven/package-config.html',
+        '/archive/maven/maven-tomcat-plugin.html',
+        '/archive/maven/faq.html',
       ]
     }
   ],
