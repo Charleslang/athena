@@ -42,7 +42,7 @@
 
 有时，您可能需要将某个项目编译为与当前使用的版本不同的版本。`javac` 可以使用 `-source` 和 `-target` 接受此类命令。Maven Compiler Plugin 还可以在编译期间提供这些配置选项。
 
-例如，如果您想使用 Java 8 语言功能 (`-source 1.8`)，并且还希望编译的类与 JVM 1.8 (`-target 1.8`) 兼容，您可以添加以下两个属性，它们是 Maven Compiler Plugin 中内置参数的默认属性名称：
+例如，如果您想使用 Java 8 语言功能（`-source 1.8`），并且还希望编译的类与 JVM 1.8（`-target 1.8`）兼容，您可以添加以下两个属性，它们是 Maven Compiler Plugin 中内置参数的默认属性名称：
 
 ```xml
 <project>
@@ -395,9 +395,6 @@ Maven Resources Plugin 在 3.2.0 版本之前，默认使用 `project.build.sour
   </build>
 </project>
 ```
-
-
-
 
 ## Binary filtering
 

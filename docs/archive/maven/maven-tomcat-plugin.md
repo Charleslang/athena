@@ -1,12 +1,12 @@
 # Tomcat 插件
 
 :::warning 注意
-该章节只是作为拓展知识，不是必须掌握的内容。而且改内容已经过时，不建议使用。
+该章节只是作为拓展知识，不是必须掌握的内容。而且该内容已经过时，不建议使用。
 :::
 
 :::tip 参考
 [Apache Tomcat Maven Plugin](https://tomcat.apache.org/maven-plugin.html)
-:::tip
+:::
 
 Apache Tomcat Maven Plugin 提供了在 Apache Tomcat®servlet 容器中操作 WAR 项目的目标。可以通过 Apache Maven 运行 War 包，而无需将 War 文件部署到 Apache Tomcat 实例（IDEA 中添加 Tomcat 其实不麻烦，Eclipse 其实也不是很麻烦）。
 
@@ -42,5 +42,5 @@ pom.xml 配置如下：
 ![20240210175241](https://djfmdresources.oss-cn-hangzhou.aliyuncs.com/athena/2024-02-10/20240210175241.png)
 
 :::warning 注意
-现在不推荐使用该插件了，该插件最后一次更新是在 2013 年，已经过时了。而且，现在的主流 IDE 都支持 Tomcat 服务器的配置，配置也很简单，所以不建议使用该插件。
+现在不推荐使用该插件了，该插件最后一次更新是在 2013 年，已经过时了。因为现代 IDE 都支持配置 Tomcat，配置方式也很简单。
 :::
