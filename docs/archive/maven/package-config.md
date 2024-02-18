@@ -109,6 +109,7 @@
         <include>**/*.xml</include>
         <!-- 打包任意目录下的 properties 文件 -->
         <include>**/*.properties</include>
+      </includes>
     </resource>
     <resource>
        <!-- 打包 ${basedir}/configs 下的所有文件 -->
