@@ -30,6 +30,10 @@ export const navbar = [
           {
             text: 'RabbitMQ',
             link: '/backend/middleware/rabbitmq/index.html'
+          },
+          {
+            text: 'Kafka',
+            link: '/backend/middleware/kafka/index.html'
           }
         ]
       }
@@ -134,6 +138,10 @@ export const navbar = [
           {
             text: '操作系统',
             link: '/os/'
+          },
+          {
+            text: '设计模式',
+            link: '/archive/design-patterns/index.html'
           }
         ]
       }

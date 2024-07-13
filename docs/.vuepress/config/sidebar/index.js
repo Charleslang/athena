@@ -142,6 +142,15 @@ export const sidebar = {
       ]
     }
   ],
+  '/backend/middleware/kafka': [
+    {
+      text: 'Kafka',
+      children: [
+        '/backend/middleware/kafka/index.html',
+        '/backend/middleware/kafka/introduce.html',
+      ]
+    }
+  ],
   '/portal/vue/vue2': [
     {
       text: 'Vue2',
@@ -234,5 +243,49 @@ export const sidebar = {
       ]
     }
   ],
+  '/archive/design-patterns':[
+    {
+      text: '设计模式',
+      children: [
+        '/archive/design-patterns/index.html',
+        '/archive/design-patterns/design-principle.html',
+        {
+          text: "创建型模式",
+          collapsible: true,
+          children: [
+            '/archive/design-patterns/creational-patterns/index.html',
+            '/archive/design-patterns/creational-patterns/singleton.html',
+            '/archive/design-patterns/creational-patterns/factory.html',
+            '/archive/design-patterns/creational-patterns/abstract-factory.html',
+            '/archive/design-patterns/creational-patterns/builder.html',
+            '/archive/design-patterns/creational-patterns/prototype.html',
+          ]
+        },
+        // '/archive/design-pattern/singleton.html',
+        // '/archive/design-pattern/factory.html',
+        // '/archive/design-pattern/abstract-factory.html',
+        // '/archive/design-pattern/builder.html',
+        // '/archive/design-pattern/prototype.html',
+        // '/archive/design-pattern/adapter.html',
+        // '/archive/design-pattern/bridge.html',
+        // '/archive/design-pattern/composite.html',
+        // '/archive/design-pattern/decorator.html',
+        // '/archive/design-pattern/facade.html',
+        // '/archive/design-pattern/flyweight.html',
+        // '/archive/design-pattern/proxy.html',
+        // '/archive/design-pattern/chain-of-responsibility.html',
+        // '/archive/design-pattern/command.html',
+        // '/archive/design-pattern/interpreter.html',
+        // '/archive/design-pattern/iterator.html',
+        // '/archive/design-pattern/mediator.html',
+        // '/archive/design-pattern/memento.html',
+        // '/archive/design-pattern/observer.html',
+        // '/archive/design-pattern/state.html',
+        // '/archive/design-pattern/strategy.html',
+        // '/archive/design-pattern/template-method.html',
+        // '/archive/design-pattern/visitor.html',
+      ]
+    }
+  ]
 
 }
