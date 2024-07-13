@@ -1,5 +1,5 @@
 {
-  "name": "note",
+  "name": "athena",
   "version": "1.0.0",
   "description": "记录, 成为更好的自己",
   "main": "index.js",
@@ -10,17 +10,17 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Charleslang/note.git"
+    "url": "git+https://github.com/Charleslang/athena.git"
   },
   "author": "Junfeng Dai",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Charleslang/note/issues"
+    "url": "https://github.com/Charleslang/athena/issues"
   },
-  "homepage": "https://github.com/Charleslang/note#readme",
+  "homepage": "https://github.com/Charleslang/athena#readme",
   "devDependencies": {
-    "@vuepress/plugin-docsearch": "^2.0.0-beta.68",
-    "vuepress": "^2.0.0-beta.68"
+    "@vuepress/plugin-docsearch": "^2.0.0-beta.64",
+    "vuepress": "^2.0.0-beta.64"
   },
   "dependencies": {
     "tippy.js": "^6.3.7"
