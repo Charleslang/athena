@@ -256,9 +256,8 @@ export const sidebar = {
             '/archive/design-patterns/creational-patterns/index.html',
             '/archive/design-patterns/creational-patterns/singleton.html',
             '/archive/design-patterns/creational-patterns/factory.html',
-            '/archive/design-patterns/creational-patterns/abstract-factory.html',
-            '/archive/design-patterns/creational-patterns/builder.html',
-            '/archive/design-patterns/creational-patterns/prototype.html',
+            // '/archive/design-patterns/creational-patterns/builder.html',
+            // '/archive/design-patterns/creational-patterns/prototype.html',
           ]
         },
         // '/archive/design-pattern/singleton.html',
