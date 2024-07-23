@@ -5,8 +5,8 @@
 创建型模式主要包括以下几种模式：
 
 - [单例模式](singleton.md)
-- [简单工厂模式](simple-factory.md)
-- [工厂方法模式](factory-method.md)
-- [抽象工厂模式](abstract-factory.md)
-- [建造者模式](builder.md)
+- [简单工厂模式](factory.md#简单工厂)
+- [工厂方法模式](factory.md#工厂方法)
+- [抽象工厂模式](factory.md#抽象工厂)
 - [原型模式](prototype.md)
+- [建造者模式](builder.md)
