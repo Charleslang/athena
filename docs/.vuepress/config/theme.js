@@ -10,8 +10,8 @@ export const theme = localTheme({
   home: '/',
   navbar,
   sidebar,
-  logo: '/images/leaf.png', // Logo 图片将会显示在导航栏的左端
-  logoDark: '/images/leaf.png', // 暗黑模式下的 Logo
+  logo: '/images/moon.jpeg', // Logo 图片将会显示在导航栏的左端
+  logoDark: '/images/moon.jpeg', // 暗黑模式下的 Logo
   sidebarDepth: 3, // 提取哪些标签作为侧边栏
   tip: '提示', // Tip 自定义容器 的默认标题, 默认为 TIP
   warning: '注意', // Warning 自定义容器 的默认标题，默认为 warning
