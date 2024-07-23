@@ -92,7 +92,7 @@ redis> EVALSHA ffffffffffffffffffffffffffffffffffffffff 0
 ```
 在这种情况下，应用程序应首先使用 `SCRIPT LOAD` 加载它，然后再次调用 `EVALSHA` 以通过其 SHA1 运行缓存的脚本。大多数 [Redis 客户端](https://redis.io/clients)已经提供实用的 API 来自动执行此操作。有关具体细节，请查阅您使用的客户端文档。
 
-:::wanring 注意
+:::warning 注意
 请想想，通过 Jedis 执行脚本时，我们是不是每次都要传输脚本代码？如果脚本代码非常大，那么每次都要传输这么大的脚本代码，这样会非常浪费网络带宽。所以，Jedis 提供了 `scriptLoad` 方法，可以将脚本加载到服务器的缓存中，然后通过 `evalsha` 方法执行缓存的脚本。这样就可以节省网络带宽了。
 :::
 
@@ -135,23 +135,21 @@ public class LuaJedisLock {
      * 并且设置超时时间，为锁的最大处理时间, 设置成功也返回 1
      */
     private static final StringBuilder lockScriptBuilder = new StringBuilder()
-            .append("if (redis.call('SETNX', KEYS[1], ARGV[1]) == 1) then    ")
-            .append("return redis.call('expire', KEYS[1], ARGV[2])           ")
-            .append("else                                                    ")
-            .append("return 0                                                ")
-            .append("end                                                     ");
+            .append("if (redis.call('SETNX', KEYS[1], ARGV[1]) == 1) then")
+            .append("   return redis.call('expire', KEYS[1], ARGV[2])")
+            .append("else")
+            .append("   return 0")
+            .append("end");
 
     private static final StringBuilder unlockScriptBuilder = new StringBuilder()
-            .append("if (redis.call('get', KEYS[1]) == ARGV[1]) then ")
-            .append("return redis.call('del', KEYS[1])             ")
-            .append("else                                         ")
-            .append("return 0                                     ")
-            .append("end                                          ");      
+            .append("if (redis.call('get', KEYS[1]) == ARGV[1]) then")
+            .append("   return redis.call('del', KEYS[1])")
+            .append("else")
+            .append("   return 0")
+            .append("end");      
 
     /**
-     * 每一个锁的 key，不同的业务使用不同的key
-     *
-     * @param key
+     * 每一个锁的 key，不同的业务使用不同的 key
      */
     public LuaJedisLock(String key) {
         this.key = "redis:lock:" + key;
@@ -159,10 +157,8 @@ public class LuaJedisLock {
 
     /**
      * 获取锁
-     *
      * @param timeout     获取锁等待的超时间
      * @param processTime 处理过程中的超时时间
-     * @return
      */
     public boolean acquireLock(long timeout, long processTime) {
 

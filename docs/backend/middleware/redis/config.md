@@ -5,7 +5,7 @@
 Redis 的配置文件位于 `$REDIS_HOME/redis.conf`。一些常用的配置如下：
 
 ```sh
-# Redis 宿主机 IP，0.0.0.0 表示可以通过任意 IP 来访问 Redis
+# 哪些 IP 可以访问 Redis。0.0.0.0 表示任意 IP 都可以访问 Redis
 bind 0.0.0.0
 # 守护进程，修改为 yes 后即可后台运行
 daemonize yes 

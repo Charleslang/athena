@@ -5,7 +5,7 @@
 [Clients](https://redis.io/resources/clients/#java)
 :::
 
-在实际开发过程中，我们肯定是使用 Java 代码操作 Redis，Redis 官方提供了两个 Java 客户端，一个是 Jedis，另一个是 Lettuce，下面我们来看看这两个客户端的使用。
+在实际开发过程中，我们肯定是使用 Java 代码操作 Redis。Redis 官方提供了两个 Java 客户端，一个是 Jedis，另一个是 Lettuce。下面我们来看看这两个客户端的使用。
 
 ![20230524211335](https://djfmdresources.oss-cn-hangzhou.aliyuncs.com/athena/2023-05-24/20230524211335.png)
 
@@ -19,7 +19,7 @@
 
 Jedis 是 Redis 官方推荐的 Java 客户端之一，Jedis 是一个很小的、易于使用的 Java 库，它提供了比较全面的 Redis 命令的支持。Jedis 将所有 Redis 命令都封装成了 Java 方法，并且 Java 方法的命名与 Redis 命令的名称一一对应，比如 Redis 的 `set` 命令对应 Jedis 中的 `set` 方法，Redis 的 `get` 命令对应 Jedis 中的 `get` 方法。但是呢，Jedis 在实现上是直连 Redis Server，多线程环境下非线程安全，如果想在多线程环境下使用 Jedis，需要为每个线程都分配独立的 Jedis 实例，这时我们可以使用 JedisPool 来满足多线程环境下的需求。
 
-下面列举了一些简单的示例来说明 Jedis 的使用。
+下面列举一些简单的示例来说明 Jedis 的使用。
 
 **添加依赖**
 
@@ -31,7 +31,7 @@ Jedis 是 Redis 官方推荐的 Java 客户端之一，Jedis 是一个很小的�
 </dependency>
 ```
 
-Jedis 的版本和 Redis 版本的对应关系如下（可在 Jedis 的 GitHub 中找到对应关系）：
+Jedis 版本和 Redis 版本的对应关系如下（可在 Jedis 的 GitHub 中找到对应关系）：
 Library version|Supported redis versions
 ---|---
 3.9+|5.0 and 6.2 Family of releases
@@ -120,8 +120,6 @@ public class JedisTest {
 - **示例 4**
 
 ```java
-// JedisConnectionFactory.java
-
 public class JedisConnectionFactory {
 
     private static final JedisPool jedisPool;
@@ -177,11 +175,11 @@ public class JedisTest {
 [Spring Data Redis](https://spring.io/projects/spring-data-redis)
 :::
 
-Spring Data Redis 是 Spring Data 家族的一部分，它提供了简单的配置和从 Spring 应用程序访问 Redis，提供了与存储交互的低级和高级抽象。
+Spring Data Redis 是 Spring Data 家族的一部分，它提供了简单的配置从 Spring 应用程序访问 Redis，提供了与存储交互的低级和高级抽象。
 
-Spring Data Redis 同时支持 Jedis 和 Lettuce，在 Spring Boot 2.0 之后，Spring Data Redis 默认使用 Lettuce 作为客户端，但是呢，如果我们想要在 Spring Boot 2.0 之后使用 Jedis，也是可以的，只需要在 pom.xml 中排除 Lettuce 依赖，然后添加 Jedis 依赖即可。
+Spring Data Redis 同时支持 Jedis 和 Lettuce，在 Spring Boot 2.0 之后，Spring Data Redis 默认使用 Lettuce 作为客户端。但是呢，如果我们想要在 Spring Boot 2.0 之后使用 Jedis 也是可以的，只需要在 pom.xml 中排除 Lettuce 依赖，然后添加 Jedis 依赖即可。
 
-Lettuce 和 Jedis 各有千秋，Lettuce 是基于 Netty 的，而 Jedis 是基于阻塞 I/O 的。Lettuce 的连接是基于 Netty 的，连接实例可以在多个线程间共享，所以，**一个连接实例在多个线程间是安全的**，当多线程使用同一连接实例时，是线程安全的。而 Jedis 的连接则不能共享，**每个线程都要有一个独立的 Jedis 连接实例**，如果你使用 Jedis，**则 Jedis 是线程不安全的**，这个时候，JedisPool 就出现了，可以解决线程不安全的问题。
+Lettuce 和 Jedis 各有千秋，Lettuce 是基于 Netty 的，而 Jedis 是基于阻塞 I/O 的。Lettuce 的连接是基于 Netty 的，连接实例可以在多个线程间共享，所以，**一个连接实例在多个线程间是安全的**，当多线程使用同一连接实例时，是线程安全的。而 Jedis 的连接则不能共享，**每个线程都要有一个独立的 Jedis 连接实例**，这个时候，JedisPool 就出现了，可以解决线程不安全的问题。
 
 **添加依赖**
 
@@ -198,7 +196,8 @@ Lettuce 和 Jedis 各有千秋，Lettuce 是基于 Netty 的，而 Jedis 是基�
   <version>2.11.1</version>
 </dependency>
 
-<!-- 如果要使用 Jedis, 则需要排除 Lettuce -->
+<!-- 下面展示了如何在 Spring Boot2.x 中使用 Jedis -->
+<!-- 1. 排除 Lettuce -->
 <dependency>
   <groupId>org.springframework.boot</groupId>
   <artifactId>spring-boot-starter-data-redis</artifactId>
@@ -209,7 +208,7 @@ Lettuce 和 Jedis 各有千秋，Lettuce 是基于 Netty 的，而 Jedis 是基�
     </exclusion>
   </exclusions>
 </dependency>
-<!-- 添加 Jedis 依赖 -->
+<!-- 2. 添加 Jedis 依赖 -->
 <dependency>
   <groupId>redis.clients</groupId>
   <artifactId>jedis</artifactId>
@@ -265,27 +264,27 @@ class RedisSpringbootApplicationTests {
 127.0.0.1:6379> get name:2
 (nil)
 ```
-我们会发现，使用 redis-cli 无法从 Redis 中获取到这两个值，这是为什么呢？别急。我们再使用 `keys *` 看看。
+我们会发现，使用 redis-cli 无法从 Redis 中获取到这两个值，这是为什么呢？别急，我们再使用 `keys *` 看看。
 
 ```sh
 127.0.0.1:6379> keys *
 1) "\xac\xed\x00\x05t\x00\x06name:1"
 2) "\xac\xed\x00\x05t\x00\x06name:2"
 ```
-哈哈，是不是看着有点熟悉了，有点像我们刚才设置的值，那我们再通过 redis-cli 获取一下这两个值。
+哈哈，是不是看着有点熟悉了，有点像我们刚才设置的值。那我们再通过 redis-cli 获取一下这两个值。
 
 ```sh
 127.0.0.1:6379> mget "\xac\xed\x00\x05t\x00\x06name:1" "\xac\xed\x00\x05t\x00\x06name:2"
 1) "\xac\xed\x00\x05t\x00\x02zs"
 2) "\xac\xed\x00\x05t\x00\t\xe4\xbb\xa3\xe4\xbf\x8a\xe5\xb3\xb0"
 ```
-好吧，我完全看不懂这是什么东西，如果 value 是英文的，我还能猜出来，但是中文就完全不知道了。让我们再用 Redis 的图形化客户端 RedisInsight 来看看。
+好吧，我完全看不懂这是什么东西。如果 value 是英文的，我还能猜出来，但是中文就完全不知道了。让我们再用 Redis 的图形化客户端 RedisInsight 来看看。
 
 ![20230524223515](https://djfmdresources.oss-cn-hangzhou.aliyuncs.com/athena/2023-05-24/20230524223515.png)
 
 ![20230524223537](https://djfmdresources.oss-cn-hangzhou.aliyuncs.com/athena/2023-05-24/20230524223537.png)
 
-好吧，那确实是我们刚才设置的两个值，但是为什么在 Redis 中会这样存储呢？这是因为，我们使用的是 Redis 自带的 `RedisTemplate`，而我们没有配置 Redis 的序列化方式，所以，Redis 默认使用的是 `JdkSerializationRedisSerializer`，它会将数据序列化成二进制数据。所以，我们使用 redis-cli 是无法通过 `get name:1` 获取到数据的。那么，该如何解决这个问题呢？我们可以使用 `StringRedisTemplate` 来解决这个问题，也可以自定义 Redis 的序列化方式来解决这个问题。
+好吧，那确实是我们刚才设置的两个值，但是为什么在 Redis 中会这样存储呢？这是因为，我们使用的是 Redis 自带的 `RedisTemplate`，而我们没有配置 Redis 的序列化方式，所以，Redis 默认使用的是 `JdkSerializationRedisSerializer`，它会将数据序列化成二进制数据。因此，我们使用 redis-cli 是无法通过 `get name:1` 获取到数据的。那么，该如何解决这个问题呢？我们可以使用 `StringRedisTemplate` 来解决这个问题，也可以自定义 Redis 的序列化方式来解决这个问题。
 
 **自定义 Redis 的序列化方式**
 
@@ -348,7 +347,7 @@ class RedisSpringbootApplicationTests {
 1) "\"ls\""
 2) "\"\xe6\x9d\x8e\xe5\x9b\x9b\""
 ```
-可以看到，我们设置的 key 已经是正常的了，能够通过 redis-cli 获取到数据。但是呢，还存在两个问题，value 带了双引号，而且中文还是乱码。这是为什么呢？这是由于 Redis 的显示问题导致的，Redis 命令行客户端会对结果进行格式化显示。我们可以在进入 Redis 时，使用 `redis-cli --raw`，这样，我们再获取数据时，就不会对结果进行格式化显示了。
+可以看到，我们设置的 key 已经是正常的了，能够通过 redis-cli 获取到数据。但是呢，还存在两个问题：value 带了双引号、中文还是乱码。这是为什么呢？这是由于 Redis 的显示问题导致的，Redis 命令行客户端会对结果进行格式化显示。我们可以在进入 Redis 时，使用 `redis-cli --raw`，这样，我们再获取数据时，就不会对结果进行格式化显示了。
 
 ```sh
 [root@djfcentos1 redis]# redis-cli --raw
@@ -481,7 +480,7 @@ class RedisSpringbootApplicationTests {
 ```
 
 :::tip 说明
-如果我们想使用 `RedisTemplate` 来保存对象，并且在存储时，又不想保留额外的 `@class` 字段，并且想在获取数据时自动进行反序列化。那么我现在告诉你，这是不可能的，因为反序列化需要知道对象的类型，而没有 `@class` 字段后，就不知道你存储的是什么类型的对象，因此它是无法自动反序列化的。所以，如果你想使用 `RedisTemplate` 来保存对象，那么你就必须保留额外的 `@class` 字段，这是无法避免的。
+如果我们想使用 `RedisTemplate` 来保存对象，并且在存储时，又不想保留额外的 `@class` 字段，并且想在获取数据时自动进行反序列化。那么我现在告诉你，这是不可能的。因为反序列化需要知道对象的类型，而没有 `@class` 字段后，就不知道你存储的是什么类型的对象，因此它是无法自动反序列化的。所以，如果你想使用 `RedisTemplate` 来保存对象，那么你就必须保留额外的 `@class` 字段，这是无法避免的。
 :::
 
 - **示例 3**
@@ -507,7 +506,7 @@ class RedisSpringbootApplicationTests {
 }
 ```
 
-在看了上面的一些操作后，你可能有点懵，不明白为什么要这样做，下面，我们就来看看 `RedisAutoConfiguration` 这个自动配置类，看看它是怎么做的。
+在看了上面的一些操作后，你可能有点懵，不明白为什么要这样做。下面，我们就来看看 `RedisAutoConfiguration` 这个自动配置类，看看它是怎么做的。
 
 - `RedisAutoConfiguration.java`
 

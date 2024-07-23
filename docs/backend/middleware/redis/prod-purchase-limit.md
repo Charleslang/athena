@@ -1,8 +1,8 @@
 # 一人一单
 
-在电商系统中，秒杀活动是常见的营销方式，部分场景下，为了保证活动的公平性，需要限制每个用户只能购买一件商品，这就是一人一单的场景。
+在电商系统中，秒杀活动是常见的营销方式。部分场景下，为了保证活动的公平性，需要限制每个用户只能购买一件商品，这就是一人一单的场景。
 
-在这里，我们先准备两张表，一张是优惠券表，一张是订单表，两张表的表结构分别如下：
+在这里，我们先准备两张表。一张是优惠券表，一张是订单表。两张表的表结构分别如下：
 
 - `tb_coupon`
 
@@ -251,7 +251,7 @@ public class CouponOrderServiceImpl implements CouponOrderService {
 
 当然，我们也可以把创建订单的逻辑单独抽离出来，封装成一个方法，如下：
 
-```java{37,42-63}
+```java{36,42-63}
 @Service
 public class CouponOrderServiceImpl implements CouponOrderService {
 
@@ -325,9 +325,9 @@ public class CouponOrderServiceImpl implements CouponOrderService {
     }
 }
 ```
-你以为这样就可以了吗，当然是不行的，还存在两个问题。
+你以为这样就可以了吗？当然是不行的，还存在两个问题。
 
-第一个问题就是事务，我们都知道，Spring 的声明式事务（也就是 `@Transactional` 注解）是基于 AOP 的，也就是说，只有当方法被外部调用的时候，事务才会生效，如果是内部调用（也就是通过 `this` 来调用），事务是不会生效的。也就是说，如果我们在 `createOrder` 方法上加上 `@Transactional` 注解，那么 `createOrder` 方法中的事务是不会生效的，因为 `createOrder` 方法是被 `addCouponOrder` 方法内部调用的，相当于在 `addCouponOrder` 方法中直接使用 `this` 调用 `createOrder()` 方法，这样的话，`createOrder` 方法中的事务是不会生效的。解决办法如下：
+第一个问题就是事务。我们都知道，Spring 的声明式事务（也就是 `@Transactional` 注解）是基于 AOP 的。也就是说，只有当方法被外部调用的时候，事务才会生效，如果是内部调用（也就是通过 `this` 来调用），事务是不会生效的。也就是说，如果我们在 `createOrder` 方法上加上 `@Transactional` 注解，那么 `createOrder` 方法中的事务是不会生效的，因为 `createOrder` 方法是被 `addCouponOrder` 方法内部调用的，相当于在 `addCouponOrder` 方法中直接使用 `this` 调用 `createOrder()` 方法，这样的话，`createOrder` 方法中的事务是不会生效的。解决办法如下：
 
 - `pom.xml`
 
@@ -367,7 +367,7 @@ public interface CouponOrderService {
 
 - `CouponOrderServiceImpl.java`
 
-```java{37,38}
+```java{36,37}
 @Service
 public class CouponOrderServiceImpl implements CouponOrderService {
 
@@ -415,7 +415,7 @@ public class CouponOrderServiceImpl implements CouponOrderService {
 
 - `CouponOrderServiceImpl.java`
 
-```java{37,38,41,44-63}
+```java{36,37,40,43-62}
 @Service
 public class CouponOrderServiceImpl implements CouponOrderService {
 
@@ -500,7 +500,7 @@ public class CouponOrderServiceImpl implements CouponOrderService {
 
 ![20230708151256](https://djfmdresources.oss-cn-hangzhou.aliyuncs.com/athena/2023-07-08/20230708151256.png)
 
-可以看到，使用 `synchronized` 作为悲观锁，确实解决了一人一单的问题。但是，这种方式仅仅适用于单机，如果是集群环境，那么就无法解决了。因为，`synchronized` 是基于 JVM 的，而集群环境下，每个 JVM 都有自己的一套锁，所以，这种方式无法解决集群环境下的并发问题。我们来验证一下在集群环境下的并发问题。
+可以看到，使用 `synchronized` 作为悲观锁确实解决了一人一单的问题。但是，这种方式仅仅适用于单机，如果是集群环境，那就无法解决了。因为，`synchronized` 是基于 JVM 的，而集群环境下，每个 JVM 都有自己的一套锁。所以，这种方式无法解决集群环境下的并发问题。我们来验证一下在集群环境下的并发问题。
 
 首先，在 IDEA 中，我们启动两个服务，端口分别为 8080 和 8081，如下：
 

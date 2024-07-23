@@ -230,7 +230,7 @@ public class AppWebConfig implements WebMvcConfigurer {
 ![20230604145412](https://djfmdresources.oss-cn-hangzhou.aliyuncs.com/athena/2023-06-04/20230604145412.png)
 
 
-上面就是使用 Session 实现登录认证的代码，这种方式的优点是简单，缺点是不支持集群部署。由于 Session 是基于 JVM 内存的，在集群部署时，如果用户在 A 服务器登录，那么在 B 服务器上就无法获取到用户信息，这就导致了用户在 A 服务器登录后，切换到 B 服务器时，需要重新登录，显然这是不合理的。
+上面就是使用 Session 实现登录认证的代码，这种方式的优点是简单，缺点是不支持集群部署。由于 Session 是基于 JVM 内存的，在集群部署时，如果用户在 A 服务器登录，那么在 B 服务器上就无法获取到用户信息。这就导致了用户在 A 服务器登录后，切换到 B 服务器时，需要重新登录，显然这是不合理的。
 
 为了解决这个问题，Tomcat 提供了一种叫做 Session 共享的功能，其实就是把 Session 复制到集群中的其他服务器上，但是这种方式有一些缺点，如下：
 
@@ -245,7 +245,7 @@ public class AppWebConfig implements WebMvcConfigurer {
 - 数据共享
 - K-V 存储。因为 Session 是 K-V 结构，所以替代方案最好也应该是 K-V 存储
 
-答案是有的，那就是**Redis**。
+答案是有的，那就是 **Redis**！
 
 ## 基于 Redis
 
@@ -448,7 +448,7 @@ Redis 中的 key:
 ![20230604163437](https://djfmdresources.oss-cn-hangzhou.aliyuncs.com/athena/2023-06-04/20230604163437.png)
 
 
-在上面的示例中，后端手动刷新了 Token，但是这样会存在一个问题。我们是在 `AuthenticationInterceptor` 中刷新的 Token，而 `AuthenticationInterceptor` 只会拦截需要登录的请求，如果一个用户登录了，但是他一直访问的是不需要登录的接口，那么这个用户的 Token 就不会被刷新。其实我们可以单独再写一个拦截器，专门用来刷新 Token，这样就可以解决上面的问题了，当然，这个拦截器也可以不写，让前端来手动刷新 Token，这样也是可以的。
+在上面的示例中，后端手动刷新了 Token，但是这样会存在一个问题。我们是在 `AuthenticationInterceptor` 中刷新的 Token，而 `AuthenticationInterceptor` 只会拦截需要登录的请求，如果一个用户登录了，但是他一直访问的是不需要登录的接口，那么这个用户的 Token 就不会被刷新。其实我们可以单独再写一个拦截器，专门用来刷新 Token，这样就可以解决上面的问题了。当然，这个拦截器也可以不写，让前端来手动刷新 Token，这样也是可以的。
 
 下面，我们单独写一个拦截器来自动刷新 Token：
 

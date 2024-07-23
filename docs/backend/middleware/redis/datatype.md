@@ -53,8 +53,8 @@ help keys
 `DEL`|删除一个指定的 key
 `EXISTS`|判断 key 是否存在
 `EXPIRE`|给一个 key 设置有效期，有效期到期时该 key 会被自动删除
-`TTL`|查看一个 KEY 的剩余有效期
-`TYPE`|返回存储在键中的值类型的字符串表示形式。可以返回的不同类型有：string、list、set、zset、hash 和 stream。
+`TTL`|查看一个 key 的剩余有效期
+`TYPE`|返回存储在 key 中的值类型的字符串表示形式。可以返回的不同类型有：string、list、set、zset、hash 和 stream。
 
 可以通过 `help` 命令查看某些命令的用法，如下：
 ```sh
@@ -68,10 +68,10 @@ help keys
 # 查看当前数据库的所有 key
 keys *
 
-# 查看当前数据库的以 a 开头的 key
+# 查看当前数据库以 a 开头的 key
 keys a*
 
-# 查看当前数据库的以 a 结尾的 key
+# 查看当前数据库以 a 结尾的 key
 keys *a
 
 # 匹配两个字符, 第一个字符为 a, 第二个字符为任意字符
@@ -108,7 +108,7 @@ String 类型是 Redis 中最基本的数据类型，单个 String 类型的值�
 - int：整数类型，可以做自增、自减操作
 - float：浮点类型，可以做自增、自减操作
 
-不管是哪种格式，底层都是字节数组形式存储，只不过是编码方式不同。
+不管是哪种格式，底层都是字节数组形式存储，只不过编码方式不同。
 
 命令|说明
 ---|---
@@ -176,7 +176,7 @@ Redis 中的 List 类型与 Java 中的 LinkedList 类似，可以看做是一�
 命令|说明
 ---|---
 `LPUSH key element ...`|向列表左侧插入一个或多个元素
-`LPOP key`|移除并返回列表左侧的第一个元素，没有则返回nil
+`LPOP key`|移除并返回列表左侧的第一个元素，没有则返回 nil
 `RPUSH key element ...`|向列表右侧插入一个或多个元素
 `RPOP key`|移除并返回列表右侧的第一个元素
 `LRANGE key star end`|返回一段角标范围内的所有元素，不会移除元素

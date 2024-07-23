@@ -23,8 +23,8 @@ wget https://packages.redis.io/redis-stack/redis-stack-server-6.2.6-v7.rhel7.x86
 编译：
 ```sh
 tar -zxf redis-stack-server-6.2.6-v7.rhel7.x86_64.tar.gz
-mv redis-stack-server-6.2.6-v7.rhel7.x86_64 redis-6.2.6.tar.gz
-cd redis-6.2.6.tar.gz
+mv redis-stack-server-6.2.6-v7.rhel7.x86_64 redis-6.2.6
+cd redis-6.2.6
 
 # 将 redis 安装到 /usr/local/redis 目录下, 默认是在 /usr/local/ 目录下
 make PREFIX=/usr/local/redis && make install
@@ -38,18 +38,18 @@ make PREFIX=/usr/local/redis && make install
 这是因为 Redis6.0 之后需要高版本的 gcc，先执行以下命令卸载 Redis：
 
 ```sh
-cd redis-6.2.6.tar.gz
+cd redis-6.2.6
 
 make distclean
 make clean
 
 # 删除 redis 解压后的文件
 cd ..
-rm -rf redis-6.2.6.tar.gz
+rm -rf redis-6.2.6
 
 # 重新解压
 tar -zxf redis-stack-server-6.2.6-v7.rhel7.x86_64.tar.gz
-mv redis-stack-server-6.2.6-v7.rhel7.x86_64 redis-6.2.6.tar.gz
+mv redis-stack-server-6.2.6-v7.rhel7.x86_64 redis-6.2.6
 ```
 安装高版本的 gcc 和 tcl：
 ```sh
@@ -108,7 +108,7 @@ docker exec -it myredis redis-cli
 ```sh
 # Redis 默认是安装在 /use/local 目录下
 # 该方式默认是前台启动 Redis
-# /usr/local/bin/redis-server 其实是 redis-server 的软连接
+# /usr/local/bin/redis-server 其实是 redis-server 的软链接
 /usr/local/bin/redis-server
 ```
 后台启动 Redis: 
@@ -120,7 +120,7 @@ cp /usr/local/redis/redis.conf /usr/local/redis/redis.conf.bak
 vim /usr/local/redis/redis.conf
 ```
 ```sh
-# Redis 宿主机 IP，0.0.0.0 表示可以通过任意 IP 来访问 Redis
+# 哪些 IP 可以访问 Redis。0.0.0.0 表示任意 IP 都可以访问 Redis
 bind 0.0.0.0
 # 守护进程，修改为 yes 后即可后台运行
 daemonize yes 
@@ -146,7 +146,7 @@ ps aux | grep redis
 kill -9 12345
 
 # 利用 redis-cli 来执行 shutdown 命令即可停止 Redis 服务（推荐）
-# 因为之前配置了密码，因此需要通过 -u、-a 来指定密码
+# 因为之前配置了密码，因此需要通过 -u 或者 -a 来指定密码
 redis-cli -u 123456 shutdown
 ```
 ## 设置开机自启
