@@ -260,6 +260,14 @@ export const sidebar = {
             '/archive/design-patterns/creational-patterns/builder.html'
           ]
         },
+        {
+          text: "结构型模式",
+          collapsible: true,
+          children: [
+            '/archive/design-patterns/structural-patterns/index.html',
+            '/archive/design-patterns/structural-patterns/proxy.html',
+          ]
+        },
         // '/archive/design-pattern/singleton.html',
         // '/archive/design-pattern/factory.html',
         // '/archive/design-pattern/abstract-factory.html',
