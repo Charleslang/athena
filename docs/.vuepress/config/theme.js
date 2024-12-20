@@ -33,11 +33,22 @@ export const theme = localTheme({
   contributorsText: '贡献者', // 贡献者列表 标签的文字。
   userConfig: userConfig({
     backgroundImg: [
+      'https://djfmdresources.oss-cn-hangzhou.aliyuncs.com/athena/2023-03-17/P3.jpg', 
+      'https://djfmdresources.oss-cn-hangzhou.aliyuncs.com/athena/2023-03-17/P31.jpg', 
+      'https://djfmdresources.oss-cn-hangzhou.aliyuncs.com/athena/2023-03-17/P32.jpg', 
+      'https://djfmdresources.oss-cn-hangzhou.aliyuncs.com/athena/2023-03-17/P55.jpg', 
+      'https://djfmdresources.oss-cn-hangzhou.aliyuncs.com/athena/2023-03-17/P58.jpeg', 
+      'https://djfmdresources.oss-cn-hangzhou.aliyuncs.com/athena/2023-03-17/P61.jpg', 
+      'https://djfmdresources.oss-cn-hangzhou.aliyuncs.com/athena/2023-03-17/P63.jpg', 
       'https://djfmdresources.oss-cn-hangzhou.aliyuncs.com/athena/2023-03-17/P65.jpg', 
       'https://djfmdresources.oss-cn-hangzhou.aliyuncs.com/athena/2023-03-17/P66.jpg', 
       'https://djfmdresources.oss-cn-hangzhou.aliyuncs.com/athena/2023-03-17/P69.jpg', 
       'https://djfmdresources.oss-cn-hangzhou.aliyuncs.com/athena/2023-03-17/P70.jpg', 
-      'https://djfmdresources.oss-cn-hangzhou.aliyuncs.com/athena/2023-03-17/P71.jpg'
+      'https://djfmdresources.oss-cn-hangzhou.aliyuncs.com/athena/2023-03-17/P71.jpg',
+      'https://djfmdresources.oss-cn-hangzhou.aliyuncs.com/athena/2023-03-17/P73.png',
+      'https://djfmdresources.oss-cn-hangzhou.aliyuncs.com/athena/2023-03-17/P78.jpg',
+      'https://djfmdresources.oss-cn-hangzhou.aliyuncs.com/athena/2023-03-17/p40.jpg',
+      'https://djfmdresources.oss-cn-hangzhou.aliyuncs.com/athena/2023-03-17/破碎2.jpg',
     ],
     heroText: [
       '实力与野心不符，是一件可悲的事', 
@@ -72,10 +83,25 @@ export const theme = localTheme({
       '不要走在我的后面，因为我可能不会引路；不要走在我的前面，因为我可能不会跟随。请走在我的身边，做我的朋友',
       '我从未见过你，但是当你出现在我身边的时候，我就知道是你',
       '天下熙熙，皆为利来；天下攘攘，皆为利往',
+      '永远相信美好的事情即将发生',
+      '人世间没有任何理想值得以这样的沉沦作为代价',
+      '他看不到月亮，但是他看到了月光',
+      '往者不可留，逝者不可追',
+      '心一旦离开了，就再不会回来',
+      '谎言说得越来越真诚，最后连她自己也从中得到了安慰',
+      '生活有些方面极其伟大，有些方面又极其平凡；性情有些方面极其美丽，有些方面又极其琐碎',
+      '这个社会上，让别人有机可乘的人注定要吃亏',
+      '细雨唏嘘如歌，落叶曼妙如舞',
+      '别人经历的事情，我们永远也无法明了',
+      '有时候，一个人只要好好活着，就足以拯救某人',
+      '吾尝终日而思矣，不如须臾之所学也',
+      '学而不思则罔，思而不学则殆',
+      '温故而知新',
+      '纸上得来终觉浅，绝知此事要躬行',
     ],
     footerText: {
-      left: '吾尝终日而思矣',
-      right: '不如须臾之所学也'
+      left: '纸上得来终觉浅',
+      right: '绝知此事要躬行'
     }
   }),
 })

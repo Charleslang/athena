@@ -4,11 +4,11 @@
       <div class="footer" id="app-page-bottom">
         <div class="footer-container">
           <div class="footer-text">
-            <span class="left">[ 吾尝终日而思矣</span>
+            <span class="left">[ 纸上得来终觉浅</span>
             <span class="footer-text-icon">
               <span class="iconfont icon-shandian1"></span>
             </span>
-            <span class="right">不如须臾之所学也 ]</span>
+            <span class="right">绝知此事要躬行 ]</span>
           </div>
           Copyright © 2021-present Junfeng Dai <br> 
           <a href="https://beian.miit.gov.cn" class="record-num" target="_blank">蜀ICP备2021009537号</a>
