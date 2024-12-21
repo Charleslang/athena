@@ -1,5 +1,35 @@
 #app {
-  header, .navbar {
+  div.theme-container.no-sidebar header.navbar {
+    background-color: transparent;
+    border: none;
+    box-shadow: none;
+    .site-name {
+      color: #ffe;
+    }
+    & > .navbar-items-wrapper {
+      & > .toggle-color-mode-button {
+        svg {
+          color: #fffff5db;
+        }
+      }
+      .navbar-item {
+        & > .navbar-dropdown-wrapper > .navbar-dropdown-title {
+          .arrow.down {
+            border-top-color: #ffe;
+          }
+          color: #ffe;
+        }
+        & > a {
+          color: #ffe;
+        }
+
+        & > .external-link > span > svg.external-link-icon {
+          color: #ffe;
+        }
+      }
+    }
+  }
+  header.navbar {
     box-shadow: 0 1px 8px 0 rgba(0, 0, 0, 0.1);
     div.navbar-items-wrapper {
       nav.navbar-items {
