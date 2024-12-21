@@ -4,7 +4,7 @@
 #app {
   div.theme-container .navbar {
     .site-name {
-      font-family: "Long Cang", cursive;
+      font-family: "阿里妈妈数黑体 Bold", -apple-system, system-ui, sans-serif;
       font-size: 1.5rem;
     }
     img.logo {
@@ -41,7 +41,7 @@
       .hero {
         h1#main-title {
           font-weight: 700;
-          font-family: 'Playball',cursive;
+          font-family: '阿里妈妈数黑体 Bold', -apple-system, system-ui, sans-serif;
           letter-spacing: -1px;
           color: #fff;
           -webkit-animation: fade-in-down 1s;
@@ -59,8 +59,8 @@
         width: 100%;
 
         p.description {
-          font-size: 1.3rem;
-          font-family: 'Long Cang', cursive;
+          font-size: 1.5rem;
+          font-family: cursive, -apple-system, system-ui, sans-serif;
           letter-spacing: .01rem;
           color: rgba(255,255,255,.8);
           text-shadow: 0 3px 6px rgb(0 0 0 / 50%);
@@ -70,10 +70,21 @@
           animation: fade-in-down .9s both;
           -webkit-animation-delay: .5s;
           animation-delay: .5s;
-          // -webkit-box-orient: vertical;
-          -webkit-line-clamp: 10;
+          position: relative;
+          display: inline-block;
           overflow: hidden;
           max-width: 40rem;
+
+          .cursor {
+            display: inline-block;
+            width: 2px;
+            height: 1.2em;
+            background-color: rgba(255,255,255,.8);
+            margin-left: 4px;
+            margin-right: 4px;
+            vertical-align: middle;
+            animation: blink 0.7s infinite;
+          }
         }
       }
     }
@@ -83,4 +94,15 @@
 html.dark main.home {
   // filter 会导致子元素的 position 定位改变
   filter: brightness(.8);
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+@font-face {
+  font-family: "阿里妈妈数黑体 Bold";font-weight: 500;src: url("//at.alicdn.com/wf/webfont/OpXjAMslo23A/gRi4JPg3cBdd.woff2") format("woff2"),
+  url("//at.alicdn.com/wf/webfont/OpXjAMslo23A/GKdmTR8l6243.woff") format("woff");
+  font-display: swap;
 }

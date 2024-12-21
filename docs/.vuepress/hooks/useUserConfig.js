@@ -26,14 +26,57 @@ export const useUserConfig = () => {
     if (heroText) {
       const description = document.querySelector('#app .no-sidebar main.home header.hero .description')
       if (description) {
-        let text = ''
-        if (typeof heroText === 'string') {
-          text = heroText
-        } else {
-          const index = Math.floor(Math.random() * heroText.length)
-          text = heroText[index]
+        let texts = typeof heroText === 'string' ? [heroText] : heroText
+        let currentIndex = Math.floor(Math.random() * texts.length)
+        
+        // 创建三个 span 元素分别存放『、文本内容和』
+        const leftBracket = document.createElement('span')
+        const content = document.createElement('span')
+        const rightBracket = document.createElement('span')
+        const cursor = document.createElement('span')
+        
+        leftBracket.textContent = '『'
+        rightBracket.textContent = '』'
+        cursor.className = 'cursor'
+        
+        description.innerHTML = ''
+        description.appendChild(leftBracket)
+        description.appendChild(content)
+        description.appendChild(cursor)
+        description.appendChild(rightBracket)
+        
+        const typeWriter = (text, callback) => {
+          let index = 0
+          
+          const type = () => {
+            if (index < text.length) {
+              content.textContent = text.slice(0, index + 1)
+              index++
+              setTimeout(type, 100)
+            } else if (callback) {
+              setTimeout(callback, 3000)
+            }
+          }
+
+          content.textContent = ''
+          setTimeout(type, 500)
         }
-        description.innerText = text
+        
+        const deleteText = () => {
+          const text = content.textContent
+          if (text.length > 0) {
+            content.textContent = text.slice(0, -1)
+            setTimeout(deleteText, 100)
+          } else {
+            currentIndex = (currentIndex + 1) % texts.length
+            setTimeout(() => {
+              typeWriter(texts[currentIndex], deleteText)
+            }, 1000)
+          }
+        }
+        
+        // 开始第一轮打字
+        typeWriter(texts[currentIndex], deleteText)
       }
     }
 
@@ -53,4 +96,12 @@ export const useUserConfig = () => {
       }
     }
   }
+}
+
+const getTextWidth = (text, element) => {
+  const canvas = getTextWidth.canvas || (getTextWidth.canvas = document.createElement('canvas'))
+  const context = canvas.getContext('2d')
+  const computedStyle = window.getComputedStyle(element)
+  context.font = `${computedStyle.fontSize} ${computedStyle.fontFamily}`
+  return context.measureText(text).width
 }

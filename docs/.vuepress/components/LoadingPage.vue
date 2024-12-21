@@ -65,8 +65,8 @@
   }
 
   .loading-wrapper .loading-img {
-    width: 7rem;
-    height: 7rem;
+    width: 5rem;
+    height: 5rem;
     background: url('/images/loading/loading-pen.gif') center center / cover no-repeat;
   }
 
