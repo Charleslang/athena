@@ -82,4 +82,32 @@ html.dark ::-webkit-scrollbar-thumb {
   .sidebar {
     scrollbar-width: none;
   }
+
+  /**
+   * 当页面为 no-sidebar 时隐藏滚动条 (Firefox)
+   */
+  html:has(.theme-container.no-sidebar),
+  body:has(.theme-container.no-sidebar) {
+    scrollbar-width: none;
+  }
+}
+
+/**
+ * 当页面为 no-sidebar 时隐藏滚动条
+ */
+html:has(.theme-container.no-sidebar),
+body:has(.theme-container.no-sidebar) {
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@supports not selector(::-webkit-scrollbar) {
+  /**
+   * 当页面为 no-sidebar 时隐藏滚动条 (Firefox)
+   */
+  html:has(.theme-container.no-sidebar),
+  body:has(.theme-container.no-sidebar) {
+    scrollbar-width: none;
+  }
 }
