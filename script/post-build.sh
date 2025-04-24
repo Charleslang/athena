@@ -2,7 +2,7 @@
 
 WEBHOOK_URL=$WX_ROBOT_WEBHOOK_URL
 CONTENT_TYPE='Content-Type: application/json'
-STAUS_COLOR=$([ "${BUILD_RESULT}" == "Success" ] && echo 'info' || echo 'comment')
+STATUS_COLOR=$([ "${BUILD_RESULT}" == "Success" ] && echo 'info' || echo 'comment')
 
 echo "### send message to wx，build result: ${BUILD_RESULT}"
 
@@ -20,7 +20,7 @@ curl "$WEBHOOK_URL" \
       > 构建耗时：<font color=\"comment\">'"${BUILD_DURATION}"'</font>
       > 构建地址：<font color=\"comment\">[点击查看]('"${JOB_URL}"')</font>
       > 构建日志：<font color=\"comment\">[点击查看]('"${JOB_CONSOLE}"')</font>
-      > 构建状态：<font color=\"'"$STAUS_COLOR"'\">**'"${BUILD_RESULT}"'**</font> \n
+      > 构建状态：<font color=\"'"$STATUS_COLOR"'\">**'"${BUILD_RESULT}"'**</font> \n
       > 已完成构建请确认：<@DaiJunFeng>"
     }
   }
