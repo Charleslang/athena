@@ -102,6 +102,18 @@ export const sidebar = {
             '/backend/middleware/redis/prod-distributed-lock.html',
             '/backend/middleware/redis/prod-redisson.html',
             '/backend/middleware/redis/prod-async-kill.html',
+            '/backend/middleware/redis/prod-message-queue.html',
+            '/backend/middleware/redis/prod-clock-in.html',
+            '/backend/middleware/redis/prod-uv.html',
+          ]
+        },
+        '/backend/middleware/redis/persistence.html',
+        {
+          text: '集群',
+          collapsible: true,
+          children: [
+            '/backend/middleware/redis/cluster-master-slave.html',
+            '/backend/middleware/redis/cluster-sentinel.html',
           ]
         }
       ]

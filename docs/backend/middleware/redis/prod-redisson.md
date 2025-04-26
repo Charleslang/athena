@@ -7,7 +7,7 @@
 
 Redisson 是一个在 Redis 基础上实现的 Java 驻内存数据网格（In-Memory Data Grid）。它不仅提供了一系列的分布式的 Java 常用对象，还提供了许多分布式服务。例如 Set、Multimap、SortedSet、Map、List、Queue、Deque、Semaphore、Lock、AtomicLong、Map Reduce、Publish / Subscribe、Bloom filter、Spring Cache、Tomcat、Scheduler、JCache API、Hibernate、MyBatis、RPC，本地缓存等。其中就包含了各种分布式锁的实现。
 
-**快速开始**
+## 快速开始
 
 - `pom.xml`
 
@@ -101,6 +101,8 @@ public class CouponOrderServiceImpl implements CouponOrderService {
 
 可以看到，我们只需要修改获取锁和释放锁的代码即可，使用起来非常方便。
 
+## 可重入锁
+
 可能你会好奇，我们在获取锁的时候，只传入了 key，那么 Redis 中最终存储的 value 是啥呢？我们可以通过 Redis 的客户端来查看一下，如下图所示：
 
 ![Redisson-value](https://djfmdresources.oss-cn-hangzhou.aliyuncs.com/athena/2023-07-15/Redisson-value.png)
@@ -154,45 +156,59 @@ void method2() {
 ![分布式锁-可重入](https://djfmdresources.oss-cn-hangzhou.aliyuncs.com/athena/2023-07-15/分布式锁-可重入.png)
 
 :::warning 注意
-由于在获取锁和释放锁时，需要保证原子性，因此，我们需要使用 Lua 脚本来实现。
+由于在获取锁和释放锁时需要保证原子性，因此，我们需要使用 Lua 脚本来实现。
 :::
 
 好了，大概原理我们已经知道了，那么我们来看看 Redisson 中是如何利用 Lua 脚本来实现可重入锁的。
 
+## 加锁原理
+
 通过调试 `org.redisson.RedissonLock#tryLock()` 这个方法，我们会发现，Redisson 在获取锁时，使用的 Lua 脚本如下：
 
 ```lua
--- 如果不存在该 key，则设置该 key 的值为 1，并设置过期时间，返回 nil
--- 如果存在该 key，则判断该 key 的值是否为当前线程，如果是，则将该 key 的值自增 1，并设置过期时间，返回 nil
+-- KEYS[1] 是锁的名称，ARGV[1] 是锁的过期时间，ARGV[2] 是字段名称（也就是 UUID:threadId）
+-- 如果不存在该 key，则设置该 field 的值为 1，并设置过期时间，返回 nil
+-- 如果存在该 key，则判断 field 的值是否为当前线程，如果是，则将该 key 的值自增 1，并重置过期时间，返回 nil
 if ((redis.call('exists', KEYS[1]) == 0) or (redis.call('hexists', KEYS[1], ARGV[2]) == 1)) then 
   redis.call('hincrby', KEYS[1], ARGV[2], 1);
   redis.call('pexpire', KEYS[1], ARGV[1]);
   return nil;
 end;
--- 如果该 key 的值不是当前线程，则返回该 key 的剩余过期时间
--- 与 TTL 类似， PTTL 返回设 key 的剩余过期时间，唯一的区别是 TTL 以秒为单位返回剩余时间，而 PTTL 以毫秒为单位返回
+-- 如果该 key 的 field 不是当前线程，则返回该 key 的剩余过期时间
+-- 与 TTL 类似，PTTL 也返回 key 的剩余过期时间。唯一的区别是，TTL 以秒为单位返回剩余时间，而 PTTL 以毫秒为单位返回
 return redis.call('pttl', KEYS[1]);
 ```
+
+**小结：**  
+
+使用 Lua 脚本进行加锁。先判断锁是否存在，如果锁不存在，或者是当前线程获取锁，则进行加锁。使用 `hincrby` 将加锁次数加 1，然后使用 `pexpire` 设置锁的过期时间。否则加锁失败，返回锁的剩余过期时间。当加锁失败时，会订阅锁对应的 channel（redisson_lock__channel:{锁的名称}），等待锁释放。如果锁被释放，则使用自旋的方式重新尝试获取锁。自旋获取锁的流程是，先使用 Lua 脚本进行加锁，如果获取锁失败，则使用 AQS 的 Semaphore 等待锁的剩余过期时间（Semaphore 的初始 state 就是 0）。获取锁成功后，会取消对 channel 的订阅。如果使用了 Redisson 默认的加锁策略（没有传入锁的过期时间），则会额外开启一个异步线程，每隔 10 秒对锁续期（默认加锁时间是 30 秒）。
+
+## 解锁原理
 
 解锁时，使用的 Lua 脚本如下：
 
 ```lua
--- 如果不存在该 key，则返回 nil
+-- 如果锁不存在，或者锁的持有者不是当前线程，则解锁失败
 if (redis.call('hexists', KEYS[1], ARGV[3]) == 0) then 
   return nil;
 end;
--- 如果存在该 key，则将该 key 的值自减 1
+-- 如果锁存在，并且当前线程是锁的持有者，则将加锁次数减 1
 local counter = redis.call('hincrby', KEYS[1], ARGV[3], -1);
--- 如果该 key 的值大于 0，则重置该 key 的过期时间，返回 0
+-- 如果加锁次数大于 0，则说锁尚未完全释放，重置锁的过期时间
 if (counter > 0) then 
   redis.call('pexpire', KEYS[1], ARGV[2]);
   return 0;
-else -- 如果该 key 的值小于等于 0，则删除该 key，返回 1
+else -- 如果加锁次数小于等于 0，则释放锁
   redis.call('del', KEYS[1]);
-  -- 释放锁成功后，发布一条消息，通知其他线程(此处可以先忽略这段代码, 后面我们再讲解)
+  -- 锁释放后，发布一条消息，通知其他正在等待锁的线程重新竞争锁
+  -- 执行命令 publish redisson_lock__channel:{锁的名称} 0
   redis.call(ARGV[4], KEYS[2], ARGV[1]);
   return 1;
 return nil;
 ```
+
+**小结：**  
+
+使用 Lua 脚本解锁。检查当前线程是否是锁的持有者，如果是，则把加锁次数减 1，如果减 1 后大于零，则说明重入的锁并未完全释放，此时重置锁的过期时间；否则释放锁，然后往锁对应的 channel 中发送一个释放锁的消息，最后取消锁续期的定时任务！
 
 好了，上面就是 Redisson 如何实现可重入锁的原理了以及相关核心代码。不知道你还有没有一个问题，那就是，HASH 的 field 字段是什么？其实就是 `UUID:线程ID`。
