@@ -114,6 +114,7 @@ export const sidebar = {
           children: [
             '/backend/middleware/redis/cluster-master-slave.html',
             '/backend/middleware/redis/cluster-sentinel.html',
+            '/backend/middleware/redis/cluster-shard.html',
           ]
         }
       ]

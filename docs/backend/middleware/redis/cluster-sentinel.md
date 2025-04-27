@@ -135,3 +135,34 @@ cd /usr/local/myapp/redis/sentinel/s10003
 **为什么 Sentinel 集群至少 3 节点？**
 
 一个 Sentinel 节选举成为 Leader 的最低票数为 `quorum` 和 `Sentinel 节点数 / 2 + 1` 的最大值，如果 Sentinel 集群只有 2 个 Sentine l节点，则 `Sentinel节点数 / 2 + 1 = 2 / 2 + 1 = 2`，即 Leader 最低票数至少为 2，当该 Sentinel 集群中有一个 Sentinel 节点故障后，仅剩的一个 Sentinel 节点是永远无法成为 Leader。因此，Sentinel 集群允许 1 个 Sentinel 节点故障则需要 3 个节点的集群；允许 2 个节点故障则需要 5 个节点集群。
+
+## RedisTemplate 配置
+
+RedisTemplate 底层利用 lettuce 实现了节点的感知和故障转移，因此，我们只需要配置 sentinel 的地址即可：
+
+```properties
+# 集群名称
+spring.redis.sentinel.master=mymaster
+# Redis Sentinel 集群的地址，多个地址用逗号分隔
+spring.redis.sentinel.nodes=192.168.120.10:10001,192.168.120.10:10002,192.168.120.10:10003
+# master 节点的密码，如果没有设置密码，则不需要配置
+spring.redis.sentinel.password=dyftm71017
+```
+
+配置读写分离：
+
+```java
+@Bean
+public LettuceClientConfigurationBuilderCustomizer clientConfigurationBuilderCustomizer() {
+    return clientConfigurationBuilder -> {
+        // 可选值有 4 个：
+        // MASTER 表示只从主节点读取数据
+        // MASTER_PREFERRED 表示优先从主节点读取数据，如果主节点不可用，则从从节点读取数据
+        // SLAVE 表示只从从节点读取数据
+        // SLAVE_PREFERRED 表示优先从从节点读取数据，如果所有从节点不可用，则从主节点读取数据 
+        clientConfigurationBuilder.readFrom(ReadFrom.REPLICA_PREFERRED);
+        // 和 REPLICA_PREFERRED 是一样的
+        // clientConfigurationBuilder.readFrom(ReadFrom.SLAVE_PREFERRED);
+    };
+}
+```
