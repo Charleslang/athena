@@ -116,6 +116,14 @@ export const sidebar = {
             '/backend/middleware/redis/cluster-sentinel.html',
             '/backend/middleware/redis/cluster-shard.html',
           ]
+        },
+        {
+          text: '最佳实践',
+          collapsible: true,
+          children: [
+            '/backend/middleware/redis/best-practice-kv-design.html',
+            '/backend/middleware/redis/best-practice-service-config.html',
+          ]
         }
       ]
     }
