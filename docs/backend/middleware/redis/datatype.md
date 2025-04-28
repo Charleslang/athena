@@ -257,9 +257,9 @@ sdiff myset2 myset
 spop myset
 ```
 
-## Sorted Set
+## ZSet
 
-Redis 的 SortedSet 是一个可排序的 set 集合，与 Java 中的 TreeSet 有些类似，但底层数据结构却差别很大。SortedSet 中的每一个元素都带有一个 score 属性，可以基于 score 属性对元素排序，底层的实现是一个跳表（SkipList）加 hash 表。SortedSet 具备下列特性：
+ZSet（SortedSet）是 Redis 中一个可排序的 set 集合，与 Java 中的 TreeSet 有些类似，但底层数据结构却差别很大。SortedSet 中的每一个元素都带有一个 score 属性，可以基于 score 属性对元素排序（默认升序），底层的实现是一个跳表（SkipList）加 hash 表。SortedSet 具备下列特性：
 
 - 可排序
 - 元素不重复

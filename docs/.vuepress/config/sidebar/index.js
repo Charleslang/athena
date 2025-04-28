@@ -124,7 +124,32 @@ export const sidebar = {
             '/backend/middleware/redis/best-practice-kv-design.html',
             '/backend/middleware/redis/best-practice-service-config.html',
           ]
-        }
+        },
+        {
+          text: '底层数据结构',
+          collapsible: true,
+          children: [
+            '/backend/middleware/redis/data-structure-sds.html',
+            '/backend/middleware/redis/data-structure-intset.html',
+            '/backend/middleware/redis/data-structure-dict.html',
+            '/backend/middleware/redis/data-structure-zip-list.html',
+            '/backend/middleware/redis/data-structure-quick-list.html',
+            '/backend/middleware/redis/data-structure-skip-list.html',
+            '/backend/middleware/redis/data-structure-redis-object.html',
+          ]
+        },
+        {
+          text: '数据类型底层实现',
+          collapsible: true,
+          children: [
+            '/backend/middleware/redis/data-type-impl-string.html',
+            '/backend/middleware/redis/data-type-impl-list.html',
+            '/backend/middleware/redis/data-type-impl-set.html',
+            '/backend/middleware/redis/data-type-impl-zset.html',
+            '/backend/middleware/redis/data-type-impl-hash.html',
+          ]
+        },
+        '/backend/middleware/redis/memory-management-strategy.html',
       ]
     }
   ],
