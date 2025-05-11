@@ -102,14 +102,14 @@ Redis 的事件循环（while (true)）并不是一个“忙等待”的死循�
 
 ## 内存淘汰策略
 
-由于 Redis 内存有限，当内存使用达到上限时，Redis 会根据配置的内存淘汰策略来删除一些 key（不管 key 有没有过期），以释放内存。每次执行 Redis 命令之前，都会检查内存使用情况（只有 maxmemory > 0 才会检查内存是否可用），如果超过了 maxmemory 的限制，就会执行内存淘汰策略。如果经过淘汰后，Redis 仍然无法满足内存使用限制，则会返回错误。
+由于 Redis 内存有限，当内存使用达到上限时，Redis 会根据配置的内存淘汰策略来删除一些 key（不管 key 有没有过期），以释放内存。每次执行 Redis 命令之前，都会检查内存使用情况（只有 maxmemory > 0 才会检查内存是否可用），如果超过了 maxmemory 的限制，就会执行内存淘汰策略。如果经过淘汰后，Redis 仍然无法满足内存使用限制，则会拒绝本次的写入操作。
 
 Redis 支持以下几种内存淘汰策略：
 
 - noeviction：不淘汰任何 key, 达到内存限制时不允许写入新数据，默认就是这种策略。
-- volatile-ttl: 对设置了 TTL 的 key，比较 key 的剩余时间，剩余时间越小越先被淘汰。
-- allkeys-random: 对全体 key，随机进行淘汰。也就是直接从 db->dict 中随机挑选。
-- volatile-random: 对设置了 TTL 的 key，随机进行淘汰。也就是从 db->expires 中随机挑选。
+- volatile-ttl：对设置了 TTL 的 key，比较 key 的剩余时间，剩余时间越小越先被淘汰。
+- allkeys-random：对全体 key，随机进行淘汰。也就是直接从 db->dict 中随机挑选。
+- volatile-random：对设置了 TTL 的 key，随机进行淘汰。也就是从 db->expires 中随机挑选。
 - allkeys-lru：对全体 key，基于 LRU 算法进行淘汰。
 - volatile-lru：对设置了 TTL 的 key，基于 LRU 算法进行淘汰。
 - allkeys-lfu：对全体 key，基于 LFU 算法进行淘汰。
@@ -123,6 +123,8 @@ maxmemory-policy noeviction
 
 - LRU（Least Recently Used），最少最近使用。用当前时间减去最后一次访问时间，这个值越大则淘汰优先级越高。
 - LFU（Least Frequently Used），最少频率使用。会统计每个 key 的访问频率，值越小淘汰优先级越高。
+
+### 内存淘汰原理
 
 怎么知道 key 的访问频率呢？Redis 中的每个 key 都被封装成了 RedisObject 对象，RedisObject 中有一个 lru 字段，表示 key 的访问频率。lru 字段是一个 24 位的整数，表示 key 的访问时间戳或者访问次数。Redis 会在每次访问（增、删、改、查） key 的时候，更新 lru 字段。
 
@@ -146,7 +148,7 @@ typedef struct redisObject {
 Redis 会在每次访问 key 的时候，更新 key 的访问频率。如果是 LRU 策略，则直接更新 lru 字段；如果是 LFU 策略，则会先更新 lru 字段，然后再更新逻辑访问次数。
 
 逻辑访问次数 logc 的更新策略如下：
-1. 每次访问时生成一个随机数 r（0~1 之间的随机数）。
+1. 每次访问时生成一个 `[0, 1)` 的随机数 r。
 2. 计算 `p = 1.0 / (logc_current * lfu_log_factor + 1)`，其中 lfu_log_factor 是配置参数（默认 10）。
 3. 若 r < p，则 logc += 1。当 logc 达到 255 时，不再递增，保持最大值。
 
@@ -158,22 +160,21 @@ Redis 会在每次访问 key 的时候，更新 key 的访问频率。如果是 
 - 若 logc = 10，则递增概率为 1/(10*10+1) ≈ 0.99%。
 - 若 logc = 100，概率为 1/(100*10+1) ≈ 0.099%。
 
-为避免旧键因历史高频访问长期占据内存，Redis 还会定期对 logc 进行衰减。当 key 被访问时，Redis 会检查距离上次衰减的时间（根据高 16 位时间戳计算）。衰减公式是 `logc = logc_current - (minutes_since_last_access * lfu_decay_time)`，其中 lfu_decay_time 是配置参数（默认 1，表示每分钟衰减 1 点）。logc 最小值为 0，衰减后不会为负数。
+当 key 被访问时，Redis 会检查距离上次衰减的时间（根据高 16 位时间戳计算）。衰减公式是 `logc = logc_current - ((nowMinutes - minutes_since_last_access) * lfu_decay_time)`，其中 lfu_decay_time 是配置参数（默认 1，表示每分钟衰减 1 点）。logc 最小值为 0，衰减后不会为负数。例如，若 key 在过去 5 分钟内未被访问，且 lfu_decay_time = 1，则 logc -= 5。
 
-示例：  
-- 若 key 在过去 5 分钟内未被访问，且 lfu_decay_time = 1，则 logc -= 5。
+我们会发现，当淘汰策略设置为 lfu 时，某个 key 被访问时，需要同时为访问次数进行时间衰减和访问次数的递增。他们的执行顺序是先衰减（惩罚历史未访问），再基于衰减后的值递增（奖励本次访问），最后更新时间戳。
+
+那这样是不是有问题了，如果某个 key 由于历史原因，它的访问次数非常多，所以这时它的 logc 会很大。但是在今后很长的一段时间内，这个 key 都没有被再次访问了，岂不是它的 logc 会一直保持在一个很大的值吗？这样就会导致这个 key 很难被淘汰。其实并不会，因为 Redis 在进行内存淘汰的时候，会再次计算一下这个 key 的访问次数。
 
 可以通过配置文件调整 LFU 行为：
 
 ```sh
 # 控制计数器递增概率的斜率。默认为 10
-# 值越大：高频键的递增概率下降越快，适合访问模式差异大的场景。
-# 值越小：计数器增长更激进，适合需要快速响应变化的场景。
+# 值越大，高频键的递增概率越小
 lfu-log-factor 10
 
 # 默认为 1，表示每分钟衰减 1 点。
-# 值越大：衰减速度越慢，历史访问权重更高。
-# 值越小：衰减速度越快，更侧重近期访问。
+# 值越大：衰减速度越快
 lfu-decay-time 1：
 ```
 
@@ -181,11 +182,25 @@ lfu-decay-time 1：
 
 上图中的 `maxTTL` 其实就是 long 的最大值。
 
-在进行内存淘汰时，如果策略是 random，则随机挑选一个 key 进行删除，某个 key 被删除后，如果剩余可用空间能够满足需求，则淘汰完成，否则继续挑选 key 进行淘汰。如果策略是 lru、lfu、ttl，则会先准备一个 eviction_pool，然后随机挑选 `maxmemory_samples` 个（默认值是 5）key，并根据不同策略计算 idleTime。计算出 idleTime 之后，会尝试把这些 key 按照 idleTime 从小到大进行排序放入 eviction_pool，然后从后往前删除，直到剩余的内存能够满足需求为止。由于 eviction_pool 的容量是有限的，所以并不是每次都会把帅选出来的所有 key 都放入 eviction_pool 中。如果 eviction_pool 的空间充足，则直接放入，否则会把 eviction_pool 中 idleTime 最小的 key 和当前筛选出来的 key 依次进行比较，如果当前 key 的 idleTime 更小，则替换掉 eviction_pool 中的 key。
+只有 maxmemory > 0（默认是 0），Redis 才会检查内存是否足够。Redis 每次执行任何命令之前，会计算本次操作需要多少存储空间，如果剩余空间不足，则进行内存淘汰。
 
-Redis 的内存淘汰是全局随机行为，不涉及按顺序切换 DB。每次删除的键可能来自任意 DB，因此继续淘汰时可能切换也可能不切换 DB，完全随机。
+内存淘汰的逻辑如下：
 
-所以，Redis 中的 LRU 和 LFU 策略是基于采样的，并不是真正意义上的 LRU 和 LFU 策略。这样做是为了避免 Redis 在内存淘汰时，遍历所有的 key，导致性能下降。但是，随着淘汰的增多，那么 Redis 中的 LRU 就越接近真实的 LRU。
+**random：**  
+
+1. 记录淘汰开始时间。
+2. 从 db 为 0 的数据库开始，随机选择一个 key 进行删除，如果删除之后释放的内存空间大于等于本次所需的内存空间，则淘汰完成；否则继续遍历下一个 db（对数据库数量取模），随机选择一个 key 进行删除。
+
+**TTL、LRU、LFU：**
+
+1. 记录淘汰开始时间。
+2. 准备一个容量等于 16 的 eviction_pool，本质是个数组，eviction_pool 中的每个元素包含了 key、dbid、idle 等信息。
+3. 从 db 为 0 的数据库开始依次遍历所有数据库，从每个库随机挑选 `maxmemory_samples` 个（默认值是 5）key，并根据不同策略计算 idle，然后把这些 key 放入 eviction_pool 中。放入 eviction_pool 之后，会按照 idle 从小到大进行排序。如果 eviction_pool 中的数量达到了 16，则会尝试使用本次筛选出来的所有 key 替换 eviction_pool 中已经存在的 key，如果当前 key 的 idle 更大，则进行替换，否则丢弃当前 key，整个过程依然会保持 eviction_pool 的 key 按照 idle 从小到大进行排序。
+4. 淘汰 eviction_pool 中最后一个 key（idle 最大的 key），如果删除之后释放的内存空间大于等于本次所需的内存空间，则淘汰完成；否则继续执行步骤 3。
+
+从上面我们知道了，Redis 每次进行内存淘汰时，只会删除一个 key，每次删除完成后，都会检查一下释放的内存是否已经满足本次所需的内存空间。如果满足，则淘汰完成，否则继续执行下一次淘汰。由于淘汰是在主线程中执行，是否意味着主线程可能造成长时间的阻塞呢？其实 Redis 每经过 16 次淘汰后，会检查一下淘汰经历的时间是否超时了，如果超时，则会开启一个后台任务执行淘汰，然后结束本次淘汰，以便让主线程执行后续操作。此时，主线程如果执行的是写操作，并且操作系统的剩余内存足够，那么本次写操作依然能够正常执行，这就可能导致 Redis 内存使用量暂时超过 maxmemory 的限制；如果操作系统的剩余内存不足，那么本次写操作会失败。
+
+所以，Redis 中的 LRU 和 LFU 策略是基于采样的，并不是真正意义上的 LRU 和 LFU。这样做是为了避免 Redis 在内存淘汰时，遍历所有的 key，导致性能下降。但是，随着淘汰的增多，Redis 中的 LRU 就越接近真实的 LRU。
 
 `maxmemory_samples` 的默认值是 5，表示每次内存淘汰时，随机采样 5 个 key 来进行 LRU 或 LFU 的计算。可以通过配置文件来修改这个值：
 
@@ -193,10 +208,9 @@ Redis 的内存淘汰是全局随机行为，不涉及按顺序切换 DB。每�
 maxmemory-samples 5
 ```
 
-
 **Redis 中 key 过期了一定会被立即删除吗？**  
 
-不一定。如果没有访问该 key，惰性删除不会触发；定期删除也不保证每次都扫到。但它最终会被清除。
+不一定。如果没有访问该 key，那么惰性删除不会触发；定期删除也不保证每次都扫到。但它最终会被清除。
 
 **有大量过期 key，怎么快速清除？**
 
@@ -208,3 +222,319 @@ maxmemory-samples 5
 **为什么默认的内存淘汰策略是 noeviction？**
 
 防止误删重要数据。
+
+
+### 内存淘汰源码
+
+- [server.c](https://github.com/redis/redis/blob/unstable/src/server.c#L4167)
+
+```c
+if (server.maxmemory && !isInsideYieldingLongCommand()) {
+    // 仅当 performEvictions 返回 EVICT_FAIL 时，才认为 OOM
+    int out_of_memory = (performEvictions() == EVICT_FAIL);
+
+    /* performEvictions may evict keys, so we need flush pending tracking
+        * invalidation keys. If we don't do this, we may get an invalidation
+        * message after we perform operation on the key, where in fact this
+        * message belongs to the old value of the key before it gets evicted.*/
+    trackingHandlePendingKeyInvalidations();
+
+    /* performEvictions may flush slave output buffers. This may result
+        * in a slave, that may be the active client, to be freed. */
+    if (server.current_client == NULL) return C_ERR;
+
+    // 仅当 performEvictions 返回 EVICT_FAIL 时，才会拒绝本次写操作
+    if (out_of_memory && is_denyoom_command) {
+        rejectCommand(c, shared.oomerr);
+        return C_OK;
+    }
+
+    /* Save out_of_memory result at command start, otherwise if we check OOM
+        * in the first write within script, memory used by lua stack and
+        * arguments might interfere. We need to save it for EXEC and module
+        * calls too, since these can call EVAL, but avoid saving it during an
+        * interrupted / yielding busy script / module. */
+    server.pre_command_oom_state = out_of_memory;
+}
+```
+
+- [evict.c](https://github.com/redis/redis/blob/unstable/src/evict.c#L380)
+
+```c
+int performEvictions(void) {
+    /* Note, we don't goto update_metrics here because this check skips eviction
+     * as if it wasn't triggered. it's a fake EVICT_OK. */
+    if (!isSafeToPerformEvictions()) return EVICT_OK;
+
+    int keys_freed = 0;
+    size_t mem_reported, mem_tofree;
+    long long mem_freed; /* May be negative */
+    mstime_t latency;
+    int slaves = listLength(server.slaves);
+    int result = EVICT_FAIL;
+
+    // 检查内存是否足够，并计算本次操作所需要的内存
+    if (getMaxmemoryState(&mem_reported,NULL,&mem_tofree,NULL) == C_OK) {
+        result = EVICT_OK;
+        goto update_metrics;
+    }
+
+    // 如果淘汰策略是 noeviction，则直接返回 EVICT_FAIL
+    if (server.maxmemory_policy == MAXMEMORY_NO_EVICTION) {
+        result = EVICT_FAIL;  /* We need to free memory, but policy forbids. */
+        goto update_metrics;
+    }
+
+    // 计算淘汰的时间限制
+    unsigned long eviction_time_limit_us = evictionTimeLimitUs();
+
+    mem_freed = 0;
+
+    latencyStartMonitor(latency);
+
+    monotime evictionTimer;
+    elapsedStart(&evictionTimer);
+
+    /* Try to smoke-out bugs (server.also_propagate should be empty here) */
+    serverAssert(server.also_propagate.numops == 0);
+    /* Evictions are performed on random keys that have nothing to do with the current command slot. */
+
+    // 如果释放的内存小于本次所需的内存，则继续执行淘汰
+    while (mem_freed < (long long)mem_tofree) {
+        int j, k, i;
+        static unsigned int next_db = 0;
+        sds bestkey = NULL;
+        int bestdbid;
+        redisDb *db;
+        dictEntry *de;
+
+        // 如果内存淘汰策略是 VOLATILE_TTL、LRU 或 LFU，则需要准备一个容量为 16 的 eviction_pool
+        if (server.maxmemory_policy & (MAXMEMORY_FLAG_LRU|MAXMEMORY_FLAG_LFU) ||
+            server.maxmemory_policy == MAXMEMORY_VOLATILE_TTL)
+        {
+            struct evictionPoolEntry *pool = EvictionPoolLRU;
+            // 如果没找到需要淘汰的 key，则需要重新填充 eviction_pool
+            while (bestkey == NULL) {
+                unsigned long total_keys = 0;
+
+                // 遍历所有 db，每个 db 中随机选择 maxmemory_samples 个 key 放入 eviction_pool
+                for (i = 0; i < server.dbnum; i++) {
+                    db = server.db+i;
+                    kvstore *kvs;
+                    // 判断淘汰策略是 allkeys 还是 volatile
+                    if (server.maxmemory_policy & MAXMEMORY_FLAG_ALLKEYS) {
+                        kvs = db->keys;
+                    } else {
+                        kvs = db->expires;
+                    }
+                    unsigned long sampled_keys = 0;
+                    unsigned long current_db_keys = kvstoreSize(kvs);
+                    // 如果 key 的数量为 0，则跳过
+                    if (current_db_keys == 0) continue;
+
+                    total_keys += current_db_keys;
+                    // 获取当前 dict 中 key 的数量
+                    int l = kvstoreNumNonEmptyDicts(kvs);
+                    /* Do not exceed the number of non-empty slots when looping. */
+                    while (l--) {
+                        // 取出 5 个 key 放入 eviction_pool
+                        sampled_keys += evictionPoolPopulate(db, kvs, pool);
+                        /* We have sampled enough keys in the current db, exit the loop. */
+                        if (sampled_keys >= (unsigned long) server.maxmemory_samples)
+                            break;
+                        /* If there are not a lot of keys in the current db, dict/s may be very
+                         * sparsely populated, exit the loop without meeting the sampling
+                         * requirement. */
+                        if (current_db_keys < (unsigned long) server.maxmemory_samples*10)
+                            break;
+                    }
+                }
+                if (!total_keys) break; /* No keys to evict. */
+
+                /* Go backward from best to worst element to evict. */
+                for (k = EVPOOL_SIZE-1; k >= 0; k--) {
+                    if (pool[k].key == NULL) continue;
+                    bestdbid = pool[k].dbid;
+
+                    kvstore *kvs;
+                    if (server.maxmemory_policy & MAXMEMORY_FLAG_ALLKEYS) {
+                        kvs = server.db[bestdbid].keys;
+                    } else {
+                        kvs = server.db[bestdbid].expires;
+                    }
+                    de = kvstoreDictFind(kvs, pool[k].slot, pool[k].key);
+
+                    /* Remove the entry from the pool. */
+                    if (pool[k].key != pool[k].cached)
+                        sdsfree(pool[k].key);
+                    pool[k].key = NULL;
+                    pool[k].idle = 0;
+
+                    /* If the key exists, is our pick. Otherwise it is
+                     * a ghost and we need to try the next element. */
+                    // 仅删除 eviction_pool 中最后一个 key 
+                    if (de) {
+                        bestkey = dictGetKey(de);
+                        break;
+                    } else {
+                        /* Ghost... Iterate again. */
+                    }
+                }
+            }
+        }
+
+        // 如果淘汰策略是 volatile-random 和 allkeys-random policy
+        else if (server.maxmemory_policy == MAXMEMORY_ALLKEYS_RANDOM ||
+                 server.maxmemory_policy == MAXMEMORY_VOLATILE_RANDOM)
+        {
+            // 遍历所有 db，每个 db 中随机选择一个 key 进行删除
+            for (i = 0; i < server.dbnum; i++) {
+                // 注意，这里的 next_db 自增了 1
+                j = (++next_db) % server.dbnum;
+                // 获取下一个 db，这里的 db 是 server.db[j]
+                db = server.db+j;
+                kvstore *kvs;
+                // 判断淘汰策略是 allkeys 还是 volatile
+                if (server.maxmemory_policy == MAXMEMORY_ALLKEYS_RANDOM) {
+                    kvs = db->keys;
+                } else {
+                    kvs = db->expires;
+                }
+
+                // 随机选择一个 key 进行删除
+                int slot = kvstoreGetFairRandomDictIndex(kvs);
+                de = kvstoreDictGetRandomKey(kvs, slot);
+                if (de) {
+                    bestkey = dictGetKey(de);
+                    bestdbid = j;
+                    break;
+                }
+            }
+        }
+
+        // 如果找到了可以被删除的 key，则进行删除，以便释放内存
+        if (bestkey) {
+            long long key_mem_freed;
+            // 计算应该从哪个 db 中删除 key
+            db = server.db+bestdbid;
+
+            // 删除 key，并释放内存
+            enterExecutionUnit(1, 0);
+            robj *keyobj = createStringObject(bestkey,sdslen(bestkey));
+            deleteEvictedKeyAndPropagate(db, keyobj, &key_mem_freed);
+            decrRefCount(keyobj);
+            exitExecutionUnit();
+            /* Propagate the DEL command */
+            postExecutionUnitOperations();
+
+            // 计算累计释放掉的所有内存
+            mem_freed += key_mem_freed;
+            // 计算释放内存的次数（也就是删除 key 的次数）
+            keys_freed++;
+
+            // 每当删除了 16 个 key，就检查一下是否超过了时间限制
+            if (keys_freed % 16 == 0) {
+                /* When the memory to free starts to be big enough, we may
+                 * start spending so much time here that is impossible to
+                 * deliver data to the replicas fast enough, so we force the
+                 * transmission here inside the loop. */
+                if (slaves) flushSlavesOutputBuffers();
+
+                /* Normally our stop condition is the ability to release
+                 * a fixed, pre-computed amount of memory. However when we
+                 * are deleting objects in another thread, it's better to
+                 * check, from time to time, if we already reached our target
+                 * memory, since the "mem_freed" amount is computed only
+                 * across the dbAsyncDelete() call, while the thread can
+                 * release the memory all the time. */
+                if (server.lazyfree_lazy_eviction) {
+                    if (getMaxmemoryState(NULL,NULL,NULL,NULL) == C_OK) {
+                        break;
+                    }
+                }
+
+                /* After some time, exit the loop early - even if memory limit
+                 * hasn't been reached.  If we suddenly need to free a lot of
+                 * memory, don't want to spend too much time here.  */
+                // 如果淘汰的时间超过了某个阈值，则结束本次淘汰 
+                if (elapsedUs(evictionTimer) > eviction_time_limit_us) {
+                    // 开启后台线程执行淘汰
+                    startEvictionTimeProc();
+                    break;
+                }
+            }
+        } else {
+            goto cant_free; /* nothing to free... */
+        }
+    }
+    /* at this point, the memory is OK, or we have reached the time limit */
+    // 如果淘汰的时间超过了阈值，则设置状态为 EVICT_RUNNING
+    result = (isEvictionProcRunning) ? EVICT_RUNNING : EVICT_OK;
+
+cant_free:
+    if (result == EVICT_FAIL) {
+        /* At this point, we have run out of evictable items.  It's possible
+         * that some items are being freed in the lazyfree thread.  Perform a
+         * short wait here if such jobs exist, but don't wait long.  */
+        mstime_t lazyfree_latency;
+        latencyStartMonitor(lazyfree_latency);
+        while (bioPendingJobsOfType(BIO_LAZY_FREE) &&
+              elapsedUs(evictionTimer) < eviction_time_limit_us) {
+            if (getMaxmemoryState(NULL,NULL,NULL,NULL) == C_OK) {
+                result = EVICT_OK;
+                break;
+            }
+            usleep(eviction_time_limit_us < 1000 ? eviction_time_limit_us : 1000);
+        }
+        latencyEndMonitor(lazyfree_latency);
+        latencyAddSampleIfNeeded("eviction-lazyfree",lazyfree_latency);
+    }
+
+    latencyEndMonitor(latency);
+    latencyAddSampleIfNeeded("eviction-cycle",latency);
+
+update_metrics:
+    if (result == EVICT_RUNNING || result == EVICT_FAIL) {
+        if (server.stat_last_eviction_exceeded_time == 0)
+            elapsedStart(&server.stat_last_eviction_exceeded_time);
+    } else if (result == EVICT_OK) {
+        if (server.stat_last_eviction_exceeded_time != 0) {
+            server.stat_total_eviction_exceeded_time += elapsedUs(server.stat_last_eviction_exceeded_time);
+            server.stat_last_eviction_exceeded_time = 0;
+        }
+    }
+    return result;
+}
+
+/* Algorithm for converting tenacity (0-100) to a time limit.  */
+// 方法返回值是微秒 us，1 ms = 1000 us
+static unsigned long evictionTimeLimitUs(void) {
+    serverAssert(server.maxmemory_eviction_tenacity >= 0);
+    serverAssert(server.maxmemory_eviction_tenacity <= 100);
+
+    if (server.maxmemory_eviction_tenacity <= 10) {
+        /* A linear progression from 0..500us */
+        return 50uL * server.maxmemory_eviction_tenacity;
+    }
+
+    if (server.maxmemory_eviction_tenacity < 100) {
+        /* A 15% geometric progression, resulting in a limit of ~2 min at tenacity==99  */
+        return (unsigned long)(500.0 * pow(1.15, server.maxmemory_eviction_tenacity - 10.0));
+    }
+
+    // 返回 long 的最大值
+    return ULONG_MAX;   /* No limit to eviction time */
+}
+```
+
+可以通过 Redis 配置文件设置 maxmemory-eviction-tenacity 参数来控制内存淘汰的时间限制。默认值是 10，表示 500us 的时间限制。可以设置为 0-100 之间的整数，值越大，时间限制越长。
+
+```sh
+# Eviction processing is designed to function well with the default setting.
+# If there is an unusually large amount of write traffic, this value may need to
+# be increased.  Decreasing this value may reduce latency at the risk of 
+# eviction processing effectiveness
+#   0 = minimum latency, 10 = default, 100 = process without regard to latency
+#
+# maxmemory-eviction-tenacity 10
+```
