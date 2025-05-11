@@ -24,4 +24,4 @@ typedef struct intset {
 
 ![20250428133230](https://djfmdresources.oss-cn-hangzhou.aliyuncs.com/athena/2025-04-28/20250428133230.png)
 
-IntSet 在插入数据的时候会先判断数据是否存在，如果已经存在了（使用的是二分查找）。
+IntSet 在插入数据的时候会先判断数据是否存在，如果已经存在了，就不会插入了（使用的是二分查找）。

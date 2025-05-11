@@ -132,6 +132,8 @@ cd /usr/local/myapp/redis/sentinel/s10003
     - Sentinel Leader 会修改发生故障的主节点的配置文件，设置为从节点（在配置文件中添加 `SLAVEOF <new-master-ip> <new-master-port>`），故障恢复之后会进行全量同步。
     - 其他 Sentinel 节点会执行 `SENTINEL MONITOR <master-name> <new-master-ip> <new-master-port>` 命令，更新主节点信息。
 
+当某个 slave 节点选举为 master 节点之后，其他的 slave 节点会从新的 master 同步数据，同步规则也和之前的一样。老的 master 节点以 slave 的身份加入到集群之后，会先进行一次全量同步，因为 master_replid 不一致了。
+
 **为什么 Sentinel 集群至少 3 节点？**
 
 一个 Sentinel 节选举成为 Leader 的最低票数为 `quorum` 和 `Sentinel 节点数 / 2 + 1` 的最大值，如果 Sentinel 集群只有 2 个 Sentine l节点，则 `Sentinel节点数 / 2 + 1 = 2 / 2 + 1 = 2`，即 Leader 最低票数至少为 2，当该 Sentinel 集群中有一个 Sentinel 节点故障后，仅剩的一个 Sentinel 节点是永远无法成为 Leader。因此，Sentinel 集群允许 1 个 Sentinel 节点故障则需要 3 个节点的集群；允许 2 个节点故障则需要 5 个节点集群。

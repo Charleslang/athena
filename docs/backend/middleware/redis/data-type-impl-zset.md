@@ -11,6 +11,6 @@ ZSet 也就是 Sorted Set，Redis 中的有序集合。它是一个包含唯一�
 
 在添加过程中，只要任意一个条件不满足，则会进行编码转换（转换数据结构）。
 
-ZipList 本身没有排序功能，而且没有K-V 的概念，因此进行一些转换:
+ZipList 本身没有排序功能，而且没有 K-V 的概念，因此进行一些转换:
 - ZipList 是连续内存，因此 score 和 element 是紧挨在一起的两个 entry，element 在前，score 在后
 - score 越小越接近队首，score 越大越接近队尾，按照 score 值升序排列

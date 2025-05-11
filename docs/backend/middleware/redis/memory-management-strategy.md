@@ -20,8 +20,8 @@ Redis 本身是一个 K-V 结构的数据库，因此，数据库中的所有数
 typedef struct redisDb {
     // 数据库的 key 空间，存放所有的键值对（键为 key，value 是内存地址）
     dict *dict;                 
-    // key 的过期时间（只保存设置了 ttl 的 key。其 key 是设置了 ttl 的 key 的名称，value 是过期时间）
-    // value 是过期的时间，单位是毫秒。例如 10 秒后过期，则 value 就是 now() + 10 * 1000
+    // 保存设置了过期时间的 key（只保存设置了 ttl 的 key。其 key 是设置了 ttl 的 key 的名称，value 是过期时间）
+    // value 是过期的时间戳，单位是毫秒。例如 10 秒后过期，则 value 就是 now() + 10 * 1000
     dict *expires;              
     // 处于阻塞状态的 key 和相应的 client（主要用于 List 类型的阻塞操作）
     dict *blocking_keys;       
@@ -205,6 +205,6 @@ maxmemory-samples 5
 - 使用 `FLUSHDB` 或 `FLUSHALL` 命令清空整个数据库或所有数据库，快速释放内存。
 - 调整 `hz` 参数，增加定期删除频率。
 
-**为什么默认是 noeviction？**
+**为什么默认的内存淘汰策略是 noeviction？**
 
 防止误删重要数据。

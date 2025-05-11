@@ -148,6 +148,8 @@ Redis 的主从至少需要 3 个实例，且实例数量最好的单数，这�
 
 ## 数据同步原理
 
+master 会为每个 slave 都分配一个缓冲区，然后把数据写入缓冲区 `client-output-buffer-limit slave`，从节点会读取缓冲区的数据。
+
 ### 全量同步
 
 主从第一次同步是全量同步。当某个节点加入集群中时，从节点会向 master 发送一个 `PSYNC` 命令表示要同步数据，master 会判断该节点是不是第一次加入到集群，如果是，则全量同步。master 执行 `bgsave` 命令生成 RDB 文件，然后把 RDB 文件发送给从节点，从节点会清空本地数据，然后利用 RDB 文件进行同步。生成 RDB 文件期间执行的所有**修改命令**会被保存到 master 的 `repl_baklog`（replication backlog）缓冲区，会随 RDB 文件一起发送给从节点，从节点拿到数据后也会执行这些修改命令。
@@ -156,9 +158,11 @@ Redis 的主从至少需要 3 个实例，且实例数量最好的单数，这�
 - master 启动时会生成一个 `master_replid`，从节点会继承这个 ID，所以可以通过从节点的 `master_replid` 来判断是不是第一次来。如果 `master_replid` 不一致，则说明需要进行全量同步。
 - 集群中的每个节点都有一个 offset，用于标识当前节点数据同步的进度，从节点的 offset 肯定小于等于 master 节点的 offset。从节点每次完成数据同步后，会修改当前的 offset，如果小于 master 的 offset，则说明需要进行数据同步。如果 offset 为 0，则说明需要进行全量同步。
 
+还有一种场景是，如果 offset 在 master 的 `repl_baklog` 中找不到，则会进行全量同步。
+
 ### 增量同步
 
-从节点加入到集群之后，会发送自己的 offset 给 master，master 会根据 offset 到 repl_baklog 中寻找需要同步的数据，然后把这些数据发送给 slave，从节点每次完成数据同步后，会修改当前的 offset。在 slave 正常连接到 master 的情况下，master 会主动将每个新的写命令实时推送给所有已连接的 slave，slave 持续接收并执行这些命令以保持数据一致。
+从节点加入到集群之后，会发送自己的 offset 给 master，master 会根据 offset 到 repl_baklog 中寻找需要同步的数据（会把从 offset 开始到主节点当前最新偏移量之间的所有写命令发送给从节点。），然后把这些数据发送给 slave，从节点每次完成数据同步后，会修改当前的 offset。在 slave 正常连接到 master 的情况下，master 的后台线程会主动将每个写命令实时推送给所有已连接的 slave，slave 持续接收并执行这些命令以保持数据一致。
 
 repl_baklog 是一个固定容量的环形缓冲区，所以，新的数据会覆盖掉老的数据。如果 slave 宕机时间太久，同步数据时就可能丢失部分数据，此时必须再次进行全量同步。
 

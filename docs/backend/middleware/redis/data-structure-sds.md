@@ -22,7 +22,7 @@ struct __attribute__ ((__packed__)) sdshdr5 {
     char buf[];
 };
 struct __attribute__ ((__packed__)) sdshdr8 {
-    // 字符串的实际长度（uint8 表示 8 字节的无符号类型）
+    // 字符串的实际长度（uint8 表示 8 bit 的无符号类型）
     uint8_t len; /* used */
     // 实际分配的内存空间
     uint8_t alloc; /* excluding the header and null terminator */

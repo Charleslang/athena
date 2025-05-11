@@ -6,4 +6,4 @@ Redis 中的 List 可以从首、尾操作列表中的元素，那么使用哪�
 - ZipList：压缩列表，内存占用较低，但是数据存储上限低、查询效率较低，容易产生连锁更新问题。
 - QuickList：快速列表，结合了链表和压缩列表的优点，适合存储大数据量的列表，内存占用较低。
 
-所以，Redis 中的 List 采用的是 QuickList 来实现的。QuickList 是一个双向链表，每个节点都是一个 ZipList。
+所以，Redis 中的 List 采用的是 QuickList 来实现的。QuickList 是一个双向链表，每个节点都是一个 ZipList。List 的查询时间复杂度是 O(n)，LPOP、LPUSH、RPOP、RPUSH 的时间复杂度是 O(1)（因为是双向连表）。
