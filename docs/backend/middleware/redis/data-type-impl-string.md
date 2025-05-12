@@ -63,3 +63,44 @@ OK
 127.0.0.1:6379> object encoding mytest
 "raw"
 ```
+
+**为什么 Redis 对 String 的限制是 512 MB？**
+
+我们可以查看 Redis 的源码来确认一下：
+
+- Redis 6.0 以前
+
+```c
+static int checkStringLength(client *c, long long size) {
+    if (size > 512*1024*1024) {
+        addReplyError(c,"string exceeds maximum allowed size (512MB)");
+        return C_ERR;
+    }
+    return C_OK;
+}
+```
+
+- Redis 6.0+
+
+```c
+static int checkStringLength(client *c, long long size) {
+    if (!(c->flags & CLIENT_MASTER) && size > server.proto_max_bulk_len) {
+        addReplyError(c,"string exceeds maximum allowed size (proto-max-bulk-len)");
+        return C_ERR;
+    }
+    return C_OK;
+}
+```
+
+可以看到，Redis 6.0 以前是在源码中直接写死了 512 MB 的上限，而从 Redis 6 开始，是通过 `server.proto_max_bulk_len` 来限制的。我们可以在配置文件中设置 `proto-max-bulk-len` 来修改这个值，默认是 512 MB。
+
+```sh
+proto-max-bulk-len 512mb
+```
+
+而通过 SDS 的实现，我们可以发现，Redis 其实最大能够容纳的字符串的长度是 8 个字节的整型，也就是 2^64 - 1 = 18446744073709551615 字节，约等于 16 EB（Exabyte）。可能的原因如下：
+
+1. **内存限制**：Redis 是内存数据库，虽然理论上可以存储非常大的字符串，但是，内存的容量是有限的，所以 Redis 需要限制每个键值对的大小，以保证系统的稳定性和性能。
+2. **性能问题**：更大的字符串可能会导致更长的读写操作，因为 Redis 需要更长的时间来处理和传输这些数据。这会增加延迟，并降低 Redis 的性能。
+
+综上所述，Redis 将字符串的最大容量限制为 512MB 是为了在空间和性能上取得平衡。虽然理论上可以存储更大的字符串，但是在实际应用中，512MB 的限制已经足够满足大多数场景的需求。
