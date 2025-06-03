@@ -57,7 +57,7 @@ export const navbar = [
           },
           {
             text: 'CSS',
-            link: '/portal/base/css.html'
+            link: '/portal/base/css/index.html'
           },
           {
             text: 'JavaScript',

@@ -209,6 +209,29 @@ export const sidebar = {
       ]
     }
   ],
+  '/portal/base/css': [
+    {
+      "text": 'CSS',
+      children: [
+        '/portal/base/css/index.html',
+        '/portal/base/css/selector.html',
+        '/portal/base/css/font.html',
+        '/portal/base/css/float.html',
+        '/portal/base/css/position.html',
+        '/portal/base/css/background.html',
+        '/portal/base/css/gradient.html',
+        '/portal/base/css/table.html',
+        '/portal/base/css/hack.html',
+        '/portal/base/css/center.html',
+        '/portal/base/css/transition.html',
+        '/portal/base/css/animation.html',
+        '/portal/base/css/transform.html',
+        '/portal/base/css/flex.html',
+        '/portal/base/css/less.html',
+        '/portal/base/css/media.html',
+      ]
+    }
+  ],
   '/portal/vue/vue2': [
     {
       text: 'Vue2',
