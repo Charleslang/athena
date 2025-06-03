@@ -50,30 +50,42 @@ export const sidebar = {
       ]
     }
   ],
-  '/backend/framework/elasticsearch': [
+  '/backend/framework/flyway': [
+    {
+      text: 'Flyway',
+      children: [
+        '/backend/framework/flyway/index.html',
+        '/backend/framework/flyway/get-started.html',
+        '/backend/framework/flyway/spring-boot-principle.html',
+        '/backend/framework/flyway/flyway-principle.html',
+        '/backend/framework/flyway/config.html'
+      ]
+    }
+  ],
+  '/backend/middleware/elasticsearch': [
     {
       text: 'Elasticsearch',
       children: [
-        '/backend/framework/elasticsearch/index.html',
-        '/backend/framework/elasticsearch/concept.html',
-        '/backend/framework/elasticsearch/install.html',
-        '/backend/framework/elasticsearch/usage.html',
-        '/backend/framework/elasticsearch/query-dsl.html',
-        '/backend/framework/elasticsearch/aggregations.html',
-        '/backend/framework/elasticsearch/mapping.html',
-        '/backend/framework/elasticsearch/analysis.html',
-        '/backend/framework/elasticsearch/config.html',
+        '/backend/middleware/elasticsearch/index.html',
+        '/backend/middleware/elasticsearch/concept.html',
+        '/backend/middleware/elasticsearch/install.html',
+        '/backend/middleware/elasticsearch/usage.html',
+        '/backend/middleware/elasticsearch/query-dsl.html',
+        '/backend/middleware/elasticsearch/aggregations.html',
+        '/backend/middleware/elasticsearch/mapping.html',
+        '/backend/middleware/elasticsearch/analysis.html',
+        '/backend/middleware/elasticsearch/config.html',
         {
           text: 'Query DSL',
           collapsible: true,
           children: [
-            '/backend/framework/elasticsearch/query-dsl-query-filter-context.html',
-            '/backend/framework/elasticsearch/query-dsl-compound-queries.html',
-            '/backend/framework/elasticsearch/query-dsl-full-text-queries.html',
-            '/backend/framework/elasticsearch/query-dsl-match-all-query.html',
+            '/backend/middleware/elasticsearch/query-dsl-query-filter-context.html',
+            '/backend/middleware/elasticsearch/query-dsl-compound-queries.html',
+            '/backend/middleware/elasticsearch/query-dsl-full-text-queries.html',
+            '/backend/middleware/elasticsearch/query-dsl-match-all-query.html',
           ]
         },
-        '/backend/framework/elasticsearch/java-rest-high-rest-client.html'
+        '/backend/middleware/elasticsearch/java-rest-high-rest-client.html'
       ]
     }
   ],

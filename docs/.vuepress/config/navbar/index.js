@@ -15,14 +15,18 @@ export const navbar = [
         text: '框架',
         children: [
           {
-            text: 'Elasticsearch',
-            link: '/backend/framework/elasticsearch/index.html'
+            text: 'Flyway',
+            link: '/backend/framework/flyway/index.html'
           }
         ]
       },
       {
         text: '中间件',
         children: [
+          {
+            text: 'Elasticsearch',
+            link: '/backend/middleware/elasticsearch/index.html'
+          },
           {
             text: 'Redis',
             link: '/backend/middleware/redis/index.html'
