@@ -211,7 +211,7 @@ export const sidebar = {
   ],
   '/portal/base/css': [
     {
-      "text": 'CSS',
+      text: 'CSS',
       children: [
         '/portal/base/css/index.html',
         '/portal/base/css/selector.html',
@@ -229,6 +229,29 @@ export const sidebar = {
         '/portal/base/css/flex.html',
         '/portal/base/css/less.html',
         '/portal/base/css/media.html',
+      ]
+    }
+  ],
+  '/portal/base/js/': [
+    {
+      text: 'JavaScript',
+      children: [
+        '/portal/base/js/index.html',
+        '/portal/base/js/data-type.html',
+        '/portal/base/js/usage.html',
+        '/portal/base/js/object.html',
+        '/portal/base/js/function.html',
+        '/portal/base/js/scope.html',
+        '/portal/base/js/this.html',
+        '/portal/base/js/gc.html',
+        '/portal/base/js/array.html',
+        '/portal/base/js/string.html',
+        '/portal/base/js/regex.html',
+        '/portal/base/js/dom-api.html',
+        '/portal/base/js/bom.html',
+        '/portal/base/js/interval.html',
+        '/portal/base/js/context.html',
+        '/portal/base/js/closure.html',
       ]
     }
   ],

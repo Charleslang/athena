@@ -61,7 +61,7 @@ export const navbar = [
           },
           {
             text: 'JavaScript',
-            link: '/portal/base/js.html'
+            link: '/portal/base/js/index.html'
           }
         ]
       },
