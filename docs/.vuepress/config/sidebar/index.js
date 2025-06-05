@@ -255,6 +255,18 @@ export const sidebar = {
       ]
     }
   ],
+  '/portal/advance/jquery': [
+    {
+      text: 'jQuery',
+      children: [
+        '/portal/advance/jquery/index.html',
+        '/portal/advance/jquery/usage.html',
+        '/portal/advance/jquery/method.html',
+        '/portal/advance/jquery/event.html',
+        '/portal/advance/jquery/practice.html',
+      ]
+    }
+  ],
   '/portal/vue/vue2': [
     {
       text: 'Vue2',

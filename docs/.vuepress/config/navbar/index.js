@@ -70,7 +70,7 @@ export const navbar = [
         children: [
           {
             text: 'jQuery',
-            link: '/portal/advance/jq.html'
+            link: '/portal/advance/jquery/index.html'
           },
           {
             text: 'ECMAScript6',
