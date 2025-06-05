@@ -74,7 +74,7 @@ export const navbar = [
           },
           {
             text: 'ECMAScript6',
-            link: '/portal/advance/es6.html'
+            link: '/portal/advance/es6/index.html'
           },
           {
             text: 'TypeScript',

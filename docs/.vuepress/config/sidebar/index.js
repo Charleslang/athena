@@ -267,6 +267,38 @@ export const sidebar = {
       ]
     }
   ],
+  '/portal/advance/es6': [
+    {
+      text: 'ECMAScript6',
+      children: [
+        '/portal/advance/es6/index.html',
+        '/portal/advance/es6/usage-let.html',
+        '/portal/advance/es6/usage-const.html',
+        '/portal/advance/es6/usage-deconstruction.html',
+        '/portal/advance/es6/usage-obj-abb.html',
+        '/portal/advance/es6/usage-arrow-fun.html',
+        '/portal/advance/es6/usage-args-default-value.html',
+        '/portal/advance/es6/usage-rest-args.html',
+        '/portal/advance/es6/usage-optional-operator.html',
+        '/portal/advance/es6/usage-string-template.html',
+        '/portal/advance/es6/usage-ext-operator.html',
+        '/portal/advance/es6/usage-ext-array.html',
+        '/portal/advance/es6/usage-ext-string.html',
+        '/portal/advance/es6/usage-ext-number.html',
+        '/portal/advance/es6/usage-ext-obj.html',
+        '/portal/advance/es6/usage-iterator.html',
+        '/portal/advance/es6/usage-generator.html',
+        '/portal/advance/es6/usage-data-type-bigint.html',
+        '/portal/advance/es6/usage-data-type-set.html',
+        '/portal/advance/es6/usage-data-type-map.html',
+        '/portal/advance/es6/usage-class.html',
+        '/portal/advance/es6/usage-module.html',
+        '/portal/advance/es6/usage-global-this.html',
+        '/portal/advance/es6/usage-async-await.html',
+        '/portal/advance/es6/usage-promise.html',
+      ]
+    }
+  ],
   '/portal/vue/vue2': [
     {
       text: 'Vue2',
