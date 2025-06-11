@@ -17,6 +17,10 @@ export const navbar = [
           {
             text: 'Flyway',
             link: '/backend/framework/flyway/index.html'
+          },
+          {
+            text: 'MapStruct',
+            link: '/backend/framework/mapstruct/index.html'
           }
         ]
       },

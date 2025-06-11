@@ -62,6 +62,16 @@ export const sidebar = {
       ]
     }
   ],
+  '/backend/framework/mapstruct': [
+    {
+      text: 'MapStruct',
+      children: [
+        '/backend/framework/mapstruct/index.html',
+        '/backend/framework/mapstruct/get-started.html',
+        '/backend/framework/mapstruct/usage.html',
+      ]
+    }
+  ],
   '/backend/middleware/elasticsearch': [
     {
       text: 'Elasticsearch',
