@@ -290,6 +290,8 @@ export const sidebar = {
         '/portal/advance/es6/usage-args-default-value.html',
         '/portal/advance/es6/usage-rest-args.html',
         '/portal/advance/es6/usage-optional-operator.html',
+        '/portal/advance/es6/usage-nullish-coalescing.html',
+        '/portal/advance/es6/usage-nullish-coalescing-assignment.html',
         '/portal/advance/es6/usage-string-template.html',
         '/portal/advance/es6/usage-ext-operator.html',
         '/portal/advance/es6/usage-ext-array.html',
@@ -304,8 +306,8 @@ export const sidebar = {
         '/portal/advance/es6/usage-class.html',
         '/portal/advance/es6/usage-module.html',
         '/portal/advance/es6/usage-global-this.html',
-        '/portal/advance/es6/usage-async-await.html',
         '/portal/advance/es6/usage-promise.html',
+        '/portal/advance/es6/usage-async-await.html',
       ]
     }
   ],

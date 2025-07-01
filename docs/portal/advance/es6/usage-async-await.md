@@ -9,7 +9,8 @@ ES6 引入了 `async` 和 `await` 关键字，用于简化异步编程。它们�
 ```js
 async function foo() {
   console.log('123')
-  return 'success' // 相当于调用 resolve( 'success' )
+  // 相当于调用 resolve( 'success' )
+  return 'success'
 }
 const result = foo()
 console.log(result)
@@ -20,7 +21,8 @@ console.log(result)
 ```js
 async function foo() {
   console.log('123')
-  throw new Error('fail') // 返回失败的 Promise, 详单与调用 reject( 'fail' )
+  // 返回失败的 Promise, 相当于调用 reject( 'fail' )
+  throw new Error('fail') 
 }
 const result = foo()
 console.log(result)
