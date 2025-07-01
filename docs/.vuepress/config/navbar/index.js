@@ -21,6 +21,10 @@ export const navbar = [
           {
             text: 'MapStruct',
             link: '/backend/framework/mapstruct/index.html'
+          },
+          {
+            text: 'Spring Cloud',
+            link: '/backend/framework/spring-cloud/index.html'
           }
         ]
       },

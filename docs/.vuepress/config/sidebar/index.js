@@ -72,6 +72,21 @@ export const sidebar = {
       ]
     }
   ],
+  '/backend/framework/spring-cloud': [
+    {
+      text: 'Spring Cloud',
+      children: [
+        '/backend/framework/spring-cloud/index.html',
+        {
+          text: '服务拆分',
+          collapsible: true,
+          children: [
+            '/backend/framework/spring-cloud/service-split-index.html',
+          ]
+        }
+      ]
+    }
+  ],
   '/backend/middleware/elasticsearch': [
     {
       text: 'Elasticsearch',
