@@ -1,4 +1,4 @@
-# Spring Boot
+# 整合 Spring Boot
 
 :::tip 参考
 [Spring AMQP](https://spring.io/projects/spring-amqp/)  
@@ -247,9 +247,9 @@ public void receive(Map object) {
 
 其实，Spring AMQP 中，已经为我们提供了消费重试的功能。我们只需要进行一些配置即可，将 `spring.rabbitmq.listener.simple.retry.enabled` 设置为 `true` 即可开启重试。
 
-这里需要说明一下，`spring.rabbitmq.listener.simple.retry.enabled` 默认为 `false`，此时，如果我们在消费消息的过程中抛出了异常，那么 Spring 会将消息重新放回队列，然后该消息会被重新消费，但是重新消费又报错，然后消息又被重新放入队列，如此循环。这样会导致消息一直被重复消费（因此需要保证消息消费的幂等性），而且，如果该条消息一直被重复消费，那么可能就会导致队列中的消息越来越多，并且占用网络带宽。在这种情况下，我们可以将 `spring.rabbitmq.listener.simple.default-requeue-rejected` 设置为 false 来紧张消费失败时重新将消息放入队列。
+这里需要说明一下，`spring.rabbitmq.listener.simple.retry.enabled` 默认为 `false`，此时，如果我们在消费消息的过程中抛出了异常，那么 Spring 会将消息重新放回队列，然后该消息会被重新消费，但是重新消费又报错，然后消息又被重新放入队列，如此循环。这样会导致消息一直被重复消费（因此需要保证消息消费的幂等性），而且，如果该条消息一直被重复消费，那么可能就会导致队列中的消息越来越多，并且占用网络带宽。在这种情况下，我们可以将 `spring.rabbitmq.listener.simple.default-requeue-rejected` 设置为 false 来禁止消费失败时重新将消息放入队列。
 
-针对上面提到的情况，当消费消息出现异常时，我们也可以开始消息消费重试。配置如下：
+针对上面提到的情况，当消费消息出现异常时，我们也可以开启消息消费重试。配置如下：
 
 ```properties
 # 见 https://docs.spring.io/spring-boot/docs/current/reference/html/messaging.html#messaging.amqp.receiving
@@ -299,7 +299,7 @@ public class ConsumerErrorConfig {
 
 在上面，我们使用 `ImmediateRequeueMessageRecoverer` 来处理重试达到限制后的消息。这种策略会将消息重新入队，这与 `spring.rabbitmq.listener.simple.retry.enabled=false` 的情况大同小异。
 
-## ack
+## Ack
 
 ```properties
 # 自动 ack（消息一旦投递给消费者，就会从队列中删除，不管消费者是否成功消费）
@@ -308,7 +308,7 @@ public class ConsumerErrorConfig {
 spring.rabbitmq.listener.simple.acknowledge-mode=manual
 # 由 spring 来控制 ack 行为（默认就是 auto，推荐使用这种方式）
 # SpringAMQP 利用 AOP 对我们的消息处理逻辑做了环绕增强，当业务正常执行时则自动返回 ack。当业务出现异常时，根据异常判断返回不同结果：
-# - 如果是业务异常,会自动返回 nack
+# - 如果是业务异常，会自动返回 nack
 # - 如果是消息处理或校验异常，自动返回 reject
 # spring.rabbitmq.listener.simple.acknowledge-mode=auto
 ```
