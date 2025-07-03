@@ -8,23 +8,23 @@ Maven 聚合是指将多个项目组织到同一个父工程中，以便一起�
 
 **聚合的作用：**
 
-1. 管理多个子项目。通过聚合，可以将多个子项目组织在一起， 方便管理和维护。  
+1. 管理多个子项目。通过聚合，可以将多个子项目组织在一起，方便管理和维护。  
 2. 构建和发布一组相关的项目。通过聚合，可以在一个命令中构建和发布多个相关的项目，简化了部署和维护工作。  
 3. 优化构建顺序。通过聚合，可以对多个项目进行顺序控制，避免出现构建依赖混乱导致构建失败的情况。  
 4. 统一管理依赖项。通过聚合，可以在父项目中管理公共依赖和插件，避免重复定义。
 
 **如何使用聚合？**  
 
-其实，聚合就是要创建一个父项目和多个子项目。创建父项目和子项目的步骤和 Maven 的继承完全一样，参考 [继承](./inheritance.html)。  
+其实，聚合就是要创建一个父项目和多个子项目。创建父项目和子项目的步骤和 Maven 的继承完全一样，参考[继承](./inheritance.html)。  
 
-有一点区别就是，我们需要在父项目中额外添加 `module`，来声明子项目相对于父项目的路径。如下：
-
-项目结构：
+有一点区别就是，我们需要在父项目中额外添加 `module`，来声明子项目相对于父项目的路径。项目结构：
 
 ```plaintext
-|── maven-cms-common
-maven-cms-parent
-├── maven-cms-login
+maven-cms-common
+|── maven-cms-parent
+|   |—— maven-cms-login
+|       |—— pom.xml
+|   |—— pom.xml
 ├── pom.xml
 ```
 
@@ -43,11 +43,9 @@ maven-cms-parent
 </modules>
 ```
 
-在打包时，我们只需要对父工程执行 `mvn clean package` 即可，子工程会按照父工程在 `<module` 中定义的顺序依次自动执行 `mvn clean package`。
+在打包时，我们只需要对父工程执行 `mvn clean package` 即可，子工程会按照在父工程 `<module>` 中定义的顺序依次自动执行 `mvn clean package`。可能你还没有理解为什么要使用聚合，下面我们通过一个例子来说明。
 
-下面来看一个使用聚合的典型例子。
-
-如果 maven-cms-login 中需要使用 maven-cms-common，那该怎么办呢？我们能想到的是，在 maven-cms-login 的依赖中添加 maven-cms-common。如下：
+假如 maven-cms-login 中需要依赖 maven-cms-common，那该怎么办呢？我们能想到的是，在 maven-cms-login 的依赖中添加 maven-cms-common。如下：
 
 - maven-cms-login
 
@@ -58,4 +56,30 @@ maven-cms-parent
   <version>1.0-SNAPSHOT</version>
 </dependency>
 ```
+
 这样做确实没有问题。但是，如果不使用聚合，那么在编译 maven-cms-login 时可能报错，报错的原因是找不到 maven-cms-common，为什么呢？因为 maven 中的依赖都是先找本地仓库，本地没有的话再找远程仓库。显然，本地和远程仓库都没有 maven-cms-common，所以报错。解决办法就是手动将 maven-cms-common 安装到本地仓库，即在 maven-cms-common 中执行 `mvn install`，这样做非常麻烦。有了聚合后，我们就不再需要这样手动 install 了。
+
+此外，Maven 聚合还可以帮助我们在构建时自动处理子项目之间的依赖关系。通过在父项目中声明子项目，Maven 会自动处理它们之间的依赖关系，确保构建顺序正确。看下面的例子。
+
+- maven-cms-parent
+
+```xml
+<modules>
+  <module>maven-cms-login</module>
+  <module>maven-cms-common</module>
+</modules>
+```
+
+- maven-cms-login
+
+```xml
+<dependencies>
+  <dependency>
+    <groupId>com.daijunfeng</groupId>
+    <artifactId>maven-cms-common</artifactId>
+    <version>1.0-SNAPSHOT</version>
+  </dependency>
+</dependencies>
+```
+
+当我们执行 `mvn clean package` 时，尽管 maven-cms-common 在 maven-cms-parent 的 `<modules>` 中排在 maven-cms-login 后面，但由于 maven-cms-login 依赖了 maven-cms-common，Maven 会自动调整构建顺序，确保 maven-cms-common 在 maven-cms-login 之前构建。
