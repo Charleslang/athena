@@ -113,6 +113,10 @@ export const navbar = [
     text: '文章归档',
     children: [
       {
+        text: 'Linux',
+        link: '/archive/linux/index.html'
+      },
+      {
         text: 'Jenkins',
         link: '/archive/jenkins/index.html',
       },
@@ -123,10 +127,6 @@ export const navbar = [
       {
         text: 'MySQL',
         link: '/mysql/'
-      },
-      {
-        text: 'Linux',
-        link: '/linux/'
       },
       {
         text: '插件工具',

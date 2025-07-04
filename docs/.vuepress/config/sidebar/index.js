@@ -375,6 +375,37 @@ export const sidebar = {
       ]
     },
   ],
+  '/archive/linux': [
+    {
+      text: 'Linux',
+      children: [
+        '/archive/linux/index.html',
+        {
+          text: '常用命令',
+          collapsible: true,
+          children: [
+            '/archive/linux/commands-directory.html',
+            '/archive/linux/commands-permission.html',
+            '/archive/linux/commands-file-search.html',
+            '/archive/linux/commands-disk.html',
+            '/archive/linux/commands-help.html',
+            '/archive/linux/commands-user-management.html',
+            '/archive/linux/commands-de-compression.html',
+            '/archive/linux/commands-network.html',
+            '/archive/linux/commands-output.html',
+            '/archive/linux/commands-others.html',
+          ]
+        },
+        '/archive/linux/vim.html',
+        '/archive/linux/package-management.html',
+        '/archive/linux/user-group-management.html',
+        '/archive/linux/permission.html',
+        '/archive/linux/variables.html',
+        '/archive/linux/shell.html',
+        '/archive/linux/service-management.html',
+      ]
+    }
+  ],
   '/archive/jenkins': [
     {
       text: 'Jenkins',
