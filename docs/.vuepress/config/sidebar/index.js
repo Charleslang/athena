@@ -82,9 +82,15 @@ export const sidebar = {
           collapsible: true,
           children: [
             '/backend/framework/spring-cloud/service-split-index.html',
+            '/backend/framework/spring-cloud/service-split-parent-module.html',
+            '/backend/framework/spring-cloud/service-split-common-service.html',
+            '/backend/framework/spring-cloud/service-split-goods-service.html',
+            '/backend/framework/spring-cloud/service-split-cart-service.html',
           ]
-        }
-      ]
+        },
+        '/backend/framework/spring-cloud/rmi.html',
+        '/backend/framework/spring-cloud/registration-center.html',
+      ],
     }
   ],
   '/backend/middleware/elasticsearch': [
